@@ -11,7 +11,7 @@ import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.helper.impl.ParseBoardDefinitionHelperImpl;
 import com.ronny.ludo.model.Game;
 
-public class LudoActivity extends LudoCommon {
+public class LudoActivity extends LudoCommonActivity {
 	private String TAG = "-Ludo-:";
 
 	private ImageButton zoomInButton;

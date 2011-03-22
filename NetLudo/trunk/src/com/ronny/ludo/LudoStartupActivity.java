@@ -2,7 +2,7 @@ package com.ronny.ludo;
 
 import android.os.Bundle;
 
-public class LudoStartupActivity extends LudoCommon {
+public class LudoStartupActivity extends LudoCommonActivity {
 	
 	/** Called when the activity is first created. */
 	@Override

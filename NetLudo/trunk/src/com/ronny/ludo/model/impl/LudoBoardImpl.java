@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import android.util.Log;
 
-import com.ronny.ludo.LudoConstants;
+import com.ronny.ludo.helper.LudoConstants;
 import com.ronny.ludo.model.Brikke;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.Game;

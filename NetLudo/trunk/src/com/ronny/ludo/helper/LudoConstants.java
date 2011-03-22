@@ -1,4 +1,4 @@
-package com.ronny.ludo;
+package com.ronny.ludo.helper;
 
 public class LudoConstants {
 	public final static int MOVE_FROM_HOUSE = 100;
