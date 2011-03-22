@@ -15,7 +15,7 @@ public class Game implements ILudoEventListener {
 	private PlayerColor currentTurnColor = PlayerColor.RED; // Rød starter
 															// alltid
 
-	private HashMap<PlayerColor, Player> players; // All players
+//	private HashMap<PlayerColor, Player> players; // All players
 	private Player localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
 	private LudoBoard ludoBoard = new LudoBoard();
@@ -27,37 +27,36 @@ public class Game implements ILudoEventListener {
 		return INSTANCE;
 	}
 
+	private Game() {
+		
+		// Set up game
+		// Players are added by the LudoBoard
+//		players = new HashMap<PlayerColor, Player>();
+//		players.put(PlayerColor.RED, new Player(PlayerColor.RED));
+//		players.put(PlayerColor.GREEN, new Player(PlayerColor.GREEN));
+//		players.put(PlayerColor.YELLOW, new Player(PlayerColor.YELLOW));
+//		players.put(PlayerColor.BLUE, new Player(PlayerColor.BLUE));
+		
+		// Add player items
+	}
+	
+	public void startGame() {
+		
+	}
+
 	
 	// Returnere en spiller basert på farge
 	public Player getPlayerInfo(String theColor) {
-		Player ret = null;
-		if (theColor.compareToIgnoreCase("RED") == 0) {
-			ret = players.get(PlayerColor.RED);
-		} else if (theColor.compareToIgnoreCase("GREEN") == 0) {
-			ret = players.get(PlayerColor.GREEN);
-		} else if (theColor.compareToIgnoreCase("BLUE") == 0) {
-			ret = players.get(PlayerColor.BLUE);
-		} else if (theColor.compareToIgnoreCase("YELLOW") == 0) {
-			ret = players.get(PlayerColor.YELLOW);
-		}
+		Player ret = getLudoBoard().getPlayer(theColor);
 		return ret;
 	}
 
-	private Game() {
-		// Set up game
-		players = new HashMap<PlayerColor, Player>();
-		players.put(PlayerColor.RED, new Player(PlayerColor.RED));
-		players.put(PlayerColor.GREEN, new Player(PlayerColor.GREEN));
-		players.put(PlayerColor.YELLOW, new Player(PlayerColor.YELLOW));
-		players.put(PlayerColor.BLUE, new Player(PlayerColor.BLUE));
-
-		// Add player items
-
+	// Returnere en spiller basert på farge
+	public Player getPlayerInfo(PlayerColor theColor) {
+		Player ret = getLudoBoard().getPlayer(theColor);
+		return ret;
 	}
 
-	public void startGame() {
-
-	}
 
 	/**
 	 * Flytter en brikke for en spiller
@@ -94,7 +93,7 @@ public class Game implements ILudoEventListener {
 	 * @param color
 	 */
 	public void setLocalPlayerColor(PlayerColor color) {
-		localPlayer = players.get(color);
+		localPlayer = getLudoBoard().getPlayer(color);
 	}
 
 	// Listener sink for event.
@@ -132,4 +131,30 @@ public class Game implements ILudoEventListener {
 		return ludoBoard;
 	}
 
+	// Utils
+	// Returnere en spiller basert på farge
+	public static PlayerColor convertPlayerColor(String theColor) {
+		PlayerColor ret = null;
+		if (theColor.compareToIgnoreCase("RED") == 0) {
+			ret = PlayerColor.RED;
+		} else if (theColor.compareToIgnoreCase("GREEN") == 0) {
+			ret = PlayerColor.GREEN;
+		} else if (theColor.compareToIgnoreCase("BLUE") == 0) {
+			ret = PlayerColor.BLUE;
+		} else if (theColor.compareToIgnoreCase("YELLOW") == 0) {
+			ret = PlayerColor.YELLOW;
+		}
+		return ret;
+	}
+
+
+	/**
+	 * En Player flytter en brikke et visst antall ruter eller ut fra hus, eller hjem/goal
+	 * @param theColor
+	 * @param theBrikke
+	 * @param theMove
+	 */
+	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
+		getLudoBoard().playerMove( theColor,  theBrikke,  theMove);		
+	}
 }

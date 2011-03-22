@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <boarddef>
+<basedonresolution x="900" y="900"/>
 <commonfields>
 <common pos="0" x="393" y="787"/>
 <common pos="1" x="393" y="731"/>
@@ -53,18 +54,17 @@
 <common pos="49" x="506" y="730"/>
 <common pos="50" x="506" y="786"/>
 <common pos="51" x="506" y="842"/>
-
 <common pos="52" x="449" y="842"/>
 <common pos="53" x="393" y="842"/>
 </commonfields>
-<itemdef col="red" firstmove="1">
+<itemdef col="red" firstmove="0">
 	<base>
 		<path pos="0" x="143" y="750"/>
 		<path pos="1" x="143" y="653"/>
 		<path pos="2" x="249" y="653"/>
 		<path pos="3" x="249" y="750"/>
 	</base>
-	<wayhome start="51">
+	<wayhome start="52">
 		<path pos="0" x="449" y="787"/>
 		<path pos="1" x="449" y="731"/>
 		<path pos="2" x="449" y="675"/>
@@ -74,14 +74,14 @@
 	</wayhome>
 </itemdef>
 
-<itemdef col="green" firstmove="5">
+<itemdef col="green" firstmove="14">
 	<base>
 		<path pos="0" x="249" y="147"/>
 		<path pos="1" x="249" y="246"/>
 		<path pos="2" x="143" y="147"/>
 		<path pos="3" x="143" y="246"/>
 	</base>
-	<wayhome start="41">
+	<wayhome start="52"><!--wayhome start="41"-->
 		<path pos="0" x="113" y="449"/>
 		<path pos="1" x="169" y="449"/>
 		<path pos="2" x="225" y="449"/>
@@ -91,14 +91,14 @@
 	</wayhome>
 </itemdef>
 
-<itemdef col="yellow" firstmove="5">
+<itemdef col="yellow" firstmove="28">
 	<base>
 		<path pos="0" x="756" y="147"/>
 		<path pos="1" x="756" y="246"/>
 		<path pos="2" x="649" y="147"/>
 		<path pos="3" x="649" y="246"/>
 	</base>
-	<wayhome start="21">
+	<wayhome start="52">
 		<path pos="0" x="449" y="113"/>
 		<path pos="1" x="449" y="169"/>
 		<path pos="2" x="449" y="225"/>
@@ -108,14 +108,18 @@
 	</wayhome>
 </itemdef>
 
-<itemdef col="blue" firstmove="5">
+<itemdef col="blue" firstmove="41">
 	<base>
-		<path pos="0" x="787" y="449"/>
+		<path pos="0" x="649" y="750"/>
+		<path pos="1" x="649" y="653"/>
+		<path pos="2" x="756" y="750"/>
+		<path pos="3" x="756" y="653"/>
+		<!-- path pos="0" x="787" y="449"/>
 		<path pos="1" x="731" y="449"/>
 		<path pos="2" x="675" y="449"/>
-		<path pos="3" x="619" y="449"/>
+		<path pos="3" x="619" y="449"/-->
 	</base>
-	<wayhome start="41">
+	<wayhome start="52">
 		<path pos="0" x="787" y="449"/>
 		<path pos="1" x="731" y="449"/>
 		<path pos="2" x="675" y="449"/>
