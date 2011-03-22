@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.ronny.ludo.board.LudoSurfaceView;
+import com.ronny.ludo.helper.impl.ParseBoardDefinitionHelperImpl;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.Game;
 
@@ -65,11 +66,20 @@ public class LudoActivity extends LudoCommon {
 		}
 		//TEST END 
 		
-		parseXmlDefs();
+		//parseXmlDefs();
+		if(!new ParseBoardDefinitionHelperImpl().parseBoardDefinition(getResources().getXml(R.xml.boarddefinition))){
+			//TODO Håndter feil ved lasting av brettdefinisjon
+			//Vis feilmelding og ev. avslutt
+		}
+			
 		Game.getInstance().getLudoBoard().recalcPositions();
 
 	}
 
+	/*
+	 * ovrron 2011.03.22
+	 * Laget egen helperklasse som tar seg av dette
+	 * 
 	private void parseXmlDefs() {
 		// Xml parse
 		XmlResourceParser defs = getResources().getXml(R.xml.boarddefinition);
@@ -213,7 +223,7 @@ public class LudoActivity extends LudoCommon {
 		}
 
 	}
-
+*/
 	private OnClickListener zoomInListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Zoom in");
