@@ -9,15 +9,12 @@ import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.Game;
 
-public class ParseBoardDefinitionHelperImpl implements
-		ParseBoardDefinitionHelper
-{
+public class ParseBoardDefinitionHelperImpl implements ParseBoardDefinitionHelper{
 
 	private static final String TAG = "-ParseBoardDefinitionHelperImpl-:";
 	
 	@Override
-	public boolean parseBoardDefinition(XmlResourceParser defs)
-	{
+	public boolean parseBoardDefinition(XmlResourceParser defs){
 		boolean retVal = true;
 		int eventType = -1;
 		try {
@@ -91,7 +88,7 @@ public class ParseBoardDefinitionHelperImpl implements
 		boolean ferdig = false;
 		int eventType = -1;
 		String strName = null;
-		String col = "unknown"; // Player color
+		String col = "unknown"; // PlayerImpl color
 		int whatToParse = 0; // 1 is base, 2=way home
 		Vector<Coordinate> wayHome = new Vector<Coordinate>();
 		Vector<Coordinate> baseHome = new Vector<Coordinate>();

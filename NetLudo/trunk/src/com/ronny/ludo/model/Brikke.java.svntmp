@@ -1,6 +1,6 @@
 package com.ronny.ludo.model;
 
-public interface BrikkeMgr
+public interface Brikke
 {
 
 }

@@ -1,24 +1,24 @@
 package com.ronny.ludo.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
-public class Game implements ILudoEventListener {
+import com.ronny.ludo.model.impl.LudoBoardImpl;
+
+public class Game implements LudoEventListener {
 
 	// Siden vi er en av fargene, så må vi lagre 'vår' farge.
 	// private PlayerColor localColor;
 
-	private List<ILudoEventListener> requestListeners = new ArrayList<ILudoEventListener>();
+	private List<LudoEventListener> requestListeners = new ArrayList<LudoEventListener>();
 	private PlayerColor currentTurnColor = PlayerColor.RED; // Rød starter
 															// alltid
 
 //	private HashMap<PlayerColor, Player> players; // All players
 	private Player localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
-	private LudoBoard ludoBoard = new LudoBoard();
+	private LudoBoard ludoBoard = new LudoBoardImpl();
 
 	// Singleton type game
 	private static Game INSTANCE = new Game();
@@ -97,7 +97,7 @@ public class Game implements ILudoEventListener {
 	}
 
 	// Listener sink for event.
-	public void ludoActionEvent(IGameEvent event) {
+	public void ludoActionEvent(GameEvent event) {
 		// Lokale endringer gjør vi selv. - eller så gjør vi det på en
 		// eventbasert total-løsning
 		// Mer om dette senere i diskusjon av modellen
@@ -112,16 +112,16 @@ public class Game implements ILudoEventListener {
 	// Game moves
 
 	// Event listener og håndtering
-	public void addEventListener(ILudoEventListener client) {
+	public void addEventListener(LudoEventListener client) {
 		requestListeners.add(client);
 	}
 
-	public void removeEventListener(ILudoEventListener client) {
+	public void removeEventListener(LudoEventListener client) {
 		requestListeners.remove(client);
 	}
 
-	public void fireGameEvent(IGameEvent event) {
-		for (ILudoEventListener l : requestListeners) {
+	public void fireGameEvent(GameEvent event) {
+		for (LudoEventListener l : requestListeners) {
 			l.ludoActionEvent(event);
 		}
 

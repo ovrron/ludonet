@@ -1,5 +1,7 @@
 package com.ronny.ludo.model;
 
-public class Terning {
-
+public interface Terning
+{
+	int roll();
+	int getEyes();
 }

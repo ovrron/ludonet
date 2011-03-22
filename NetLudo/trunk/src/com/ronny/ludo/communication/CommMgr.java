@@ -1,14 +1,14 @@
 package com.ronny.ludo.communication;
 
-import com.ronny.ludo.model.IGameEvent;
-import com.ronny.ludo.model.ILudoEventListener;
+import com.ronny.ludo.model.GameEvent;
+import com.ronny.ludo.model.LudoEventListener;
 
-public class CommMgr implements ILudoEventListener{
+public class CommMgr implements LudoEventListener{
 
 	public CommMgr() {
 		
 	}
-	public void ludoActionEvent(IGameEvent event) {
+	public void ludoActionEvent(GameEvent event) {
 		// TODO Auto-generated method stub
 		
 	}

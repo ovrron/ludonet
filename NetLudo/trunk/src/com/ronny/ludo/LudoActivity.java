@@ -1,22 +1,15 @@
 package com.ronny.ludo;
 
-import java.io.IOException;
-import java.util.Vector;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import com.ronny.ludo.board.LudoSurfaceView;
-import com.ronny.ludo.helper.impl.ParseBoardDefinitionHelperImpl;
-import com.ronny.ludo.model.Coordinate;
-import com.ronny.ludo.model.Game;
-
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.ImageButton;
+
+import com.ronny.ludo.board.LudoSurfaceView;
+import com.ronny.ludo.helper.impl.ParseBoardDefinitionHelperImpl;
+import com.ronny.ludo.model.Game;
 
 public class LudoActivity extends LudoCommon {
 	private String TAG = "-Ludo-:";

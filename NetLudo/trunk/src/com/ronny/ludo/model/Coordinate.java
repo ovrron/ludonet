@@ -1,6 +1,7 @@
 package com.ronny.ludo.model;
 
-public class Coordinate {
+
+public class Coordinate{
 	public int pos; // optional
 	public int x;
 	public int y;
