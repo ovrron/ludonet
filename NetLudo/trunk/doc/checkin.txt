@@ -1,6 +1,7 @@
-Her legger vi inn hva vi har sjekket inn...
+Her legger vi inn hva vi har sjekket inn...  nyeste øverst...
 
 
-
-20110323 Rha: Lagt til nytt psyko-brett. Ingen xml enda.
+20110323 RHA: Laget folder support. Starter emulator klient og tjener (etter leksjonen)
+		og spør etter 'serial' kjører ip-forwarding som trengs.
 20110323 RØ: refakotert interfacenavnene og tilhørende klasser
+20110323 Rha: Lagt til nytt psyko-brett. Ingen xml enda.
