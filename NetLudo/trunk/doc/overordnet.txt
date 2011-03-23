@@ -1,0 +1,41 @@
+Startpunkt for dok...
+
+
+Overordnede mål for funksjonalitet / løsning
+
+
+Nettludo med forskjellige brett.
+Opptil 4 aktive spillere.
+(Feature: registrering av 'spillere' som bare ser på aktivt spill)
+(Endring: antall brikker lages dynamisk?)
+
+* Designmål
+Brett/spill lages dynamisk med xml-definisjon
+Kommunikasjons-manager (CommMgr) som er uavhengig av rolle som klient/server
+Spill (Game-klasse) som behandler meldinger fra CommMgr.
+
+
+* Interaksjon
+
+1 - Oppstart
+- innlesing av hoved-xml som beskriver antall brett tilgjengelige.
+	(skal vi ha med thumbnail på brett ?)
+	
+- Bruker velger rolle som klient eller server
+	Ved 'server'
+		Velg hvilket brett som skal benyttes
+		Ip-adresse vises - venter på registrering av klienter
+		(Feature
+		Valg om å kunne fortsette til spillet (registrering lukkes)
+	Ved 'klient'
+		skriv inn server-ip
+		
+	Spill starter når server melder fra.
+	
+2 - Spill
+- Spiller kan forlate spillet når vedkommede ønsker
+
+* Kommunikasjon
+
+Så enkel som mulig: kommaseparert String - eks med verdier: farge, brikkeNummer, moves, opts
+opts: Tallverdi for : flytt, slå inn, sett brikke oppå en annen... 
