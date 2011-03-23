@@ -13,7 +13,6 @@ public class ParseBoardDefinitionHelperImpl implements ParseBoardDefinitionHelpe
 
 	private static final String TAG = "-ParseBoardDefinitionHelperImpl-:";
 	
-	@Override
 	public boolean parseBoardDefinition(XmlResourceParser defs){
 		boolean retVal = true;
 		int eventType = -1;
