@@ -1,16 +1,47 @@
 package com.ronny.ludo.model;
 
 
-public interface GameEvent{
-	public void setColor(PlayerColor color);
+public class GameEvent implements IGameEvent {
+	private PlayerColor color;
+	private LudoAction action;
+	private int additionalInfo = 0;
+	
+	public GameEvent() {
+	}
 
-	public PlayerColor getColor();
+	public GameEvent(PlayerColor playerColor, LudoAction action) {
+		this.color = playerColor;
+		this.setAction(action);
+	}
 
-	public void setAction(LudoAction action);
+	public GameEvent(PlayerColor playerColor, LudoAction action, int additionalInfo) {
+		this.color = playerColor;
+		this.setAction(action);
+		this.setAdditionalInfo(additionalInfo);
+	}
 
-	public LudoAction getAction();
+	public void setColor(PlayerColor color) {
+		this.color = color;
+	}
 
-	public void setAdditionalInfo(int additionalInfo);
+	public PlayerColor getColor() {
+		return color;
+	}
 
-	public int getAdditionalInfo();
+	public void setAction(LudoAction action) {
+		this.action = action;
+	}
+
+	public LudoAction getAction() {
+		return action;
+	}
+
+	public void setAdditionalInfo(int additionalInfo) {
+		this.additionalInfo = additionalInfo;
+	}
+
+	public int getAdditionalInfo() {
+		return additionalInfo;
+	}
+	
 }

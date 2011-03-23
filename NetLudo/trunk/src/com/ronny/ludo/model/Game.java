@@ -3,7 +3,6 @@ package com.ronny.ludo.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import com.ronny.ludo.model.impl.LudoBoardImpl;
 
 
 
@@ -21,19 +20,19 @@ import com.ronny.ludo.model.impl.LudoBoardImpl;
  * Regel 9 over er kanskje vanskelig å implementere. Hvordan velge enkelt om man vil flytte begge eller bare en brikke?
  */
 
-public class Game implements LudoEventListener {
+public class Game implements ILudoEventListener {
 
 	// Siden vi er en av fargene, så må vi lagre 'vår' farge.
 	// private PlayerColor localColor;
 
-	private List<LudoEventListener> requestListeners = new ArrayList<LudoEventListener>();
+	private List<ILudoEventListener> requestListeners = new ArrayList<ILudoEventListener>();
 	private PlayerColor currentTurnColor = PlayerColor.RED; // Rød starter
 															// alltid
 
-//	private HashMap<PlayerColor, Player> players; // All players
-	private Player localPlayer; // who is the local player
+//	private HashMap<PlayerColor, IPlayer> players; // All players
+	private IPlayer localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
-	private LudoBoard ludoBoard = new LudoBoardImpl();
+	private ILudoBoard ludoBoard = new LudoBoard();
 
 	// Singleton type game
 	private static Game INSTANCE = new Game();
@@ -45,12 +44,12 @@ public class Game implements LudoEventListener {
 	private Game() {
 		
 		// Set up game
-		// Players are added by the LudoBoard
-//		players = new HashMap<PlayerColor, Player>();
-//		players.put(PlayerColor.RED, new Player(PlayerColor.RED));
-//		players.put(PlayerColor.GREEN, new Player(PlayerColor.GREEN));
-//		players.put(PlayerColor.YELLOW, new Player(PlayerColor.YELLOW));
-//		players.put(PlayerColor.BLUE, new Player(PlayerColor.BLUE));
+		// Players are added by the ILudoBoard
+//		players = new HashMap<PlayerColor, IPlayer>();
+//		players.put(PlayerColor.RED, new IPlayer(PlayerColor.RED));
+//		players.put(PlayerColor.GREEN, new IPlayer(PlayerColor.GREEN));
+//		players.put(PlayerColor.YELLOW, new IPlayer(PlayerColor.YELLOW));
+//		players.put(PlayerColor.BLUE, new IPlayer(PlayerColor.BLUE));
 		
 		// Add player items
 	}
@@ -61,14 +60,14 @@ public class Game implements LudoEventListener {
 
 	
 	// Returnere en spiller basert på farge
-	public Player getPlayerInfo(String theColor) {
-		Player ret = getLudoBoard().getPlayer(theColor);
+	public IPlayer getPlayerInfo(String theColor) {
+		IPlayer ret = getLudoBoard().getPlayer(theColor);
 		return ret;
 	}
 
 	// Returnere en spiller basert på farge
-	public Player getPlayerInfo(PlayerColor theColor) {
-		Player ret = getLudoBoard().getPlayer(theColor);
+	public IPlayer getPlayerInfo(PlayerColor theColor) {
+		IPlayer ret = getLudoBoard().getPlayer(theColor);
 		return ret;
 	}
 
@@ -112,7 +111,7 @@ public class Game implements LudoEventListener {
 	}
 
 	// Listener sink for event.
-	public void ludoActionEvent(GameEvent event) {
+	public void ludoActionEvent(IGameEvent event) {
 		// Lokale endringer gjør vi selv. - eller så gjør vi det på en
 		// eventbasert total-løsning
 		// Mer om dette senere i diskusjon av modellen
@@ -127,22 +126,22 @@ public class Game implements LudoEventListener {
 	// Game moves
 
 	// Event listener og håndtering
-	public void addEventListener(LudoEventListener client) {
+	public void addEventListener(ILudoEventListener client) {
 		requestListeners.add(client);
 	}
 
-	public void removeEventListener(LudoEventListener client) {
+	public void removeEventListener(ILudoEventListener client) {
 		requestListeners.remove(client);
 	}
 
-	public void fireGameEvent(GameEvent event) {
-		for (LudoEventListener l : requestListeners) {
+	public void fireGameEvent(IGameEvent event) {
+		for (ILudoEventListener l : requestListeners) {
 			l.ludoActionEvent(event);
 		}
 
 	}
 
-	public LudoBoard getLudoBoard() {
+	public ILudoBoard getLudoBoard() {
 		return ludoBoard;
 	}
 
@@ -164,7 +163,7 @@ public class Game implements LudoEventListener {
 
 
 	/**
-	 * En Player flytter en brikke et visst antall ruter eller ut fra hus, eller hjem/goal
+	 * En IPlayer flytter en brikke et visst antall ruter eller ut fra hus, eller hjem/goal
 	 * @param theColor
 	 * @param theBrikke
 	 * @param theMove

@@ -28,10 +28,10 @@ import android.widget.ImageView;
 
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
-import com.ronny.ludo.model.Brikke;
-import com.ronny.ludo.model.Coordinate;
+import com.ronny.ludo.model.IBrikke;
+import com.ronny.ludo.model.ICoordinate;
 import com.ronny.ludo.model.Game;
-import com.ronny.ludo.model.Player;
+import com.ronny.ludo.model.IPlayer;
 import com.ronny.ludo.model.PlayerColor;
 
 public class LudoSurfaceView extends SurfaceView implements
@@ -337,13 +337,13 @@ public class LudoSurfaceView extends SurfaceView implements
 	private void placePlayerButtons(Canvas canvas) {
 		// Way home
 		for (PlayerColor pc : PlayerColor.values()) {
-			Player p = Game.getInstance().getLudoBoard().getPlayer(pc);
+			IPlayer p = Game.getInstance().getLudoBoard().getPlayer(pc);
 
-			// for(Coordinate co : p.getHomePositions()) {
+			// for(ICoordinate co : p.getHomePositions()) {
 			// plotPoint(canvas, co.x, co.y);
 			// }
 
-			for (Brikke brikke : p.getBrikker()) {
+			for (IBrikke brikke : p.getBrikker()) {
 				plotBrikke(canvas, brikke);
 			}
 
@@ -351,8 +351,8 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	}
 
-	private void plotBrikke(Canvas c, Brikke b) {
-		// Brikke farge
+	private void plotBrikke(Canvas c, IBrikke b) {
+		// IBrikke farge
 		String str = b.getId();
 		int knappeid = getResources().getIdentifier(str, "drawable",
 				"com.ronny.ludo");
@@ -360,7 +360,7 @@ public class LudoSurfaceView extends SurfaceView implements
 				knappeid);
 		int w = brik.getWidth() / 2;
 		Drawable dr = getResources().getDrawable(knappeid);
-		Coordinate co = b.getCurrentPosition();
+		ICoordinate co = b.getCurrentPosition();
 		int x = co.x;
 		int y = co.y;
 		Rect bnds = dr.getBounds();

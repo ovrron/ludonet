@@ -8,7 +8,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 
 import com.ronny.ludo.board.LudoSurfaceView;
-import com.ronny.ludo.helper.impl.ParseBoardDefinitionHelperImpl;
+import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
 import com.ronny.ludo.model.Game;
 
 public class LudoActivity extends LudoCommonActivity {
@@ -60,7 +60,7 @@ public class LudoActivity extends LudoCommonActivity {
 		//TEST END 
 		
 		//parseXmlDefs();
-		if(!new ParseBoardDefinitionHelperImpl().parseBoardDefinition(getResources().getXml(R.xml.boarddefinition))){
+		if(!new ParseBoardDefinitionHelper().parseBoardDefinition(getResources().getXml(R.xml.boarddefinition))){
 			//TODO Håndter feil ved lasting av brettdefinisjon
 			//Vis feilmelding og ev. avslutt
 		}
@@ -111,10 +111,10 @@ public class LudoActivity extends LudoCommonActivity {
 		// String theText = new String();
 		int eventType = -1;
 		String strName = null;
-		String col = "unknown"; // Player color
+		String col = "unknown"; // IPlayer color
 		int whatToParse = 0; // 1 is base, 2=way home
-		Vector<Coordinate> wayHome = new Vector<Coordinate>();
-		Vector<Coordinate> baseHome = new Vector<Coordinate>();
+		Vector<ICoordinate> wayHome = new Vector<ICoordinate>();
+		Vector<ICoordinate> baseHome = new Vector<ICoordinate>();
 
 		// Alle felles felter
 		try {
@@ -136,7 +136,7 @@ public class LudoActivity extends LudoCommonActivity {
 								"x"));
 						int y = Integer.parseInt(defs.getAttributeValue(null,
 								"y"));
-						Coordinate co = new Coordinate();
+						ICoordinate co = new ICoordinate();
 						co.pos = pos;
 						co.x = x;
 						co.y = y;
