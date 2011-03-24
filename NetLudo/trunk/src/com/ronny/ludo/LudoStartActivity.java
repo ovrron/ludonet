@@ -51,7 +51,6 @@ public class LudoStartActivity extends Activity {
     	buttonStartSpill.setOnClickListener(new OnClickListener()
 		{
 			
-			@Override
 			public void onClick(View v)
 			{
 				startActivity(new Intent(LudoStartActivity.this, LudoActivity.class));
@@ -61,7 +60,6 @@ public class LudoStartActivity extends Activity {
     
     	buttonSendSMS.setOnClickListener(new OnClickListener()
 		{
-			@Override
 			public void onClick(View v)
 			{
 				//TODO legg inn tekst som skal sendes i strings.xml

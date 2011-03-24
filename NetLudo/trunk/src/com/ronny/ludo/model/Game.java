@@ -26,10 +26,14 @@ public class Game implements ILudoEventListener {
 	// private PlayerColor localColor;
 
 	private List<ILudoEventListener> requestListeners = new ArrayList<ILudoEventListener>();
+	
+	//TODO Tur må flyttes til comm-mgr og behandling av slikt...
+	@SuppressWarnings("unused")
 	private PlayerColor currentTurnColor = PlayerColor.RED; // Rød starter
 															// alltid
 
-//	private HashMap<PlayerColor, IPlayer> players; // All players
+	//TODO Må sees i sammenheng med flere lokale spillere.	
+	@SuppressWarnings("unused")
 	private IPlayer localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
 	private ILudoBoard ludoBoard = new LudoBoard();
@@ -59,16 +63,39 @@ public class Game implements ILudoEventListener {
 	}
 
 	
-	// Returnere en spiller basert på farge
+	/**
+	 *  Returnere en spiller basert på farge
+	 *  
+	 * @param theColor fargen på spiller
+	 * @return IPlayer
+	 */
 	public IPlayer getPlayerInfo(String theColor) {
 		IPlayer ret = getLudoBoard().getPlayer(theColor);
 		return ret;
 	}
 
-	// Returnere en spiller basert på farge
+	/**
+	 *  Returnere en spiller basert på farge
+	 *  
+	 * @param theColor String med fargenavn
+	 * @return
+	 */
 	public IPlayer getPlayerInfo(PlayerColor theColor) {
 		IPlayer ret = getLudoBoard().getPlayer(theColor);
 		return ret;
+	}
+	
+	
+	/**
+	 * Hente ut status på bordet akkurat nå - slik at nye klienter evt. kan hoppe på
+	 * for å følge spillet...
+	 * 
+	 * @return string med definisjonen av bordet akkurat nå.
+	 */
+	public String getCurrentStatus() {
+		//TODO ikke prioritert oppgave .
+		String cs = "";
+		return cs;
 	}
 
 

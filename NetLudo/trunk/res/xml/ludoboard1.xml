@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<boarddef>
+<basedonresolution x="900" y="900"/>
+<name id="Standard Ludo"/>
+<commonfields>
+<common pos="0" x="393" y="787"/>
+<common pos="1" x="393" y="731"/>
+<common pos="2" x="393" y="675"/>
+<common pos="3" x="393" y="619"/>
+<common pos="4" x="393" y="563"/>
+<common pos="5" x="337" y="505"/>
+<common pos="6" x="281" y="505"/>
+<common pos="7" x="225" y="505"/>
+<common pos="8" x="169" y="505"/>
+<common pos="9" x="113" y="505"/>
+<common pos="10" x="57" y="505"/>
+<common pos="11" x="57" y="449"/>
+<common pos="12" x="57" y="393"/>
+<common pos="13" x="57" y="393"/>
+<common pos="14" x="113" y="393"/>
+<common pos="15" x="169" y="393"/>
+<common pos="16" x="225" y="393"/>
+<common pos="17" x="281" y="393"/>
+<common pos="18" x="337" y="393"/>
+<common pos="19" x="393" y="337"/>
+<common pos="20" x="393" y="281"/>
+<common pos="21" x="393" y="225"/>
+<common pos="22" x="393" y="169"/>
+<common pos="23" x="393" y="113"/>
+<common pos="24" x="393" y="57"/>
+<common pos="25" x="449" y="57"/>
+<common pos="26" x="505" y="57"/>
+<common pos="27" x="505" y="57"/>
+<common pos="28" x="505" y="113"/>
+<common pos="29" x="505" y="169"/>
+<common pos="30" x="505" y="225"/>
+<common pos="31" x="505" y="281"/>
+<common pos="32" x="505" y="337"/>
+<common pos="33" x="562" y="393"/>
+<common pos="34" x="618" y="393"/>
+<common pos="35" x="674" y="393"/>
+<common pos="36" x="730" y="393"/>
+<common pos="37" x="786" y="393"/>
+<common pos="38" x="842" y="393"/>
+<common pos="39" x="842" y="449"/>
+<common pos="40" x="842" y="505"/>
+<common pos="41" x="786" y="505"/>
+<common pos="42" x="730" y="505"/>
+<common pos="43" x="674" y="505"/>
+<common pos="44" x="618" y="505"/>
+<common pos="45" x="562" y="505"/>
+<common pos="46" x="506" y="562"/>
+<common pos="47" x="506" y="618"/>
+<common pos="48" x="506" y="674"/>
+<common pos="49" x="506" y="730"/>
+<common pos="50" x="506" y="786"/>
+<common pos="51" x="506" y="842"/>
+<common pos="52" x="449" y="842"/>
+<common pos="53" x="393" y="842"/>
+</commonfields>
+<itemdef col="red" firstmove="0">
+	<icon prefix="r"/>
+	<base>
+		<path pos="0" x="143" y="750"/>
+		<path pos="1" x="143" y="653"/>
+		<path pos="2" x="249" y="653"/>
+		<path pos="3" x="249" y="750"/>
+	</base>
+	<wayhome start="52">
+		<path pos="0" x="449" y="787"/>
+		<path pos="1" x="449" y="731"/>
+		<path pos="2" x="449" y="675"/>
+		<path pos="3" x="449" y="619"/>
+		<path pos="4" x="449" y="563"/>
+		<path pos="5" x="449" y="506"/><!-- Last pos is goal -->
+	</wayhome>
+</itemdef>
+
+<itemdef col="green" firstmove="14">
+	<icon prefix="g"/>
+	<base>
+		<path pos="0" x="249" y="147"/>
+		<path pos="1" x="249" y="246"/>
+		<path pos="2" x="143" y="147"/>
+		<path pos="3" x="143" y="246"/>
+	</base>
+	<wayhome start="52"><!--wayhome start="41"-->
+		<path pos="0" x="113" y="449"/>
+		<path pos="1" x="169" y="449"/>
+		<path pos="2" x="225" y="449"/>
+		<path pos="3" x="281" y="449"/>
+		<path pos="4" x="337" y="449"/>
+		<path pos="5" x="393" y="449"/>
+	</wayhome>
+</itemdef>
+
+<itemdef col="yellow" firstmove="28">
+	<icon prefix="ost"/>
+	<base>
+		<path pos="0" x="756" y="147"/>
+		<path pos="1" x="756" y="246"/>
+		<path pos="2" x="649" y="147"/>
+		<path pos="3" x="649" y="246"/>
+	</base>
+	<wayhome start="52">
+		<path pos="0" x="449" y="113"/>
+		<path pos="1" x="449" y="169"/>
+		<path pos="2" x="449" y="225"/>
+		<path pos="3" x="449" y="281"/>
+		<path pos="4" x="449" y="337"/>
+		<path pos="5" x="449" y="393"/><!-- Last pos is goal -->
+	</wayhome>
+</itemdef>
+
+<itemdef col="blue" firstmove="41">
+	<icon prefix="b"/>
+	<base>
+		<path pos="0" x="649" y="750"/>
+		<path pos="1" x="649" y="653"/>
+		<path pos="2" x="756" y="750"/>
+		<path pos="3" x="756" y="653"/>
+		<!-- path pos="0" x="787" y="449"/>
+		<path pos="1" x="731" y="449"/>
+		<path pos="2" x="675" y="449"/>
+		<path pos="3" x="619" y="449"/-->
+	</base>
+	<wayhome start="52">
+		<path pos="0" x="787" y="449"/>
+		<path pos="1" x="731" y="449"/>
+		<path pos="2" x="675" y="449"/>
+		<path pos="3" x="619" y="449"/>
+		<path pos="4" x="563" y="449"/>
+		<path pos="5" x="507" y="449"/>	  <!-- Last pos is goal -->
+	</wayhome>
+</itemdef>
+</boarddef>

@@ -3,23 +3,23 @@ package com.ronny.ludo.model;
 
 public interface IBrikke{
 	
-	void setOnWayHome();
-	void setIsAtGoal();
-	boolean isAtGoal();
-	IPlayer getOwner();
-	void setBoardPosition(int boardPosition);
-	int getBoardPosition();
-	void setHousePosition(int housePosition);
-	int getHousePosition();
+//	void setOnWayHome();
+	public void setIsAtGoal();
+	public boolean isAtGoal();
+	public IPlayer getOwner();
+	public void setBoardPosition(int boardPosition);
+	public int getBoardPosition();
+	public void setHousePosition(int housePosition);
+	public int getHousePosition();
 	/**
 	 * Returner current koordinat for brikke
 	 * 
 	 * @return
 	 */
-	ICoordinate getCurrentPosition();
-	void placeBrikkeOnBoard();
+	public ICoordinate getCurrentPosition();
+	public void placeBrikkeOnBoard();
 	// Get the string id til bitmap denne representerer
-	String getId();
+	public String getId();
 	// Flytte en brikke litt
-	void moveForward(int theMove);
+	public void moveForward(int theMove);
 }

@@ -15,22 +15,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
+import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.IBrikke;
 import com.ronny.ludo.model.ICoordinate;
-import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.IPlayer;
 import com.ronny.ludo.model.PlayerColor;
 
@@ -47,11 +44,11 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int boardImageX, boardImageY; // bredde, høyde på bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
-	private Bitmap knapper;
-	private Drawable knapperDrawable;
+//	private Bitmap knapper;
+//	private Drawable knapperDrawable;
 	private float currentScale = 1.0f;
 
-	private ImageView knappView;
+//	private ImageView knappView;
 
 	private static String TAG = "SurfView";
 
@@ -151,7 +148,10 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int screenHeight;
 
 	private DrawingThread mThread = null;
+	
+	@SuppressWarnings("unused")
 	private ImageButton zoomInButton;
+	@SuppressWarnings("unused")
 	private ImageButton zoomOutButton;
 
 	public LudoSurfaceView(Context context) {
@@ -177,44 +177,43 @@ public class LudoSurfaceView extends SurfaceView implements
 		// setOnTouchListener(metroListener);
 	}
 
-	private void loadAndScaleImage() {
-		// se
-		// http://stackoverflow.com/questions/2078768/resolution-independence-in-android-surfaceview
-		// BitmapFactory.Options options = new BitmapFactory.Options();
-		// options.outHeight = (int) (900 * currentScale);
-		// options.outWidth = (int) (900 * currentScale);
-		// backgroundImage =
-		// BitmapFactory.decodeResource(getResources(),R.drawable.ludoboard,
-		// options);
-		// boardImageX = backgroundImage.getWidth();
-		// boardImageY = backgroundImage.getHeight();
-
-		// Se
-		// http://android-er.blogspot.com/2010/07/scale-bitmap-image-using-matrix.html
-		Matrix matrix = new Matrix();
-		matrix.postScale(1.0f, 1.0f);
-		backgroundImage = BitmapFactory.decodeResource(getResources(),
-				R.drawable.ludoboard);
-		backgroundImage = Bitmap.createBitmap(backgroundImage, 0, 0,
-				backgroundImage.getWidth(), backgroundImage.getHeight(),
-				matrix, true);
-
-		boardImageX = backgroundImage.getWidth();
-		boardImageY = backgroundImage.getHeight();
-
-		knapperDrawable = getResources().getDrawable(R.drawable.b4);
-
-		Bitmap bb = BitmapFactory.decodeResource(getResources(), R.drawable.b4);
-		knapper = Bitmap.createBitmap(bb, 0, 0, bb.getWidth(), bb.getHeight(),
-				matrix, true);
-
-		// Lage knappView
-		// knappView = new ImageView(getContext());
-		// knappView.setImageResource(R.drawable.y4);
-		// knappView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-		// LayoutParams.WRAP_CONTENT));
-		// ((SurfaceView)findViewById(R.id.surfView)).addTouchables(knappView);
-	}
+//	private void loadAndScaleImage() {
+//		// se
+//		// http://stackoverflow.com/questions/2078768/resolution-independence-in-android-surfaceview
+//		// BitmapFactory.Options options = new BitmapFactory.Options();
+//		// options.outHeight = (int) (900 * currentScale);
+//		// options.outWidth = (int) (900 * currentScale);
+//		// backgroundImage =
+//		// BitmapFactory.decodeResource(getResources(),R.drawable.ludoboard,
+//		// options);
+//		// boardImageX = backgroundImage.getWidth();
+//		// boardImageY = backgroundImage.getHeight();
+//
+//		// Se
+//		// http://android-er.blogspot.com/2010/07/scale-bitmap-image-using-matrix.html
+//		Matrix matrix = new Matrix();
+//		matrix.postScale(1.0f, 1.0f);
+//		backgroundImage = BitmapFactory.decodeResource(getResources(),
+//				R.drawable.ludoboard);
+//		backgroundImage = Bitmap.createBitmap(backgroundImage, 0, 0,
+//				backgroundImage.getWidth(), backgroundImage.getHeight(),
+//				matrix, true);
+//
+//		boardImageX = backgroundImage.getWidth();
+//		boardImageY = backgroundImage.getHeight();
+//
+////		knapperDrawable = getResources().getDrawable(R.drawable.b4);
+////		Bitmap bb = BitmapFactory.decodeResource(getResources(), R.drawable.b4);
+////		knapper = Bitmap.createBitmap(bb, 0, 0, bb.getWidth(), bb.getHeight(),
+////				matrix, true);
+//
+//		// Lage knappView
+//		// knappView = new ImageView(getContext());
+//		// knappView.setImageResource(R.drawable.y4);
+//		// knappView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+//		// LayoutParams.WRAP_CONTENT));
+//		// ((SurfaceView)findViewById(R.id.surfView)).addTouchables(knappView);
+//	}
 
 	private void loadImage() {
 		// backgroundImage = BitmapFactory.decodeResource(getResources(),
@@ -238,12 +237,13 @@ public class LudoSurfaceView extends SurfaceView implements
 		// knapperDrawable = getResources().getDrawable(R.drawable.b4);
 	}
 
-	private OnTouchListener metroListener = new OnTouchListener() {
-		public boolean onTouch(View v, MotionEvent event) {
-			onTouchEvent(event);
-			return true;
-		}
-	};
+	
+//	private OnTouchListener metroListener = new OnTouchListener() {
+//		public boolean onTouch(View v, MotionEvent event) {
+//			onTouchEvent(event);
+//			return true;
+//		}
+//	};
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
@@ -363,7 +363,7 @@ public class LudoSurfaceView extends SurfaceView implements
 		ICoordinate co = b.getCurrentPosition();
 		int x = co.x;
 		int y = co.y;
-		Rect bnds = dr.getBounds();
+//		Rect bnds = dr.getBounds();
 		dr.setBounds(current_X + x - w, current_Y + y - w, current_X + x + w,
 				current_Y + y + w);
 		dr.draw(c);
@@ -380,6 +380,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	}
 
 	// Debug metode
+	@SuppressWarnings("unused")
 	private void plotPoints(Canvas c) {
 		// - delta 56
 
@@ -519,6 +520,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	}
 
+	@SuppressWarnings("unused")
 	public void debug(int teller) {
 		PlayerColor c = PlayerColor.BLUE;
 //		PlayerColor c = PlayerColor.YELLOW;

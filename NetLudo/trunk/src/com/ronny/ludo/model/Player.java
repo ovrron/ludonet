@@ -4,9 +4,13 @@ import java.util.Vector;
 
 
 public class Player implements IPlayer{
-	private ILudoBoard owner;
+	@SuppressWarnings("unused")
 	private String TAG = "PLAYER:";
+	
+	private ILudoBoard owner;
 	private PlayerColor color;
+	private String iconPrefix = null;
+	
 	private boolean isActive = false;
 	private int firstPositionOnBoard = 0; // Første posisjon i definisjonen av hovedsporet rundt bordet - se ILudoBoard.movingPath
 	private int lastPositionBeforeWayHome = 0; // Hvor mange steg skal gås før vi starter 'innover'
@@ -23,11 +27,33 @@ public class Player implements IPlayer{
 			brikker[i] = new Brikke(this);
 			brikker[i].setHousePosition(i);
 		}
+		// default prefix er farge hvis ingen ting er gitt...
+		iconPrefix = ""+color.toString().toLowerCase().charAt(0);
 	}
 
 	public IBrikke[] getBrikker() {
 		return brikker; 
 	}
+	
+
+	/**
+	 * @return the iconPrefix
+	 */
+	public String getIconPrefix() {
+		return iconPrefix;
+	}
+
+	/**
+	 * @param iconPrefix the iconPrefix to set
+	 */
+	public void setIconPrefix(String iconPrefix) {
+		this.iconPrefix = iconPrefix;
+		// Default if err in settings
+		if(this.iconPrefix==null) {
+			this.iconPrefix = ""+color.toString().toLowerCase().charAt(0);
+		}
+	}
+
 	public boolean isActive() {
 		return isActive;
 	}
@@ -96,7 +122,7 @@ public class Player implements IPlayer{
 
 	public void moveBrikke(int theBrikke, int theMove) {
 		IBrikke b = brikker[theBrikke];
-		int brikkeMoves = b.getBoardPosition();
+//		int brikkeMoves = b.getBoardPosition();
 		b.moveForward(theMove);
 		
 		// Sjekk om brikken 

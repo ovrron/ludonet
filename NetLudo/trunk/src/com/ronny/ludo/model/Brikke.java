@@ -15,15 +15,17 @@ public class Brikke implements IBrikke{
 	private int numberOfElements = 1; // Antall brikker i høyden 1..4
 	private int housePosition = -1; // position in the 'house'
 	private boolean isAtGoal = false; // true hvis brikke er i mål
-	private boolean isOnWayHome = false; // true hvis brikke er i mål
+	
+//	@SuppressWarnings("unused")
+//	private boolean isOnWayHome = false; // true hvis brikke er i mål
 
 	public Brikke(IPlayer owner) {
 		this.owner = owner;
 	}
 
-	public void setOnWayHome() {
-		isOnWayHome = true;
-	}
+//	public void setOnWayHome() {
+//		isOnWayHome = true;
+//	}
 
 	public void setIsAtGoal() {
 		isAtGoal = true;
@@ -105,8 +107,7 @@ public class Brikke implements IBrikke{
 
 	// Get the string id til bitmap denne representerer
 	public String getId() {
-		String ret = owner.getColor().toString().toLowerCase().charAt(0)
-				+ Integer.toString(numberOfElements);
+		String ret = owner.getIconPrefix() + Integer.toString(numberOfElements);
 		return ret;
 	}
 

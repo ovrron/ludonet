@@ -1,5 +1,7 @@
 package com.ronny.ludo;
 
+import java.util.Vector;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,21 +48,27 @@ public class LudoActivity extends LudoCommonActivity {
 		
 		//TEST
 		// Test av mod
-		int start = 0;
-		int maxVal = 13;
-		
-		for(int j=0;j<20;j++) {
-			System.out.println("J: "+j+" - "+(start+j)%maxVal);
-		}
-
-		start = 7;
-		for(int j=0;j<20;j++) {
-			System.out.println("J: "+j+" - "+(start+j)%maxVal);
-		}
+//		int start = 0;
+//		int maxVal = 13;
+//		
+//		for(int j=0;j<20;j++) {
+//			System.out.println("J: "+j+" - "+(start+j)%maxVal);
+//		}
+//
+//		start = 7;
+//		for(int j=0;j<20;j++) {
+//			System.out.println("J: "+j+" - "+(start+j)%maxVal);
+//		}
 		//TEST END 
 		
+		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
+		
+		// TODO på lasting av board
+		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
+		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
+		
 		//parseXmlDefs();
-		if(!new ParseBoardDefinitionHelper().parseBoardDefinition(getResources().getXml(R.xml.boarddefinition))){
+		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
 			//TODO Håndter feil ved lasting av brettdefinisjon
 			//Vis feilmelding og ev. avslutt
 		}

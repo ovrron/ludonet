@@ -12,7 +12,7 @@ public class DrawingThread extends Thread {
 	private SurfaceHolder mSurfaceHolder;
 	private LudoSurfaceView mLudoView;
 	private boolean mRun = false;
-	private int mHeading = 0;
+//	private int mHeading = 0;
 	private boolean mPause = false;
 	public DrawingThread(SurfaceHolder holder, LudoSurfaceView parentView){
 		   mSurfaceHolder = holder;

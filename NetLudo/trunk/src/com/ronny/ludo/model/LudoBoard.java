@@ -9,6 +9,7 @@ import com.ronny.ludo.helper.LudoConstants;
 
 public class LudoBoard implements ILudoBoard {
 
+	@SuppressWarnings("unused")
 	private int xRes = 0, yRes = 0; // definitions resolution
 	private int imX = 0, imY = 0; // Target image resolution
 

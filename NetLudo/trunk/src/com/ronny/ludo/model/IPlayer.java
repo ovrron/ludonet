@@ -4,24 +4,28 @@ import java.util.Vector;
 
 public interface IPlayer
 {
-	IBrikke[] getBrikker();
-	boolean isActive();
-	void setActive(boolean isActive);
-	void setColor(PlayerColor color);
-	PlayerColor getColor();
+	public IBrikke[] getBrikker();
+	public boolean isActive();
+	public void setActive(boolean isActive);
+	public void setColor(PlayerColor color);
+	public PlayerColor getColor();
+	public String getIconPrefix();
+	public void setIconPrefix(String newPrefix);
 	// Sette første posisjon ut fra home
-	void setFirstBoardPosition(int firsMovePosition);
-	int getFirstBoardPosition();
+	public void setFirstBoardPosition(int firsMovePosition);
+	public int getFirstBoardPosition();
 	// Siste posisjon før vi starter på vi inn i brettet.
-	void setStartWayHomePosition(int fieldToStartWayHome);
-	int getStartWayHomePosition();
+	public void setStartWayHomePosition(int fieldToStartWayHome);
+	public int getStartWayHomePosition();
 	// Sette koordinater for posisjon i home
-	void setHomePositions(Vector<ICoordinate> baseHome);
-	Vector<ICoordinate> getHomePositions();
+	public void setHomePositions(Vector<ICoordinate> baseHome);
+	public Vector<ICoordinate> getHomePositions();
 	// Setter koordinater for 'way home' til mål
-	void setWayHomePositions(Vector<ICoordinate> wayHome);
-	Vector<ICoordinate> getWayHomePositions();
-	String toString();
-	ICoordinate getBoardPosition(int numberOfMovesFromhome);
-	void moveBrikke(int theBrikke, int theMove);
+	public void setWayHomePositions(Vector<ICoordinate> wayHome);
+	public Vector<ICoordinate> getWayHomePositions();
+	public ICoordinate getBoardPosition(int numberOfMovesFromhome);
+	public void moveBrikke(int theBrikke, int theMove);
+	
+	public String toString();
+
 }
