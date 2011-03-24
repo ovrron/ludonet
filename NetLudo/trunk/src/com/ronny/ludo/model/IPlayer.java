@@ -27,5 +27,6 @@ public interface IPlayer
 	public void moveBrikke(int theBrikke, int theMove);
 	
 	public String toString();
+	public void DumpGame();
 
 }

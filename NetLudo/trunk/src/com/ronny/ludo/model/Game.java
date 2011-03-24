@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.util.Log;
+
 
 
 /**
@@ -37,11 +39,16 @@ public class Game implements ILudoEventListener {
 	private IPlayer localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
 	private ILudoBoard ludoBoard = new LudoBoard();
+	private String gameImageName = null;
 
+	
 	// Singleton type game
-	private static Game INSTANCE = new Game();
+	private static Game INSTANCE = null; 
 
 	public static Game getInstance() {
+		if(INSTANCE==null) {
+			INSTANCE = new Game();
+		}
 		return INSTANCE;
 	}
 
@@ -85,7 +92,20 @@ public class Game implements ILudoEventListener {
 		return ret;
 	}
 	
-	
+	/**
+	 * @return the gameImageName
+	 */
+	public String getGameImageName() {
+		return gameImageName;
+	}
+
+	/**
+	 * @param gameImageName the gameImageName to set
+	 */
+	public void setGameImageName(String gameImageName) {
+		this.gameImageName = gameImageName;
+	}
+
 	/**
 	 * Hente ut status på bordet akkurat nå - slik at nye klienter evt. kan hoppe på
 	 * for å følge spillet...
@@ -197,5 +217,12 @@ public class Game implements ILudoEventListener {
 	 */
 	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
 		getLudoBoard().playerMove( theColor,  theBrikke,  theMove);		
+	}
+	
+	// Debug
+	public void DumpGame() {
+		Log.d("DUMP","Board image : "+gameImageName);
+		ludoBoard.DumpGame();
+		
 	}
 }

@@ -43,8 +43,8 @@
         android:layout_marginBottom="5dip" />
 		
 		<ImageButton
-        android:id="@+id/debug"
-        android:src="@drawable/bug"
+        android:id="@+id/zoomFit"
+        android:src="@drawable/zoomfit"
         android:background="@null"
         android:layout_width="45px"
         android:layout_height="45px"

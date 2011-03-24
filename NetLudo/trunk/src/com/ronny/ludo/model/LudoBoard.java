@@ -3,6 +3,8 @@ package com.ronny.ludo.model;
 import java.util.HashMap;
 import java.util.Vector;
 
+import junit.framework.Assert;
+
 import android.util.Log;
 
 import com.ronny.ludo.helper.LudoConstants;
@@ -181,11 +183,17 @@ public class LudoBoard implements ILudoBoard {
 	}
 
 	public int recalcX(int x) {
+		if(x==0) {
+			Assert.fail("Image width is 0 - this would say that scaling gives 0");
+		}
 		int ret = (int) (((((float) imX) / ((float) xRes))) * x);
 		return ret;
 	}
 
 	public int recalcY(int y) {
+		if(y==0) {
+			Assert.fail("Image height is 0 - this would say that scaling gives 0");
+		}
 		int ret = (int) (((((float) imY) / ((float) xRes))) * y);
 		return ret;
 	}
@@ -216,5 +224,12 @@ public class LudoBoard implements ILudoBoard {
 			c.y = recalcX(c.y);
 		}
 
+	}
+
+	public void DumpGame() {
+		Log.d("DUMP","Moving path : "+movingPath);
+		for(IPlayer p : players.values()) {
+			p.DumpGame();
+		}
 	}
 }

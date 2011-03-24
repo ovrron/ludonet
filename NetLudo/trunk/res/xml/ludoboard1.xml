@@ -2,6 +2,7 @@
 <boarddef>
 <basedonresolution x="900" y="900"/>
 <name id="Standard Ludo"/>
+<image name="ludoboard"/>
 <commonfields>
 <common pos="0" x="393" y="787"/>
 <common pos="1" x="393" y="731"/>

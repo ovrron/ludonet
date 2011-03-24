@@ -44,11 +44,11 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int boardImageX, boardImageY; // bredde, høyde på bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
-//	private Bitmap knapper;
-//	private Drawable knapperDrawable;
+	// private Bitmap knapper;
+	// private Drawable knapperDrawable;
 	private float currentScale = 1.0f;
 
-//	private ImageView knappView;
+	// private ImageView knappView;
 
 	private static String TAG = "SurfView";
 
@@ -102,6 +102,10 @@ public class LudoSurfaceView extends SurfaceView implements
 		return true;
 	}
 
+	/**
+	 * Sjekke pan limits for å se om disse er forenelig med definert
+	 * skalering/størrelse
+	 */
 	private void checkViewLimits() {
 		if (current_X < minX) {
 			current_X = minX;
@@ -148,7 +152,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int screenHeight;
 
 	private DrawingThread mThread = null;
-	
+
 	@SuppressWarnings("unused")
 	private ImageButton zoomInButton;
 	@SuppressWarnings("unused")
@@ -163,7 +167,7 @@ public class LudoSurfaceView extends SurfaceView implements
 		super(context, attrs);
 		Log.d(TAG, "SurfView");
 
-		// Load board image
+		// Load board image - image name is placed in Game class
 		loadImage();
 
 		holder = getHolder();
@@ -177,43 +181,46 @@ public class LudoSurfaceView extends SurfaceView implements
 		// setOnTouchListener(metroListener);
 	}
 
-//	private void loadAndScaleImage() {
-//		// se
-//		// http://stackoverflow.com/questions/2078768/resolution-independence-in-android-surfaceview
-//		// BitmapFactory.Options options = new BitmapFactory.Options();
-//		// options.outHeight = (int) (900 * currentScale);
-//		// options.outWidth = (int) (900 * currentScale);
-//		// backgroundImage =
-//		// BitmapFactory.decodeResource(getResources(),R.drawable.ludoboard,
-//		// options);
-//		// boardImageX = backgroundImage.getWidth();
-//		// boardImageY = backgroundImage.getHeight();
-//
-//		// Se
-//		// http://android-er.blogspot.com/2010/07/scale-bitmap-image-using-matrix.html
-//		Matrix matrix = new Matrix();
-//		matrix.postScale(1.0f, 1.0f);
-//		backgroundImage = BitmapFactory.decodeResource(getResources(),
-//				R.drawable.ludoboard);
-//		backgroundImage = Bitmap.createBitmap(backgroundImage, 0, 0,
-//				backgroundImage.getWidth(), backgroundImage.getHeight(),
-//				matrix, true);
-//
-//		boardImageX = backgroundImage.getWidth();
-//		boardImageY = backgroundImage.getHeight();
-//
-////		knapperDrawable = getResources().getDrawable(R.drawable.b4);
-////		Bitmap bb = BitmapFactory.decodeResource(getResources(), R.drawable.b4);
-////		knapper = Bitmap.createBitmap(bb, 0, 0, bb.getWidth(), bb.getHeight(),
-////				matrix, true);
-//
-//		// Lage knappView
-//		// knappView = new ImageView(getContext());
-//		// knappView.setImageResource(R.drawable.y4);
-//		// knappView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-//		// LayoutParams.WRAP_CONTENT));
-//		// ((SurfaceView)findViewById(R.id.surfView)).addTouchables(knappView);
-//	}
+	// private void loadAndScaleImage() {
+	// // se
+	// //
+	// http://stackoverflow.com/questions/2078768/resolution-independence-in-android-surfaceview
+	// // BitmapFactory.Options options = new BitmapFactory.Options();
+	// // options.outHeight = (int) (900 * currentScale);
+	// // options.outWidth = (int) (900 * currentScale);
+	// // backgroundImage =
+	// // BitmapFactory.decodeResource(getResources(),R.drawable.ludoboard,
+	// // options);
+	// // boardImageX = backgroundImage.getWidth();
+	// // boardImageY = backgroundImage.getHeight();
+	//
+	// // Se
+	// //
+	// http://android-er.blogspot.com/2010/07/scale-bitmap-image-using-matrix.html
+	// Matrix matrix = new Matrix();
+	// matrix.postScale(1.0f, 1.0f);
+	// backgroundImage = BitmapFactory.decodeResource(getResources(),
+	// R.drawable.ludoboard);
+	// backgroundImage = Bitmap.createBitmap(backgroundImage, 0, 0,
+	// backgroundImage.getWidth(), backgroundImage.getHeight(),
+	// matrix, true);
+	//
+	// boardImageX = backgroundImage.getWidth();
+	// boardImageY = backgroundImage.getHeight();
+	//
+	// // knapperDrawable = getResources().getDrawable(R.drawable.b4);
+	// // Bitmap bb = BitmapFactory.decodeResource(getResources(),
+	// R.drawable.b4);
+	// // knapper = Bitmap.createBitmap(bb, 0, 0, bb.getWidth(), bb.getHeight(),
+	// // matrix, true);
+	//
+	// // Lage knappView
+	// // knappView = new ImageView(getContext());
+	// // knappView.setImageResource(R.drawable.y4);
+	// // knappView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+	// // LayoutParams.WRAP_CONTENT));
+	// // ((SurfaceView)findViewById(R.id.surfView)).addTouchables(knappView);
+	// }
 
 	private void loadImage() {
 		// backgroundImage = BitmapFactory.decodeResource(getResources(),
@@ -221,8 +228,13 @@ public class LudoSurfaceView extends SurfaceView implements
 
 		Matrix matrix = new Matrix();
 		matrix.postScale(1.0f, 1.0f);
-		backgroundImage = BitmapFactory.decodeResource(getResources(),
-				R.drawable.ludoboard);
+
+		// Hent navnet
+		String boardName = Game.getInstance().getGameImageName();
+		int boardId = getResources().getIdentifier(boardName, "drawable",
+				"com.ronny.ludo");
+
+		backgroundImage = BitmapFactory.decodeResource(getResources(), boardId);
 		// backgroundImage = Bitmap.createBitmap(backgroundImage, 0, 0,
 		// backgroundImage.getWidth(), backgroundImage.getHeight(),
 		// matrix, true);
@@ -233,24 +245,27 @@ public class LudoSurfaceView extends SurfaceView implements
 				.setGraphicsResolution(boardImageX, boardImageY);
 
 		Log.d(TAG, "Load image : " + boardImageX + ", " + boardImageY);
+		// Først når vi vet størrelsen på bildet kan vi re-kalkulere...
+		Game.getInstance().getLudoBoard().recalcPositions();
 
 		// knapperDrawable = getResources().getDrawable(R.drawable.b4);
 	}
 
-	
-//	private OnTouchListener metroListener = new OnTouchListener() {
-//		public boolean onTouch(View v, MotionEvent event) {
-//			onTouchEvent(event);
-//			return true;
-//		}
-//	};
+	// private OnTouchListener metroListener = new OnTouchListener() {
+	// public boolean onTouch(View v, MotionEvent event) {
+	// onTouchEvent(event);
+	// return true;
+	// }
+	// };
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		screenWidth = width;
 		screenHeight = height;
 
+		// Litt hips om happ her..
 		currentScale = (float) screenHeight / (float) boardImageY;
+		// currentScale = (float) screenWidth / (float) boardImageX;
 
 		recomputeMovementLimits();
 		Canvas c = holder.lockCanvas(null);
@@ -262,6 +277,24 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	}
 
+	/**
+	 * Set scale for å se hele brettet.
+	 */
+	public void setScaleFullBoard() {
+
+		currentScale = Math.min((float) screenWidth / (float) boardImageX,
+				(float) screenHeight / (float) boardImageY);
+		recomputeMovementLimits();
+		Canvas c = holder.lockCanvas(null);
+		synchronized (holder) {
+			onDraw(c);
+		}
+		holder.unlockCanvasAndPost(c);
+	}
+
+	/**
+	 * Skalering har skjedd - finn verdier for max pan
+	 */
 	private void recomputeMovementLimits() {
 		minX = (int) (screenWidth / currentScale) - boardImageX;
 		minY = (int) (screenHeight / currentScale) - boardImageY;
@@ -277,15 +310,14 @@ public class LudoSurfaceView extends SurfaceView implements
 		Log.d(TAG, "surfaceCreated");
 		mThread.setRunning(true);
 		Log.d(TAG, "Starting drawThread");
-		// STARTER IKKE THREAD HER
+		// TODO STARTER IKKE THREAD HER - dette er for debug tegning
 		mThread.start();
-
-		// screenWidth = 900;
-		// screenHeight = 900;
 
 		// Tegn initielt bilde
 		Canvas c = holder.lockCanvas(null);
+		// synchronized (holder) {
 		onDraw(c);
+		// }
 		holder.unlockCanvasAndPost(c);
 	}
 
@@ -293,6 +325,8 @@ public class LudoSurfaceView extends SurfaceView implements
 		// TODO Auto-generated method stub
 		boolean retry = true;
 		mThread.setRunning(false);
+		mThread.interrupt();
+
 		while (retry) {
 			try {
 				mThread.join();
@@ -319,8 +353,8 @@ public class LudoSurfaceView extends SurfaceView implements
 		// canvas.translate(50, 50);
 
 		// plotPoints(canvas);
-//		plotPoint(canvas, 0, 0);
-//		plotPoint(canvas, boardImageX, boardImageY);
+		// plotPoint(canvas, 0, 0);
+		// plotPoint(canvas, boardImageX, boardImageY);
 
 		placePlayerButtons(canvas);
 
@@ -356,14 +390,13 @@ public class LudoSurfaceView extends SurfaceView implements
 		String str = b.getId();
 		int knappeid = getResources().getIdentifier(str, "drawable",
 				"com.ronny.ludo");
-		Bitmap brik = BitmapFactory.decodeResource(getResources(),
-				knappeid);
+		Bitmap brik = BitmapFactory.decodeResource(getResources(), knappeid);
 		int w = brik.getWidth() / 2;
 		Drawable dr = getResources().getDrawable(knappeid);
 		ICoordinate co = b.getCurrentPosition();
 		int x = co.x;
 		int y = co.y;
-//		Rect bnds = dr.getBounds();
+		// Rect bnds = dr.getBounds();
 		dr.setBounds(current_X + x - w, current_Y + y - w, current_X + x + w,
 				current_Y + y + w);
 		dr.draw(c);
@@ -522,38 +555,68 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	@SuppressWarnings("unused")
 	public void debug(int teller) {
-		PlayerColor c = PlayerColor.BLUE;
-//		PlayerColor c = PlayerColor.YELLOW;
-//		PlayerColor c = PlayerColor.GREEN;
-//		PlayerColor c = PlayerColor.RED;
-		if(teller==0) {
-			Game.getInstance().playerMove(PlayerColor.RED,0,LudoConstants.MOVE_FROM_HOUSE);
-			Game.getInstance().playerMove(PlayerColor.GREEN,0,LudoConstants.MOVE_FROM_HOUSE);
-			Game.getInstance().playerMove(PlayerColor.YELLOW,0,LudoConstants.MOVE_FROM_HOUSE);
-			Game.getInstance().playerMove(PlayerColor.BLUE,0,LudoConstants.MOVE_FROM_HOUSE);
-		} 
+		// PlayerColor c = PlayerColor.BLUE;
+		// PlayerColor c = PlayerColor.YELLOW;
+		// PlayerColor c = PlayerColor.GREEN;
+		// PlayerColor c = PlayerColor.RED;
+		if (true) {
+			if (teller == 0) {
+				Game.getInstance().playerMove(PlayerColor.RED, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+				Game.getInstance().playerMove(PlayerColor.GREEN, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+				Game.getInstance().playerMove(PlayerColor.YELLOW, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+				Game.getInstance().playerMove(PlayerColor.BLUE, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+			}
 
-		if(teller>0){
-			Game.getInstance().playerMove(PlayerColor.RED,0,Game.getInstance().rollDie());
-			Game.getInstance().playerMove(PlayerColor.GREEN,0,Game.getInstance().rollDie());
-			Game.getInstance().playerMove(PlayerColor.YELLOW,0,Game.getInstance().rollDie());
-			Game.getInstance().playerMove(PlayerColor.BLUE,0,Game.getInstance().rollDie());
-		}
-
-		if(teller>30) {
-			mThread.setRunning(false);
-			try {
-				mThread.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			if (teller > 0) {
+				Game.getInstance().playerMove(PlayerColor.RED, 0, 1);
+				Game.getInstance().playerMove(PlayerColor.GREEN, 0, 1);
+				Game.getInstance().playerMove(PlayerColor.YELLOW, 0, 1);
+				Game.getInstance().playerMove(PlayerColor.BLUE, 0, 1);
 			}
 		}
-		
-//		if((teller>=1) && (teller<=7)) {
-//			Game.getInstance().getLudoBoard().getPlayer(c).moveBrikke(0, 6);
-//		} else if(teller>7) {
-//			Game.getInstance().playerMove(c,0,1);
-//		}
+
+		if (false) {
+			if (teller == 0) {
+				Game.getInstance().playerMove(PlayerColor.RED, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+				Game.getInstance().playerMove(PlayerColor.GREEN, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+				Game.getInstance().playerMove(PlayerColor.YELLOW, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+				Game.getInstance().playerMove(PlayerColor.BLUE, 0,
+						LudoConstants.MOVE_FROM_HOUSE);
+			}
+
+			if (teller > 0) {
+				Game.getInstance().playerMove(PlayerColor.RED, 0,
+						Game.getInstance().rollDie());
+				Game.getInstance().playerMove(PlayerColor.GREEN, 0,
+						Game.getInstance().rollDie());
+				Game.getInstance().playerMove(PlayerColor.YELLOW, 0,
+						Game.getInstance().rollDie());
+				Game.getInstance().playerMove(PlayerColor.BLUE, 0,
+						Game.getInstance().rollDie());
+			}
+
+			if (teller > 30) {
+				mThread.setRunning(false);
+				try {
+					mThread.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		}
+
+		// if((teller>=1) && (teller<=7)) {
+		// Game.getInstance().getLudoBoard().getPlayer(c).moveBrikke(0, 6);
+		// } else if(teller>7) {
+		// Game.getInstance().playerMove(c,0,1);
+		// }
 	}
 
 }

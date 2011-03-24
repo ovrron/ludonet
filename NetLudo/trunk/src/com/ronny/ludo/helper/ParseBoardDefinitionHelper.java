@@ -51,6 +51,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	public boolean parseBoardDefinition(XmlResourceParser defs){
 		boolean retVal = true;
 		int eventType = -1;
+//		Game.getInstance(); // Initiering av brikker etc..?
 		// TODO Reset Game-klassen.
 		
 		
@@ -59,9 +60,16 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 			while (eventType != XmlResourceParser.END_DOCUMENT) {
 				if (eventType == XmlResourceParser.START_TAG) {
 					String strName = defs.getName();
+
+					if (strName.equals("image")) {
+						String thename = defs.getAttributeValue(null,"name");
+						Game.getInstance().setGameImageName(defs.getAttributeValue(null,"name"));
+					}
+
 					if (strName.equals("commonfields")) {
 						retVal = behandleCommons(defs);
 					}
+					
 					if (strName.equals("itemdef")) {
 						retVal = behandleSpillerData(defs);
 					}

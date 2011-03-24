@@ -17,6 +17,7 @@ public class LudoActivity extends LudoCommonActivity {
 	private String TAG = "-Ludo-:";
 
 	private ImageButton zoomInButton;
+	private ImageButton zoomFitButton;
 	private ImageButton zoomOutButton;
 	private LudoSurfaceView surface;
 
@@ -37,13 +38,36 @@ public class LudoActivity extends LudoCommonActivity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+		// Load board definisjoner - lastes før inflating.
+		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
+		
+		// TODO på lasting av board
+		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
+		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
+		
+		Game.getInstance().DumpGame();
+		
+		//parseXmlDefs();
+		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
+			//TODO Håndter feil ved lasting av brettdefinisjon
+			//Vis feilmelding og ev. avslutt
+		}
+	
+// DENNE ER FLYTTET SIDEN VI TRENGER Størrelsen på bildet før vi tar en recalc.		
+//		Game.getInstance().getLudoBoard().recalcPositions();
+		// End load board.
+
+		Game.getInstance().DumpGame();
+		
 		setContentView(R.layout.main);
 
 		zoomInButton = (ImageButton) findViewById(R.id.zoomIn);
+		zoomFitButton = (ImageButton) findViewById(R.id.zoomFit);
 		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
 		surface = (LudoSurfaceView) findViewById(R.id.image);
 
 		zoomInButton.setOnClickListener(zoomInListener);
+		zoomFitButton.setOnClickListener(zoomFitListener);
 		zoomOutButton.setOnClickListener(zoomOutListener);
 		
 		//TEST
@@ -61,20 +85,7 @@ public class LudoActivity extends LudoCommonActivity {
 //		}
 		//TEST END 
 		
-		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 		
-		// TODO på lasting av board
-		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
-		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
-		
-		//parseXmlDefs();
-		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
-			//TODO Håndter feil ved lasting av brettdefinisjon
-			//Vis feilmelding og ev. avslutt
-		}
-			
-		Game.getInstance().getLudoBoard().recalcPositions();
-
 	}
 
 	/*
@@ -229,6 +240,13 @@ public class LudoActivity extends LudoCommonActivity {
 		public void onClick(View v) {
 			Log.d(TAG, "Zoom in");
 			surface.zoomIn();
+		}
+	};
+
+	private OnClickListener zoomFitListener = new OnClickListener() {
+		public void onClick(View v) {
+			Log.d(TAG, "Zoom FIT");
+			surface.setScaleFullBoard();
 		}
 	};
 

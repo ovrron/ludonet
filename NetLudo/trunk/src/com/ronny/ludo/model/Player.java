@@ -2,6 +2,8 @@ package com.ronny.ludo.model;
 
 import java.util.Vector;
 
+import android.util.Log;
+
 
 public class Player implements IPlayer{
 	@SuppressWarnings("unused")
@@ -14,8 +16,8 @@ public class Player implements IPlayer{
 	private boolean isActive = false;
 	private int firstPositionOnBoard = 0; // Første posisjon i definisjonen av hovedsporet rundt bordet - se ILudoBoard.movingPath
 	private int lastPositionBeforeWayHome = 0; // Hvor mange steg skal gås før vi starter 'innover'
-	private Vector<ICoordinate> homePositions = null;
-	private Vector<ICoordinate> wayHomePositions = null;
+	private Vector<ICoordinate> homePositions = new Vector<ICoordinate>();
+	private Vector<ICoordinate> wayHomePositions = new Vector<ICoordinate>();
 
 	// Brikkene tilhører egentlig Game, men er fordelt på spiller
 	private IBrikke brikker[] = new Brikke[4];
@@ -153,6 +155,13 @@ public class Player implements IPlayer{
 //		}
 
 		
+	}
+
+	public void DumpGame() {
+		Log.d("DUMP","  Player : "+color.toString());
+		for(ICoordinate c : homePositions) {
+			Log.d("DUMP","    Homes : "+c);
+		}
 	}
 
 }
