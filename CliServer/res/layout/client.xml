@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="CLIENT" />
+	<TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Server ip address:"></TextView>
+	<EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/edIpaddress" android:inputType="phone" android:text="10.0.2.2"></EditText>
+
+	<Button android:layout_height="wrap_content" android:text="Connect"
+		android:id="@+id/btnConnect" android:layout_width="fill_parent"></Button>
+	<TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Message to send"></TextView>
+	<EditText android:text="RED,0,4,0" android:layout_width="match_parent"
+		android:id="@+id/editClientMessage" android:layout_height="wrap_content"></EditText>
+	<Button android:layout_height="wrap_content" android:text="Send message"
+		android:id="@+id/btnSendMsg" android:layout_width="fill_parent"></Button>
+	<Button android:layout_height="wrap_content" android:text="DISConnect"
+		android:id="@+id/btnDisConnect" android:layout_width="fill_parent"></Button>
+	<ListView android:layout_width="match_parent" android:layout_height="fill_parent" android:id="@+id/listViewCli"></ListView>
+</LinearLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, CliServer!</string>
+    <string name="app_name">CliServer test</string>
+    <string name="mnu">Velg type</string>
+    <string name="mnu_client">Klient</string>
+    <string name="mnu_server">Server</string>
+</resources>

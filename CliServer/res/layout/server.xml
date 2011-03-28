@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="SERVER" android:id="@+id/txtInformation"/>
+	<TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textIP"></TextView>
+		
+	<Button android:layout_height="wrap_content" android:text="Åpne registrering"
+		android:id="@+id/btnOpenRegistration" android:layout_width="fill_parent"></Button>
+		
+	<Button android:text="Lukk registrering"
+		android:id="@+id/btnCloseRegistration" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+	<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnSend" android:text="Send"></Button>
+	<EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/editTextToSend" android:text="GAME,RED,LEAVE,TEST"></EditText>
+	<ListView android:id="@+id/listView1" android:layout_width="match_parent" android:layout_height="fill_parent"></ListView>
+</LinearLayout>
