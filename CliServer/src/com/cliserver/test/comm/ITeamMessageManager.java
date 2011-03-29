@@ -23,5 +23,7 @@ public interface ITeamMessageManager {
 	 * Handler for debug messages
 	 * @param handle
 	 */
-	public void setHandler(Handler handle);
+	public void removeAdminListener(Handler adminListenerHandler);
+	public void addAdminListener(Handler adminListenerHandler);
+	public void disconnect();
 }

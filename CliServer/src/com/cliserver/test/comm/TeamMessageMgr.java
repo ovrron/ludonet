@@ -3,7 +3,6 @@ package com.cliserver.test.comm;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -19,6 +18,8 @@ import android.os.Message;
 import android.util.Log;
 
 /**
+ * adb -s emulator-5554 forward tcp:11700 tcp:11700
+ * 
  * The TeamMessageMgr is managing socket connections between collaborating
  * clients. The manager may act as a server for creating the initial connection
  * pool of clients, but may also act as a client. The connection and connection
@@ -30,16 +31,13 @@ import android.util.Log;
 public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 
 	private final static int PORTIN = 11700; // Clients connect to this
-	// private final static int PORTOUT = 11701; // Connect back to client
-	// private final static int PORTIN = 4000; // Clients connect to this
-	// private final static int PORTOUT = 4001; // Connect back to client
 	private String currentRole = "<none>";
 
-	private List<Handler> listeners;
-	private Handler debugListener = null;
+	private List<Handler> listeners = null; // Listeners for client messages
+	private List<Handler> adminListeners = null; // Listeners for admin-messages
 	private volatile boolean isInRegistratingMode = false;
 	// The list of clients connected.
-	private volatile List<ClientHandlerThread> clients = null;
+	private List<ClientHandlerThread> clients = null;
 
 	// Common server socket to listen on
 	private volatile ServerSocket serverSocket = null;
@@ -53,6 +51,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	public TeamMessageMgr() {
 		this.setName("TeamMessageMgr");
 		listeners = new ArrayList<Handler>();
+		adminListeners = new ArrayList<Handler>();
 		clients = new Vector<TeamMessageMgr.ClientHandlerThread>();
 	}
 
@@ -129,16 +128,13 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		public ClientHandlerThread(Socket socket) {
 			this.setName("ClientListener");
 			this.socket = socket;
-			try {
-				Log.d("CLIENT:", "Socket isConnected check ");
-				isSocketConnected = socket.getInetAddress().isReachable(10000);
-				Log.d("CLIENT:", "Socket isConnected : " + isSocketConnected);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				Log.d("CLIENT:",
-						"Socket isConnected : exception " + e1.getMessage());
-				e1.printStackTrace();
-			}
+
+			Log.d("ClientHandlerThread(" + currentRole + ")",
+					"Socket isConnected check ");
+			isSocketConnected = socket.isConnected();
+			Log.d("ClientHandlerThread(" + currentRole + ")",
+					"Socket isConnected : " + isSocketConnected);
+
 			if (isSocketConnected) {
 				try {
 					// Create pipelines
@@ -174,23 +170,31 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 						stillRunning = false;
 					} else {
 						// Check management messages
-						if (receivedString.startsWith("MGR,", 0)) {
-							if (receivedString.startsWith("LEAVE", 4)) {
-								// Client is leaving...
-								terminateRelationship();
-								Log.d("ClientHandlerThread(" + currentRole
-										+ ")", "Client is leaving...");
-								distributeMessage(receivedString);
-							}
-						} else {
-							// distribute incoming to all listeners
-							distributeMessage(receivedString);
-						}
+						// if (receivedString.startsWith("MGR,", 0)) {
+						// if (receivedString.startsWith("LEAVE", 4)) {
+						// // Client is leaving...
+						// terminateRelationship();
+						// Log.d("ClientHandlerThread(" + currentRole
+						// + ")", "Client is leaving...");
+						// distributeMessage(receivedString);
+						// }
+						// } else {
+						// // distribute incoming to all listeners
+						// distributeMessage(receivedString);
+						// }
+						// distribute incoming to all listeners
+						distributeMessage(receivedString);
 					}
 				} catch (IOException e) {
 					Log.d("ClientHandlerThread(" + currentRole + ")",
 							"receive loop IOException : " + e.getMessage());
 					e.printStackTrace();
+					// Disconnect client on failure
+					terminateRelationship();
+				} catch (Exception other) {
+					Log.d("ClientHandlerThread(" + currentRole + ")",
+							"receive loop Exception : " + other.getMessage());
+					other.printStackTrace();
 					terminateRelationship();
 				}
 			}
@@ -202,8 +206,35 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 			Log.d("ClientHandlerThread(" + currentRole + ")",
 					"Removing self from client list. #of clients before remove:"
 							+ clients.size());
-			clients.remove(this);
-			stillRunning = false;
+			try {
+				socket.close();
+			} catch (IOException e) {
+				// e.printStackTrace();
+			}
+			synchronized (clients) {
+				clients.remove(this);
+				stillRunning = false;
+			}
+		}
+
+		public void disconnect() {
+			try {
+				Log.d("ClientHandlerThread(" + currentRole + ")",
+						"*** Closing socket");
+				
+				socket.close();
+
+				Log.d("ClientHandlerThread(" + currentRole + ")",
+						"*** Closing file in");
+				in.close(); //TODO BLOCKING HERE
+				
+				Log.d("ClientHandlerThread(" + currentRole + ")",
+						"*** Closing file in OK");
+			} catch (IOException e) {
+				Log.d("ClientHandlerThread(" + currentRole + ")", "*** Excp "
+						+ e.getMessage());
+				e.printStackTrace();
+			}
 		}
 
 		/**
@@ -320,10 +351,10 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	 * @param theMessage
 	 */
 	private void distributeMessage(Serializable theMessage) {
-		Log.d("TEAMmessageMANAGER", "Distr: " + theMessage);
+		Log.d("TEAMmessageMANAGER", "Distribute message: " + theMessage);
 		for (Handler l : listeners) {
 			try {
-				Message toClient = debugListener.obtainMessage();
+				Message toClient = l.obtainMessage();
 				toClient.obj = theMessage;
 				l.sendMessage(toClient);
 			} catch (Exception e) {
@@ -339,6 +370,9 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void addListener(Handler messageBroakerClient) {
 		listeners.add(messageBroakerClient);
 	}
@@ -347,13 +381,28 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		listeners.remove(messageBroakerClient);
 	}
 
+	public void addAdminListener(Handler adminListenerHandler) {
+		adminListeners.add(adminListenerHandler);
+	}
+
+	public void removeAdminListener(Handler adminListenerHandler) {
+		adminListeners.remove(adminListenerHandler);
+	}
+
+	/***
+	 * Send a message to all connected clients.
+	 */
 	public void sendMessage(Serializable outgoingMessage) {
-		sendAdmMsg("TeamMessageMgr send : \"" + outgoingMessage + "\"");
-		for (ClientHandlerThread cli : clients) {
-			if (cli.isSocketConnected()) {
-				cli.sendMessage(outgoingMessage);
+		// Testing sendAdmMsg("TeamMessageMgr send : \"" + outgoingMessage +
+		// "\"");
+		synchronized (clients) {
+			for (ClientHandlerThread cli : clients) {
+				if (cli.isSocketConnected()) {
+					cli.sendMessage(outgoingMessage);
+				}
 			}
 		}
+
 	}
 
 	/**
@@ -363,47 +412,68 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		return isInRegistratingMode;
 	}
 
+	/**
+	 * Send an admin-message to listeners
+	 * 
+	 * @param msg
+	 */
 	private void sendAdmMsg(String msg) {
-		if (debugListener != null) {
-			Message toMain = debugListener.obtainMessage();
+		Message toMain = null;
+		for (Handler adms : adminListeners) {
+			toMain = adms.obtainMessage();
 			toMain.obj = msg;
-			debugListener.sendMessage(toMain);
+			adms.sendMessage(toMain);
 		}
 	}
 
-	public void setHandler(Handler handle) {
-		debugListener = handle;
-	}
-
+	/**
+	 * Call to initiate a client connection to an ip-address
+	 * 
+	 * @param ipadr
+	 * @return 0 if success
+	 */
 	public int initClientConnection(InetAddress ipadr) {
 		currentRole = "Client";
 		Socket s = null;
 		int ret = 0;
 		try {
-			Log.d("CLIENT ", "C: Connecting to server " + PORTIN);
+			Log.d("TeamMessageMgr(" + currentRole + ")",
+					"C: Connecting to server " + PORTIN);
 			s = new Socket(ipadr, PORTIN);
-			Log.d("CLIENT ", "C: Connected to server" + s.toString());
+			Log.d("TeamMessageMgr(" + currentRole + ")",
+					"C: Connected to server" + s.toString());
 			ret = addClientThread(s);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			ret = 2;
 		}
 		return ret;
 	}
 
+	/**
+	 * Call to initiate a client connection to an ip-address
+	 * 
+	 * @param ipadr
+	 * @return
+	 */
 	public int initClientConnection(String ipadr) {
 		currentRole = "Client";
 		Socket s = null;
 		int ret = 0;
 		try {
-			Log.d("CLIENT ", "C: Connecting to server " + ipadr + ":" + PORTIN);
+			Log.d("TeamMessageMgr(" + currentRole + ")",
+					"C: Connecting to server " + ipadr + ":" + PORTIN);
 			s = new Socket(ipadr, PORTIN);
-			Log.d("CLIENT ", "C: Connected to server" + s.toString()
-					+ " Socket:" + ihc(s));
+			Log.d("TeamMessageMgr(" + currentRole + ")",
+					"C: Connected to server" + s.toString() + " Socket:"
+							+ ihc(s));
 			ret = addClientThread(s);
+			if (ret == 0) {
+				sendAdmMsg("Client connected ok");
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Log.d("TeamMessageMgr(" + currentRole + ")",
+					"C: Exception " + e.getMessage());
 			e.printStackTrace();
 			ret = 2;
 		}
@@ -417,10 +487,13 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	 *            the client socket
 	 */
 	private int addClientThread(Socket s) {
+		Log.d("TeamMessageMgr(" + currentRole + ")", "Start addClientThread()");
 		ClientHandlerThread cht = new ClientHandlerThread(s);
 		int ret = 0;
 		if (cht.isSocketConnected()) {
-			clients.add(cht);
+			synchronized (clients) {
+				clients.add(cht);
+			}
 			cht.start();
 			ret = 0;
 		} else {
@@ -451,7 +524,19 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	protected void finalize() throws Throwable {
 		// Close server socket on object destruction
 		serverSocket.close();
+
+		// TODO More cleanup - check...?
+
 		super.finalize();
 	}
 
+	public void disconnect() {
+		// Disconnect clients
+		synchronized (clients) {
+			for (ClientHandlerThread client : clients) {
+				client.disconnect();
+				client.interrupt();
+			}
+		}
+	}
 }

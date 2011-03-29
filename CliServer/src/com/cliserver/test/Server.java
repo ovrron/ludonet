@@ -34,7 +34,7 @@ public class Server extends Activity implements ILudoMessageReceiver {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.server);
 		
-		// Create server handle - messages from server
+		// Create server handle - admin messages from server
 		Handler hnd = new Handler() {
 
 			/* This is the message handler which receives messages
@@ -44,7 +44,21 @@ public class Server extends Activity implements ILudoMessageReceiver {
 			 */
 			@Override
 			public void handleMessage(Message msg) {
-				dataAdapter.add("*"+(String)msg.obj);
+				dataAdapter.add("*A*"+(String)msg.obj);
+			}
+			
+		};
+		// Create server handle - client messages from server
+		Handler hndCli = new Handler() {
+
+			/* This is the message handler which receives messages
+			 * from the TeamMessageManager
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+				dataAdapter.add("*C*"+(String)msg.obj);
 			}
 			
 		};
@@ -54,8 +68,10 @@ public class Server extends Activity implements ILudoMessageReceiver {
 		
 		// Create server object
 		tmm = new TeamMessageMgr();
-		// Set the handler to receive messages.
-		tmm.setHandler(hnd);
+		// Set the handler to receive admin messages.
+		tmm.addAdminListener(hnd);
+		// Set the handler to receive client messages.
+		tmm.addListener(hndCli);
 		
 		// Create broker object
 		emb = new ExampleMessageBroker(this,tmm);
@@ -107,8 +123,8 @@ public class Server extends Activity implements ILudoMessageReceiver {
 	/**
 	 * Getting a message from a client via the broker
 	 */
-	public void handleIncomingMessage(String a, String b, String c, String d) {
-		addLogMessage("In: "+a+","+b+","+c+","+d);		
+	public void handleIncomingMessage(String theMessage) {
+		addLogMessage("In: "+theMessage);		
 	}
 	
 	/* (non-Javadoc)

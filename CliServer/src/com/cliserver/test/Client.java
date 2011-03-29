@@ -18,7 +18,7 @@ import com.cliserver.test.comm.ILudoMessageReceiver;
 import com.cliserver.test.comm.TeamMessageMgr;
 
 public class Client extends Activity implements ILudoMessageReceiver {
-	
+
 	private Button btnConnect = null;
 	private Button btnSendmsg = null;
 	private Button btnDisconnect = null;
@@ -39,10 +39,10 @@ public class Client extends Activity implements ILudoMessageReceiver {
 			public void onClick(View v) {
 				TextView ip = (TextView) findViewById(R.id.edIpaddress);
 				String ipTxt = ip.getText().toString();
-								
+
 				int retCode = tmm.initClientConnection(ipTxt);
-				if(retCode != 0) {
-					addLogMessage("Not connected:"+retCode);
+				if (retCode != 0) {
+					addLogMessage("Not connected:" + retCode);
 				}
 			}
 		});
@@ -51,7 +51,7 @@ public class Client extends Activity implements ILudoMessageReceiver {
 			public void onClick(View v) {
 				EditText txt = (EditText) findViewById(R.id.editClientMessage);
 				String theMsg = txt.getText().toString();
-				addLogMessage("Send:"+theMsg);
+				addLogMessage("Send:" + theMsg);
 				emb.distributeMessage(theMsg);
 			}
 		});
@@ -60,8 +60,9 @@ public class Client extends Activity implements ILudoMessageReceiver {
 		btnDisconnect.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				String theMsg = "MGR,LEAVE,GREEN,0";
-				addLogMessage("Send:"+theMsg);
+				addLogMessage("Send:" + theMsg);
 				emb.distributeMessage(theMsg);
+				emb.disconnect();
 			}
 		});
 
@@ -82,15 +83,32 @@ public class Client extends Activity implements ILudoMessageReceiver {
 			 */
 			@Override
 			public void handleMessage(Message msg) {
-				dataAdapter.add((String) msg.obj);
+				dataAdapter.add("*A*" + (String) msg.obj);
 			}
 
 		};
-
 		// Create server object
 		tmm = new TeamMessageMgr();
-		tmm.setHandler(hnd);
-		
+		tmm.addAdminListener(hnd); // Administrative messages
+
+//      // Can do this to recive message directly to myself...		
+//      // Create server handle - client messages from server
+//		Handler hndCli = new Handler() {
+//
+//			/*
+//			 * This is the message handler which receives messages from the
+//			 * TeamMessageManager
+//			 * 
+//			 * @see android.os.Handler#handleMessage(android.os.Message)
+//			 */
+//			@Override
+//			public void handleMessage(Message msg) {
+//				dataAdapter.add("*C*" + (String) msg.obj);
+//			}
+//
+//		};
+//		tmm.addListener(hndCli);
+
 		// Create broker object
 		emb = new ExampleMessageBroker(this, tmm);
 		// Start the server
@@ -103,21 +121,26 @@ public class Client extends Activity implements ILudoMessageReceiver {
 		debugListView.setSelection(dataAdapter.getCount());
 	}
 
-	public void handleIncomingMessage(String a, String b, String c, String d) {
-		addLogMessage("In: "+a+","+b+","+c+","+d);		
-		
+	/**
+	 * Handle messages from incoming clients (via the broker)
+	 */
+	public void handleIncomingMessage(String fromClients) {
+		addLogMessage("In: " + fromClients);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Log.d("Client","****************** Finish activity ******************");
-		        finish();
-		        return true;
-		    }
+			Log.d("Client",
+					"****************** Finish activity ******************");
+			finish();
+			return true;
+		}
 		return super.onKeyDown(keyCode, event);
 	}
 }
