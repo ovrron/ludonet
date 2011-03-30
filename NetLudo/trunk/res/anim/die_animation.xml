@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<set
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false">
+
+	<!-- FADE INN -->
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="3000"
+        >
+    </alpha>
+      
+    <!-- FORSTØRRER -->
+    <scale
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:fromXScale=".1"
+        android:fromYScale=".1"
+        android:toXScale="1.0"
+        android:toYScale="1.0"
+        android:duration="3000"
+        >
+	</scale>
+	
+	<!-- KOMMER INN FRA VENSTRE -->
+	<translate 
+		android:fromXDelta="-50%p"
+		android:fromYDelta="0%p"
+		android:toXDelta="20%p"
+		android:toYDelta="0%p"
+		android:duration="3000"
+		>
+	</translate>   
+	
+	<!-- GÅR FRA HØYRE TIL MIDTEN AV BILDET -->
+	<translate 
+		android:fromXDelta="0%p"
+		android:fromYDelta="0%p"
+		android:toXDelta="-20%p"
+		android:toYDelta="0%p"
+		android:duration="1500"
+		android:startOffset="3000"
+		>
+	</translate>
+
+	<!-- FORSVINNER NED TIL HØYRE
+	<translate 
+		android:fromXDelta="0%p"
+		android:fromYDelta="0%p"
+		android:toXDelta="50%p"
+		android:toYDelta="50%p"
+		android:duration="1500"
+		android:startOffset="4500"
+		>
+	</translate>	
+	 -->
+	<!-- FORMINSKER 
+	<scale
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:toXScale=".1"
+        android:toYScale=".1"
+        android:duration="1500"
+        android:startOffset="4500"
+        >
+	</scale>	
+		-->	     
+	<!-- FADE UT 	
+    <alpha
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0"
+        android:duration="1500"
+        android:startOffset="4500"
+        >
+    </alpha>
+-->	
+	    
+		
+</set>

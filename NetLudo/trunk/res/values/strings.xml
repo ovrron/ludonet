@@ -2,4 +2,15 @@
 <resources>
     <string name="hello">Hello World, LudoActivity!</string>
     <string name="app_name">LudoNet (C)</string>
+    <string name="splash_radio_host_game">Start ett nytt spill</string>
+    <string name="splash_radio_join_game">Kople til et eksisterende spill</string>
+    <string name="splash_tekst_ip_server">Din IP-adresse:</string>
+    <string name="splash_tekst_ip_client">Angi IP-adresse:</string>
+    <string name="splash_button_ip_server">Send invitasjon</string>
+    <string name="splash_button_ip_client">Kople til</string>
+    <string name="splash_edittext_ip">xxx.xxx.xxx.xxx</string>
+    <string name="splash_text_players">Spillere:</string>
+    <string name="splash_button_start_game">Spill LUDO</string>
+    <string name="splash_edittext_no_network">No network available</string>
+    <string name="splash_invite_text">inviterer deg til et spennende slag ludo.</string>
 </resources>

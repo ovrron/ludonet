@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set 
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:shareInterpolator="false"
+	>
+		<!-- android:interpolator="@android:anim/accelerate_decelerate_interpolator"  -->
+		<!-- 		android:startOffset="1000"
+		 -->
+	<scale
+		android:fromXScale="0.0" 
+		android:toXScale="1.0"
+	    android:fromYScale="0.5"
+ 		android:toYScale="1.0" 
+ 		android:pivotX="50%" 
+ 		android:pivotY="50%" 
+ 		android:duration="2000" 
+ 		/>
+	<rotate 
+		android:fromDegrees="90" 
+		android:toDegrees="0"
+ 		android:toYScale="0.0" 
+ 		android:pivotX="50%" 
+ 		android:pivotY="50%"
+ 		android:duration="2000" 
+ 		/>
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="2000"
+        >
+    </alpha> 		
+	<translate 
+		android:fromXDelta="-40%p"
+		android:fromYDelta="20%p"
+		android:toXDelta="0%p"
+		android:toYDelta="0%p"
+		android:duration="2000"
+		>
+	</translate>
+	<translate 
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:fromYDelta="0" 
+	android:toYDelta="10" 
+	android:duration="1500" 
+	android:startOffset="2000"
+	android:interpolator="@anim/cycle_2"
+	 />
+	 
+	<translate 
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:fromYDelta="0" 
+	android:toYDelta="5" 
+	android:duration="1000" 
+	android:startOffset="3500"
+	android:interpolator="@anim/cycle_4"
+	 />    
+	<translate 
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:fromYDelta="0" 
+	android:toYDelta="2" 
+	android:duration="500" 
+	android:startOffset="4500"
+	android:interpolator="@anim/cycle_7"
+	 />    
+	     
+</set>
+
