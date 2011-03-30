@@ -18,7 +18,7 @@ import android.os.Message;
 import android.util.Log;
 
 /**
- * adb -s emulator-5554 forward tcp:11700 tcp:11700
+ * adb -s emulator-5556 forward tcp:11700 tcp:11700
  * 
  * The TeamMessageMgr is managing socket connections between collaborating
  * clients. The manager may act as a server for creating the initial connection
@@ -37,7 +37,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	private List<Handler> adminListeners = null; // Listeners for admin-messages
 	private volatile boolean isInRegistratingMode = false;
 	// The list of clients connected.
-	private List<ClientHandlerThread> clients = null;
+	private volatile List<ClientHandlerThread> clients = null;
 
 	// Common server socket to listen on
 	private volatile ServerSocket serverSocket = null;
@@ -119,8 +119,8 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	 **************************************************************************************/
 	private class ClientHandlerThread extends Thread {
 
-		private Socket socket;
-		private PrintWriter out = null;
+		private volatile Socket socket;
+		private volatile PrintWriter out = null;
 		private BufferedReader in = null;
 		private boolean stillRunning = true;
 		private boolean isSocketConnected = false;
@@ -137,6 +137,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 
 			if (isSocketConnected) {
 				try {
+					socket.setSoTimeout(3000);
 					// Create pipelines
 					out = new PrintWriter(this.socket.getOutputStream(), true);
 					in = new BufferedReader(new InputStreamReader(
@@ -159,31 +160,22 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		 */
 		public void run() {
 			String receivedString = null;
-			while (stillRunning) {
+			while (stillRunning && !isInterrupted()) {
 				try {
-					Log.d("ClientHandlerThread(" + currentRole + ")", " IN : "
-							+ ihc(in));
-					receivedString = in.readLine();
-					Log.d("ClientHandlerThread(" + currentRole + ")",
-							"Receieve : " + receivedString);
-					if (receivedString == null) {
-						stillRunning = false;
-					} else {
-						// Check management messages
-						// if (receivedString.startsWith("MGR,", 0)) {
-						// if (receivedString.startsWith("LEAVE", 4)) {
-						// // Client is leaving...
-						// terminateRelationship();
-						// Log.d("ClientHandlerThread(" + currentRole
-						// + ")", "Client is leaving...");
-						// distributeMessage(receivedString);
-						// }
-						// } else {
-						// // distribute incoming to all listeners
-						// distributeMessage(receivedString);
-						// }
-						// distribute incoming to all listeners
-						distributeMessage(receivedString);
+					try {
+						receivedString = in.readLine();
+
+						Log.d("ClientHandlerThread(" + currentRole + ")",
+								"Receieve : " + receivedString);
+
+						if (receivedString == null) {
+							stillRunning = false;
+						} else {
+							distributeMessage(receivedString);
+						}
+					} catch (SocketTimeoutException ste) {
+						Log.d("ClientHandlerThread(" + currentRole + ")",
+								"--SocketTimeout");
 					}
 				} catch (IOException e) {
 					Log.d("ClientHandlerThread(" + currentRole + ")",
@@ -211,6 +203,11 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 			} catch (IOException e) {
 				// e.printStackTrace();
 			}
+			try {
+				in.close();
+			} catch (IOException e) {
+				// e.printStackTrace();
+			}
 			synchronized (clients) {
 				clients.remove(this);
 				stillRunning = false;
@@ -218,21 +215,22 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		}
 
 		public void disconnect() {
-			try {
-				Log.d("ClientHandlerThread(" + currentRole + ")",
-						"*** Closing socket");
-				
-				socket.close();
 
-				Log.d("ClientHandlerThread(" + currentRole + ")",
-						"*** Closing file in");
-				in.close(); //TODO BLOCKING HERE
-				
-				Log.d("ClientHandlerThread(" + currentRole + ")",
+			try {
+
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
+						"*** Closing interrupt");
+				this.interrupt();
+
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
+						"*** Closing socket");
+
+				socket.close();
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
 						"*** Closing file in OK");
 			} catch (IOException e) {
-				Log.d("ClientHandlerThread(" + currentRole + ")", "*** Excp "
-						+ e.getMessage());
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
+						"*** Excp " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
