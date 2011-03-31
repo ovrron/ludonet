@@ -14,10 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cliserver.test.comm.ExampleMessageBroker;
+import com.cliserver.test.comm.IExampleMessageReceiver;
 import com.cliserver.test.comm.ILudoMessageReceiver;
 import com.cliserver.test.comm.TeamMessageMgr;
 
-public class Client extends Activity implements ILudoMessageReceiver {
+public class Client extends Activity implements IExampleMessageReceiver {
 
 	private Button btnConnect = null;
 	private Button btnSendmsg = null;
@@ -84,6 +85,7 @@ public class Client extends Activity implements ILudoMessageReceiver {
 			@Override
 			public void handleMessage(Message msg) {
 				dataAdapter.add("*A*" + (String) msg.obj);
+//				msg.recycle();
 			}
 
 		};
@@ -124,8 +126,8 @@ public class Client extends Activity implements ILudoMessageReceiver {
 	/**
 	 * Handle messages from incoming clients (via the broker)
 	 */
-	public void handleIncomingMessage(String fromClients) {
-		addLogMessage("In: " + fromClients);
+	public void handleIncomingMessage(String fromClients, Integer clientId) {
+		addLogMessage("In ("+clientId+"): " + fromClients);
 	}
 
 	/*
@@ -138,6 +140,7 @@ public class Client extends Activity implements ILudoMessageReceiver {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			Log.d("Client",
 					"****************** Finish activity ******************");
+			emb.disconnect();
 			finish();
 			return true;
 		}

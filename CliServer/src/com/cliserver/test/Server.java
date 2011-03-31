@@ -13,11 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cliserver.test.comm.ExampleMessageBroker;
-import com.cliserver.test.comm.ILudoMessageReceiver;
+import com.cliserver.test.comm.IExampleMessageReceiver;
 import com.cliserver.test.comm.IPAddressHelper;
 import com.cliserver.test.comm.TeamMessageMgr;
 
-public class Server extends Activity implements ILudoMessageReceiver {
+public class Server extends Activity implements IExampleMessageReceiver {
 	private Button btnOpen = null;
 	private Button btnClose = null;
 	private Button btnSend = null;
@@ -49,19 +49,21 @@ public class Server extends Activity implements ILudoMessageReceiver {
 			
 		};
 		// Create server handle - client messages from server
-		Handler hndCli = new Handler() {
-
-			/* This is the message handler which receives messages
-			 * from the TeamMessageManager
-			 * 
-			 * @see android.os.Handler#handleMessage(android.os.Message)
-			 */
-			@Override
-			public void handleMessage(Message msg) {
-				dataAdapter.add("*C*"+(String)msg.obj);
-			}
-			
-		};
+//		Handler hndCli = new Handler() {
+//
+//			/* This is the message handler which receives messages
+//			 * from the TeamMessageManager
+//			 * 
+//			 * @see android.os.Handler#handleMessage(android.os.Message)
+//			 */
+//			@Override
+//			public void handleMessage(Message msg) {
+//				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
+//				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
+//				dataAdapter.add("*C("+client+")*"+theMessage);
+//			}
+//			
+//		};
 		
 		TextView txv = (TextView) findViewById(R.id.textIP);
 		txv.setText("IP: " + IPAddressHelper.getLocalIpAddress());
@@ -71,7 +73,8 @@ public class Server extends Activity implements ILudoMessageReceiver {
 		// Set the handler to receive admin messages.
 		tmm.addAdminListener(hnd);
 		// Set the handler to receive client messages.
-		tmm.addListener(hndCli);
+		// Nope - do this via broker
+		//tmm.addListener(hndCli);
 		
 		// Create broker object
 		emb = new ExampleMessageBroker(this,tmm);
@@ -123,8 +126,8 @@ public class Server extends Activity implements ILudoMessageReceiver {
 	/**
 	 * Getting a message from a client via the broker
 	 */
-	public void handleIncomingMessage(String theMessage) {
-		addLogMessage("In: "+theMessage);		
+	public void handleIncomingMessage(String theMessage, Integer clientId) {
+		addLogMessage("In"+clientId+":"+theMessage);		
 	}
 	
 	/* (non-Javadoc)
@@ -134,6 +137,7 @@ public class Server extends Activity implements ILudoMessageReceiver {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			Log.d("Server","****************** Finish activity ******************");
+				emb.disconnect();
 		        finish();
 		        return true;
 		    }

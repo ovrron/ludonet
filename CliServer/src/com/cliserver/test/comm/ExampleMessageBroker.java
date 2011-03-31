@@ -6,24 +6,26 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-public class ExampleMessageBroker /*implements ITeamMessageListener*/ {
+public class ExampleMessageBroker {
 
 	private ITeamMessageManager currentServer = null;
-	private ILudoMessageReceiver messageReceiver = null;
+	private IExampleMessageReceiver messageReceiver = null;
 	
-	public ExampleMessageBroker(ILudoMessageReceiver receiver, ITeamMessageManager msgServer) {
+	public ExampleMessageBroker(IExampleMessageReceiver receiver, ITeamMessageManager msgServer) {
 		currentServer = msgServer;
 		messageReceiver = receiver;
 		
 		// Create a handler for messages from the server
 		msgServer.addListener(new Handler() {
-
 			/* (non-Javadoc)
 			 * @see android.os.Handler#handleMessage(android.os.Message)
 			 */
 			@Override
 			public void handleMessage(Message msg) {
-				handleTeamMessage((String)msg.obj);
+				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
+				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
+				handleTeamMessage(theMessage, client);
+//				msg.recycle();
 			}
 			
 		});
@@ -31,12 +33,12 @@ public class ExampleMessageBroker /*implements ITeamMessageListener*/ {
 
 	/**
 	 *  Incoming message from the team message server.
-	 * @param message message from server
+	 * @param msg message from server
 	 */
-	public void handleTeamMessage(Serializable message) {
+	public void handleTeamMessage(String msg, Integer clientId) {
 //		final String[] messageParts = message.toString().split("\\,");
-		Log.d("ExampleMessageBroker","Got message from server : "+message.toString());
-		messageReceiver.handleIncomingMessage(message.toString());
+		Log.d("ExampleMessageBroker","Intercept message from server : "+msg.toString());
+		messageReceiver.handleIncomingMessage(msg, clientId);
 	}
 	
 	/**
@@ -44,7 +46,7 @@ public class ExampleMessageBroker /*implements ITeamMessageListener*/ {
 	 * @param theMsg
 	 */
 	public void distributeMessage(String theMsg) {
-		currentServer.sendMessage(theMsg);		
+		currentServer.sendMessageToClients(theMsg);		
 	}
 
 	/**
