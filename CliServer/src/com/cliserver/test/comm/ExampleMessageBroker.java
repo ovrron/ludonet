@@ -29,6 +29,21 @@ public class ExampleMessageBroker {
 			}
 			
 		});
+		
+		// Add myself to admin messages
+		msgServer.addAdminListener(new Handler() {
+			/* (non-Javadoc)
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
+				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
+				handleAdminTeamMessage(theMessage, client);
+//				msg.recycle();
+			}
+			
+		});
 	}
 
 	/**
@@ -36,8 +51,12 @@ public class ExampleMessageBroker {
 	 * @param msg message from server
 	 */
 	public void handleTeamMessage(String msg, Integer clientId) {
-//		final String[] messageParts = message.toString().split("\\,");
-		Log.d("ExampleMessageBroker","Intercept message from server : "+msg.toString());
+		Log.d("Example(C)MessageBroker","Intercept message from server : "+msg.toString());
+		messageReceiver.handleIncomingMessage(msg, clientId);
+	}
+	
+	public void handleAdminTeamMessage(String msg, Integer clientId) {
+		Log.d("Example(A)MessageBroker","Intercept message from server : "+msg.toString());
 		messageReceiver.handleIncomingMessage(msg, clientId);
 	}
 	

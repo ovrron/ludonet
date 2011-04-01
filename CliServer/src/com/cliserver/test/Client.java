@@ -13,12 +13,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cliserver.test.comm.ExampleMessageBroker;
-import com.cliserver.test.comm.IExampleMessageReceiver;
 import com.cliserver.test.comm.ILudoMessageReceiver;
+import com.cliserver.test.comm.LudoMessageBroker;
 import com.cliserver.test.comm.TeamMessageMgr;
 
-public class Client extends Activity implements IExampleMessageReceiver {
+public class Client extends Activity implements ILudoMessageReceiver {
 
 	private Button btnConnect = null;
 	private Button btnSendmsg = null;
@@ -28,7 +27,8 @@ public class Client extends Activity implements IExampleMessageReceiver {
 	private ArrayAdapter<String> dataAdapter;
 
 	private TeamMessageMgr tmm = null;
-	private ExampleMessageBroker emb = null;
+//	private ExampleMessageBroker emb = null;
+	private LudoMessageBroker emb = null;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -84,7 +84,11 @@ public class Client extends Activity implements IExampleMessageReceiver {
 			 */
 			@Override
 			public void handleMessage(Message msg) {
-				dataAdapter.add("*A*" + (String) msg.obj);
+				Integer msgtype = msg.getData().getInt(TeamMessageMgr.BUNDLE_OPERATION);
+				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
+				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
+				dataAdapter.add("A/"+msgtype+"/"+client+"/"+theMessage);
+//				dataAdapter.add("*A*" + (String) msg.obj);
 //				msg.recycle();
 			}
 
@@ -112,7 +116,9 @@ public class Client extends Activity implements IExampleMessageReceiver {
 //		tmm.addListener(hndCli);
 
 		// Create broker object
-		emb = new ExampleMessageBroker(this, tmm);
+//		emb = new ExampleMessageBroker(this, tmm);
+	
+		emb = new LudoMessageBroker(this, tmm);
 		// Start the server
 		tmm.start();
 
@@ -127,7 +133,7 @@ public class Client extends Activity implements IExampleMessageReceiver {
 	 * Handle messages from incoming clients (via the broker)
 	 */
 	public void handleIncomingMessage(String fromClients, Integer clientId) {
-		addLogMessage("In ("+clientId+"): " + fromClients);
+		addLogMessage("C/"+clientId+"/" + fromClients);
 	}
 
 	/*

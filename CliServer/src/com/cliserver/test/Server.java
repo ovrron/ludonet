@@ -12,19 +12,20 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cliserver.test.comm.ExampleMessageBroker;
-import com.cliserver.test.comm.IExampleMessageReceiver;
+import com.cliserver.test.comm.ILudoMessageReceiver;
 import com.cliserver.test.comm.IPAddressHelper;
+import com.cliserver.test.comm.LudoMessageBroker;
 import com.cliserver.test.comm.TeamMessageMgr;
 
-public class Server extends Activity implements IExampleMessageReceiver {
+public class Server extends Activity implements ILudoMessageReceiver {
 	private Button btnOpen = null;
 	private Button btnClose = null;
 	private Button btnSend = null;
 	private ArrayAdapter<String> dataAdapter;
 	
 	private TeamMessageMgr tmm = null;
-	private ExampleMessageBroker emb = null;
+//	private ExampleMessageBroker emb = null;
+	private LudoMessageBroker emb = null;
 	private ListView debugListView = null;
 	
 
@@ -44,7 +45,10 @@ public class Server extends Activity implements IExampleMessageReceiver {
 			 */
 			@Override
 			public void handleMessage(Message msg) {
-				dataAdapter.add("*A*"+(String)msg.obj);
+				Integer msgtype = msg.getData().getInt(TeamMessageMgr.BUNDLE_OPERATION);
+				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
+				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
+				dataAdapter.add("A/"+msgtype+"/"+client+"/"+theMessage);
 			}
 			
 		};
@@ -70,14 +74,14 @@ public class Server extends Activity implements IExampleMessageReceiver {
 		
 		// Create server object
 		tmm = new TeamMessageMgr();
-		// Set the handler to receive admin messages.
+		// Set the handler (myself - for debugging) to receive admin messages.
+		// This might be used by GUI and application logic, but the MessageBroker is supposed to react on these messages too.
 		tmm.addAdminListener(hnd);
-		// Set the handler to receive client messages.
-		// Nope - do this via broker
-		//tmm.addListener(hndCli);
 		
 		// Create broker object
-		emb = new ExampleMessageBroker(this,tmm);
+		//emb = new ExampleMessageBroker(this,tmm);
+		emb = new LudoMessageBroker(this,tmm);
+		
 		// Start the server
 		tmm.start();
 		
@@ -127,7 +131,7 @@ public class Server extends Activity implements IExampleMessageReceiver {
 	 * Getting a message from a client via the broker
 	 */
 	public void handleIncomingMessage(String theMessage, Integer clientId) {
-		addLogMessage("In"+clientId+":"+theMessage);		
+		addLogMessage("C/"+clientId+":"+theMessage);		
 	}
 	
 	/* (non-Javadoc)
