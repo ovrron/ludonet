@@ -1,6 +1,10 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110401 RHA: CliServer er oppdatert med kode som skal kunne fungere for ferdig applikasjon.
+			Rammeverket er ferdig, men vi trenger eks. en TurnManager som vi snakket om,
+			som også har kontroll over utdelt farge og client connections...   jeg kan begynne på det..
+
 20110331 RØ: Oppdatert splash- og startaktivitene (med tilhørende elementer)
 20110324 RHA: Oppdatert def for ludobrett 2 + legge lasting av bildet og skalering på rett plass.
 
