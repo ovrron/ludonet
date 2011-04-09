@@ -126,7 +126,7 @@ public class LudoStartActivity extends Activity
     	editTextIP.setOnKeyListener(new OnKeyListener()
     	{
 
-			@Override
+			//@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event)
 			{
 				ipAddressJoin = editTextIP.getText().toString();
@@ -199,7 +199,7 @@ public class LudoStartActivity extends Activity
         	final AnimationDrawable frameAnimation = (AnimationDrawable) player.getBackground();
             player.post(new Runnable()
             {
-    			@Override
+ //   			@Override
     			public void run()
     			{
     				frameAnimation.start();
