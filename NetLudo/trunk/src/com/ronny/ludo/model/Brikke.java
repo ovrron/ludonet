@@ -1,6 +1,5 @@
 package com.ronny.ludo.model;
 
-import android.util.Log;
 
 
 public class Brikke implements IBrikke{
@@ -118,7 +117,7 @@ public class Brikke implements IBrikke{
 			return;
 		}
 		
-		Log.d("IBrikke"," Col: "+owner.getColor().toString()+"IBrikke: "+housePosition+" Current pos: "+boardPosition+" move: "+theMove);
+//		Log.d("IBrikke"," Col: "+owner.getColor().toString()+"IBrikke: "+housePosition+" Current pos: "+boardPosition+" move: "+theMove);
 		boardPosition += theMove;
 		// Sjekk om vi har gått for langt...
 		if (boardPosition >= (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
@@ -127,4 +126,4 @@ public class Brikke implements IBrikke{
 		}
 	}
 
-}
+ }
