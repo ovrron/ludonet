@@ -47,7 +47,7 @@ public class DrawingThread extends Thread {
 				try {
 					c=mSurfaceHolder.lockCanvas(null);
 					synchronized(mSurfaceHolder) {
-						Log.d(TAG, "--Call on draw");
+						//Log.d(TAG, "--Call on draw");
 						mLudoView.debug(teller);
 						teller++;
 						mLudoView.onDraw(c);
