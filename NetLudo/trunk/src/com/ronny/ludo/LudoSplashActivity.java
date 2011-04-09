@@ -127,7 +127,7 @@ public class LudoSplashActivity extends Activity {
 //        }
         die.post(new Runnable()
         {
-			@Override
+//			@Override
 			public void run()
 			{
 				frameAnimation.start();
