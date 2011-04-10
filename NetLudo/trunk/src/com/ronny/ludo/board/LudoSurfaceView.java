@@ -97,10 +97,30 @@ public class LudoSurfaceView extends SurfaceView implements
 				&& (moveHistorySize >= 1)) {
 			Log.d("TouchEvent", "--------- Action up - redraw " + current_X
 					+ ", " + current_Y);
+			Log.d("TouchEvent", "--------- ACTION_UP - redraw " + current_X + ", " + current_Y);
+            boolean flyttetOK = handleMove(event.getX(), event.getY());
+            Log.d("TouchEvent", "----------------- " + flyttetOK + " ----------------------------------");
 		}
 
 		return true;
 	}
+
+	/**
+     * Sjekker om et flytt skal håndteres og utfører dette.
+     */
+   
+   private boolean handleMove(float currentX, float currentY) {
+
+        boolean ret = false;
+        Log.d("TouchEvent getBrikke", "current_X " + currentX + ", current_Y " + currentY);
+        Log.d("TouchEvent getBrikke", "boardImageX " + boardImageX + ", boardImageY " + boardImageY);
+        double currentXBoard = (double) currentX / currentScale;
+        double currentYBoard = (double) currentY / currentScale;
+        double delta = 0.08 * boardImageX;
+        Log.d("TouchEvent getBrikke", "currentXBoard " + currentXBoard + ", currentYBoard " + currentYBoard + ", delta " + delta);
+        ret = Game.getInstance().handleMove((int) currentXBoard, (int) currentYBoard, delta);
+        return ret;
+    }
 
 	/**
 	 * Sjekke pan limits for å se om disse er forenelig med definert
