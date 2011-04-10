@@ -1,6 +1,10 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110410 KEM: Oppdatert LudoSurfeceView og Game for å håndtere klikk og å gjøre flytt på brikke.
+			Klikk fungerer pt kun i fullscale modus. Rød starter og så går rekkefølgen rundt brettet.
+			For demo gjøres et random antall flytt av en brikke ved klikk. 
+			
 20110401 RHA: CliServer er oppdatert med kode som skal kunne fungere for ferdig applikasjon.
 			Rammeverket er ferdig, men vi trenger eks. en TurnManager som vi snakket om,
 			som også har kontroll over utdelt farge og client connections...   jeg kan begynne på det..
