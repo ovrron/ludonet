@@ -106,6 +106,24 @@ public class Game implements ILudoEventListener {
 		this.gameImageName = gameImageName;
 	}
 
+    public PlayerColor getcurrentTurnColor() {
+
+        return currentTurnColor;
+    }
+
+    public void setnextTurnColorTest() {
+
+        if (currentTurnColor.compareTo(PlayerColor.RED) == 0) {
+            currentTurnColor = PlayerColor.GREEN;
+        } else if (currentTurnColor.compareTo(PlayerColor.GREEN) == 0) {
+            currentTurnColor = PlayerColor.YELLOW;
+        } else if (currentTurnColor.compareTo(PlayerColor.BLUE) == 0) {
+            currentTurnColor = PlayerColor.RED;
+        } else if (currentTurnColor.compareTo(PlayerColor.YELLOW) == 0) {
+            currentTurnColor = PlayerColor.BLUE;
+        }
+    }
+	
 	/**
 	 * Hente ut status på bordet akkurat nå - slik at nye klienter evt. kan hoppe på
 	 * for å følge spillet...
@@ -219,6 +237,44 @@ public class Game implements ILudoEventListener {
 		getLudoBoard().playerMove( theColor,  theBrikke,  theMove);		
 	}
 	
+    /**
+     * Håndterer et flytt hvis gyldig brikke er valgt
+     * 
+     * @param xPos x-posisjon valgt
+     * @param yPos y-posisjon valgt
+     * @param delta tillegg for yttergrenser
+     */
+    public boolean handleMove(int xPos, int yPos, double delta) {
+
+        Log.d("IBrikke(LB)", "handleMove: klikket: " + xPos + "," + yPos);
+        IPlayer player = getLudoBoard().getPlayer(getcurrentTurnColor());
+        int brikkeNo = -1;
+        boolean brikkeFound = false;
+        for (IBrikke brikke : player.getBrikker()) {
+            brikkeNo += 1;
+            ICoordinate c = brikke.getCurrentPosition();
+            Log.d("IBrikke(LB)", "handleMove: brikke " + brikkeNo + ": " + c.x + "," + c.y);
+            if (((c.x - delta) < xPos) && ((c.x + delta) > xPos) && ((c.y - delta) < yPos)
+                    && ((c.y + delta) > yPos)) {
+                brikkeFound = true;
+                Log.d("IBrikke(LB)", "handleMove: farge: " + getcurrentTurnColor());
+                Log.d("IBrikke(LB)", "handleMove: brikke " + brikkeNo + " skal flyttes.");
+                break;
+            }
+        }
+        if (brikkeFound) {
+            // Terning for test
+            Terning terning = new Terning();
+            int move = terning.roll();
+            Log.d("IBrikke(LB)", "Terning: " + move);
+            playerMove(getcurrentTurnColor(), brikkeNo, move);
+            // for test setter neste farge sin tur
+            setnextTurnColorTest();
+        }
+        Log.d("IBrikke(LB)", "handleMove: neste sin tur: " + getcurrentTurnColor());
+        return true;
+    }
+
 	// Debug
 	public void DumpGame() {
 		Log.d("DUMP","Board image : "+gameImageName);
