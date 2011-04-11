@@ -1,6 +1,11 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110411: KEM: 
+	Game:
+		Forbdret handleMove og ny metode findOtherPicesAtCoordinate samt kall til regler for håndtering 
+		av andre brikker (slå inn eller tårn) på samme posisjon etter et flytt.
+
 20110411 RØ: 
 	Brikke: 
 		ny egenskap enabled
