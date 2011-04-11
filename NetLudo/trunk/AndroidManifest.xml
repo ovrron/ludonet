@@ -16,6 +16,7 @@
         <activity 
         	android:name=".LudoSplashActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,16 +26,19 @@
         <activity 
         	android:name="LudoStartActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             >
         </activity>           	
         <activity 
         	android:name="LudoActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             >
         </activity>
         <activity 
         	android:name="DieExampleActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             >
         </activity>
     </application>
