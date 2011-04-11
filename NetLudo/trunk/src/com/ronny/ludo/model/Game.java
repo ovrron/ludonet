@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.ronny.ludo.rules.StandardRules;
+
 import android.util.Log;
 
 
@@ -40,6 +42,7 @@ public class Game implements ILudoEventListener {
 	private Random randomNumbers = new Random(); // random number generator
 	private ILudoBoard ludoBoard = new LudoBoard();
 	private String gameImageName = null;
+	private StandardRules rules = new StandardRules();
 
 	
 	// Singleton type game
@@ -245,37 +248,71 @@ public class Game implements ILudoEventListener {
      * @param delta tillegg for yttergrenser
      */
     public boolean handleMove(int xPos, int yPos, double delta) {
-
+        int brikkeNo = -1;
+        ArrayList<IPiece> pices = new ArrayList<IPiece>();  
+        IPiece brikkeFlytt = null;
         Log.d("IPiece(LB)", "handleMove: klikket: " + xPos + "," + yPos);
         IPlayer player = getLudoBoard().getPlayer(getcurrentTurnColor());
-        int brikkeNo = -1;
-        boolean brikkeFound = false;
         for (IPiece brikke : player.getBrikker()) {
             brikkeNo += 1;
             Coordinate c = brikke.getCurrentPosition();
             Log.d("IPiece(LB)", "handleMove: brikke " + brikkeNo + ": " + c.x + "," + c.y);
             if (((c.x - delta) < xPos) && ((c.x + delta) > xPos) && ((c.y - delta) < yPos)
                     && ((c.y + delta) > yPos)) {
-                brikkeFound = true;
+                brikkeFlytt = brikke; 
                 Log.d("IPiece(LB)", "handleMove: farge: " + getcurrentTurnColor());
                 Log.d("IPiece(LB)", "handleMove: brikke " + brikkeNo + " skal flyttes.");
                 break;
             }
         }
-        if (brikkeFound) {
+        if (brikkeFlytt != null) {
             // Die for test
             Die terning = new Die();
             int move = terning.roll();
-            Log.d("IPiece(LB)", "Die: " + move);
+            Log.d("Game", "Die: " + move);
+            //move=2;
             playerMove(getcurrentTurnColor(), brikkeNo, move);
+            pices = findOtherPicesAtCoordinate(brikkeFlytt);
+            rules.handleMove(brikkeFlytt, pices);
             // for test setter neste farge sin tur
             setnextTurnColorTest();
+            Log.d("IPiece(LB)", "handleMove: neste sin tur: " + getcurrentTurnColor());
+            return true;
+        }else{
+            Log.d("IPiece(LB)", "handleMove: neste sin tur: " + getcurrentTurnColor());
+            return false;
         }
-        Log.d("IPiece(LB)", "handleMove: neste sin tur: " + getcurrentTurnColor());
-        return true;
+    }
+    
+    
+    /**
+     * Finner alle brikker på samme sted som current spiller nettopp flyttet til
+     * 
+     * @param brikkeFlytt brikke som nettopp er flyttet
+     * @retur Arraylist over brikker som må håndters av rules.
+     */     
+	private ArrayList< IPiece > findOtherPicesAtCoordinate(IPiece brikkeFlytt) {
+        ArrayList<IPiece> pices = new ArrayList<IPiece>();
+        Coordinate currentC = brikkeFlytt.getCurrentPosition();
+        for (PlayerColor playerColor : PlayerColor.values()){
+            IPlayer player = getLudoBoard().getPlayer(playerColor);
+            if (player!= null && player.isActive()){
+                for (IPiece brikkeTest : player.getBrikker()) {
+                    Coordinate cTest = brikkeTest.getCurrentPosition();
+                    // Sjekker om brikkene er på samme koordinater og at brikkene ikke er av samme farge og homeposition
+                    if (currentC.equals(cTest) && 
+                            !((brikkeFlytt.getOwner().getColor().compareTo(playerColor)==0) && 
+                                    brikkeFlytt.getHousePosition()==brikkeTest.getHousePosition())) {
+                        pices.add(brikkeTest);
+                        Log.d("Game", "findOtherPicesAtCoordinate: rules må håndtere: " + brikkeTest);
+                    }
+                }
+            }
+         }
+        return pices;
     }
 
-	// Debug
+    // Debug
 	public void DumpGame() {
 		Log.d("DUMP","Board image : "+gameImageName);
 		ludoBoard.DumpGame();
