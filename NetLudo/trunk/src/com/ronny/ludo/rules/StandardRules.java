@@ -2,20 +2,28 @@ package com.ronny.ludo.rules;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.IPiece;
+import com.ronny.ludo.model.PlayerColor;
 
 public class StandardRules implements IRules
 {
 	private static final int STANDARD_TAKE_OFF_NUMBER = 6;
+	private static final int STANDAR_REROLL_NUMBER = 6;
+	
 	private List<Integer> takeOffNumbers;
+	private List<Integer> reRollNumbers;
 
 	public StandardRules()
 	{
 		takeOffNumbers = new ArrayList<Integer>();
 		takeOffNumbers.add(STANDARD_TAKE_OFF_NUMBER);
+		reRollNumbers = new ArrayList<Integer>();
+		reRollNumbers.add(STANDAR_REROLL_NUMBER);
 	}
 	
-	public StandardRules(int... takeOffNumbers)
+	public void setTakeOffNumbers(int... takeOffNumbers)
 	{
 		this.takeOffNumbers = new ArrayList<Integer>();
 		for(int i:takeOffNumbers)
@@ -23,11 +31,21 @@ public class StandardRules implements IRules
 			this.takeOffNumbers.add(i);
 		}
 	}
+
+	
+	public void setReRollNumbers(int... reRollNumbers)
+	{
+		this.reRollNumbers = new ArrayList<Integer>();
+		for(int i:reRollNumbers)
+		{
+			this.reRollNumbers.add(i);
+		}
+	}
+
 	
 	/**
 	 * @return int, hvor brikken kan flyttes, -10 hvis den ikke kan flyttes 
 	 */
-	@Override
 	public boolean isLegalMove(IPiece piece, int eyes)
 	{
 		//Brikken er i mål
@@ -60,25 +78,71 @@ public class StandardRules implements IRules
 			}
 		}
 		//Brikken er på fellesområdet
+		//TODO må sjekke litt nærmere om dette stemmer
 		else
 		{
 			//Flyttet vil flytte brikken på vei inn til mål
 			if(piece.getBoardPosition()+eyes > piece.getOwner().getStartWayHomePosition())
 			{
-				return true;
+				if(piece.getBoardPosition()+eyes-piece.getOwner().getStartWayHomePosition() <= piece.getOwner().getWayHomePositions().size())
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
-			//Flyttet vil flytte brikken i fellesområdet
 			else
 			{
-				return false;
+				return true;
 			}
 		}
 	}
 
-	@Override
-	public boolean handleMove(IPiece piece, ArrayList<IPiece> pieces)
+	//TODO Her må det vel inn to lister. Kan jo f.eks. flytte ett tårn oppå et annet
+	public boolean handleMove(IPiece piece, List<IPiece> pieces)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		//Det finnes ingen brikker der fra før
+		if(pieces==null || pieces.size()==0)
+		{
+			return false;
+		}
+		else
+		{
+			//Det finnes minst en brikke der fra før med samme farge
+			if(piece.getOwner().getColor().compareTo(pieces.get(0).getOwner().getColor())==0)
+			{
+				for(IPiece p:pieces)
+				{
+					p.setEnabled(false);
+					p.clearInTowerWith();
+					piece.addInTowerWith(p);
+				}
+			}
+			//Det finnes minst en brikke der fra før med en annen farge			
+			else
+			{
+				for(IPiece p:pieces)
+				{
+					p.placePieceInHouse();
+					p.clearInTowerWith();
+					p.setEnabled(true);
+				}				
+			}
+			return true;
+		}
+	}
+
+	public PlayerColor getNextPlayerColor(PlayerColor currentPlayerColor, int eyes)
+	{
+		if(reRollNumbers.contains(eyes))
+		{
+			return currentPlayerColor;
+		}
+		else
+		{
+			return Game.getInstance().getLudoBoard().getNextPlayerColor(currentPlayerColor);
+		}
 	}
 }
