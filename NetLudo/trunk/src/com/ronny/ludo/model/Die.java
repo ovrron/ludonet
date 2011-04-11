@@ -1,10 +1,10 @@
 package com.ronny.ludo.model;
 
 
-public class Terning implements ITerning {
+public class Die implements IDie {
 	int eyes;
 	
-	public Terning(){
+	public Die(){
 		eyes = 0;
 	}
 	

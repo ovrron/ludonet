@@ -1,8 +1,8 @@
 package com.ronny.ludo.model;
 
+import android.util.Log;
 
-
-public class Brikke implements IBrikke{
+public class Piece implements IPiece{
 	private IPlayer owner;
 
 	/**
@@ -11,14 +11,17 @@ public class Brikke implements IBrikke{
 	 */
 	private int boardPosition = -1;
 
-	private int numberOfElements = 1; // Antall brikker i høyden 1..4
+	private int numberOfElements = 1; // Antall brikker i hï¿½yden 1..4
 	private int housePosition = -1; // position in the 'house'
-	private boolean isAtGoal = false; // true hvis brikke er i mål
+	private boolean isAtGoal = false; // true hvis brikke er i mï¿½l
+	
+	//TODO denne mÃ¥ beregnes etter hvert flytt
+	private boolean isOnWayToGoal = false; // true hvis brikke er pÃ¥ tur i mÃ¥l
 	
 //	@SuppressWarnings("unused")
-//	private boolean isOnWayHome = false; // true hvis brikke er i mål
+//	private boolean isOnWayHome = false; // true hvis brikke er i mï¿½l
 
-	public Brikke(IPlayer owner) {
+	public Piece(IPlayer owner) {
 		this.owner = owner;
 	}
 
@@ -32,6 +35,10 @@ public class Brikke implements IBrikke{
 
 	public boolean isAtGoal() {
 		return isAtGoal;
+	}
+	
+	public boolean isHome() {
+		return boardPosition==housePosition;
 	}
 
 	public IPlayer getOwner() {
@@ -59,8 +66,8 @@ public class Brikke implements IBrikke{
 	 * 
 	 * @return
 	 */
-	public ICoordinate getCurrentPosition() {
-		ICoordinate co = null;
+	public Coordinate getCurrentPosition() {
+		Coordinate co = null;
 		if (boardPosition < 0) {
 			// Still in house - position housePosition
 			co = owner.getHomePositions().elementAt(housePosition);
@@ -68,7 +75,7 @@ public class Brikke implements IBrikke{
 			
 			
 			if( boardPosition > owner.getStartWayHomePosition()) {
-				// Vi er på vei inn
+				// Vi er pï¿½ vei inn
 				int wayHpos = boardPosition - owner.getStartWayHomePosition() - 1;
 				co = owner.getWayHomePositions().elementAt(wayHpos);
 			} else {
@@ -100,9 +107,10 @@ public class Brikke implements IBrikke{
 		return co;
 	}
 
-	public void placeBrikkeOnBoard() {
+	public void placePieceOnBoard() {
 		boardPosition = owner.getFirstBoardPosition();
 	}
+	
 
 	// Get the string id til bitmap denne representerer
 	public String getId() {
@@ -117,13 +125,25 @@ public class Brikke implements IBrikke{
 			return;
 		}
 		
-//		Log.d("IBrikke"," Col: "+owner.getColor().toString()+"IBrikke: "+housePosition+" Current pos: "+boardPosition+" move: "+theMove);
+		Log.d("IPiece"," Col: "+owner.getColor().toString()+"IPiece: "+housePosition+" Current pos: "+boardPosition+" move: "+theMove);
 		boardPosition += theMove;
-		// Sjekk om vi har gått for langt...
+		// Sjekk om vi har gï¿½tt for langt...
 		if (boardPosition >= (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
 			boardPosition = owner.getWayHomePositions().size() + owner.getStartWayHomePosition();
 			isAtGoal = true;
 		}
 	}
 
- }
+	public boolean isOnWayToGoal()
+	{
+		return isOnWayToGoal;
+	}
+
+	@Override
+	public void placeBrikkeOnBoard()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+}

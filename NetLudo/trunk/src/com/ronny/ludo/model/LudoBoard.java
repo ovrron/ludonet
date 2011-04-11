@@ -15,7 +15,7 @@ public class LudoBoard implements ILudoBoard {
 	private int xRes = 0, yRes = 0; // definitions resolution
 	private int imX = 0, imY = 0; // Target image resolution
 
-	private Vector<ICoordinate> movingPath = new Vector<ICoordinate>(); // Veien rundt bordet.
+	private Vector<Coordinate> movingPath = new Vector<Coordinate>(); // Veien rundt bordet.
 	private HashMap<PlayerColor, IPlayer> players = new HashMap<PlayerColor, IPlayer>();
 
 	public LudoBoard() {
@@ -39,16 +39,16 @@ public class LudoBoard implements ILudoBoard {
 	 */
 	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
 		IPlayer p = getPlayer(theColor);
-		IBrikke b = p.getBrikker()[theBrikke];
+		IPiece b = p.getBrikker()[theBrikke];
 		if (theMove > 6) {
 			// Command move
 			switch(theMove) {
 			case LudoConstants.MOVE_BACK_TO_HOUSE:
 				b.setBoardPosition(-1);
-				Log.d("IBrikke(LB)","Col:"+theColor.toString()+" Back to House - brikke "+theBrikke);
+				Log.d("IPiece(LB)","Col:"+theColor.toString()+" Back to House - brikke "+theBrikke);
 				break;
 			case LudoConstants.MOVE_FROM_HOUSE:
-				Log.d("IBrikke(LB)","Col:"+theColor.toString()+" From House - brikke "+theBrikke);
+				Log.d("IPiece(LB)","Col:"+theColor.toString()+" From House - brikke "+theBrikke);
 				b.setBoardPosition(0);
 				break;
 			case LudoConstants.MOVE_TO_GOAL:
@@ -59,13 +59,13 @@ public class LudoBoard implements ILudoBoard {
 			p.moveBrikke(theBrikke, theMove);
 			
 //			int currentPos = b.getBoardPosition();
-//			// Sjekk om vi er på vei hjem
+//			// Sjekk om vi er pï¿½ vei hjem
 //			if(currentPos + theMove > p.getStartWayHomePosition()) {
 //				int delta = p.getStartWayHomePosition() - currentPos;
 //				b.setOnWayHome();
 //				b.setBoardPosition(delta);				
 //			} else if(currentPos + theMove > movingPath.size()) {
-//				// Vi er kommet til en grense og må fortsette 'over' vektoren
+//				// Vi er kommet til en grense og mï¿½ fortsette 'over' vektoren
 //			
 //			}else {
 //				// Vi kan flytte normalt
@@ -79,7 +79,7 @@ public class LudoBoard implements ILudoBoard {
 		return pl;
 	}
 
-	// Returnere en spiller basert på farge
+	// Returnere en spiller basert pï¿½ farge
 	public IPlayer getPlayer(String theColor) {
 		IPlayer ret = null;
 		if (theColor.compareToIgnoreCase("RED") == 0) {
@@ -96,7 +96,7 @@ public class LudoBoard implements ILudoBoard {
 
 	// Add commond fields - the path to move on
 	public void addCommon(int pos, int x, int y) {
-		movingPath.add(new ICoordinate(pos, x, y));
+		movingPath.add(new Coordinate(pos, x, y));
 	}
 
 	/**
@@ -104,13 +104,13 @@ public class LudoBoard implements ILudoBoard {
 	 * @param position
 	 * @return
 	 */
-	public ICoordinate getBoardPosition(int position) {
-		ICoordinate co = movingPath.elementAt(position);
+	public Coordinate getBoardPosition(int position) {
+		Coordinate co = movingPath.elementAt(position);
 		return co;
 	}
 
 	/**
-	 * Brikker beveger seg i økende lengde fra 'home'. Dette er mapping til index fra relativ posisjon
+	 * Brikker beveger seg i ï¿½kende lengde fra 'home'. Dette er mapping til index fra relativ posisjon
 	 * @param position
 	 * @return
 	 */
@@ -122,7 +122,7 @@ public class LudoBoard implements ILudoBoard {
 	}
 
 
-	// Definerer første start i brettet ut fra home base
+	// Definerer fï¿½rste start i brettet ut fra home base
 	public void addPlayerInfo(String playerColor, int firsMovePosition) {
 		IPlayer pl = Game.getInstance().getPlayerInfo(playerColor);
 		if (pl == null) {
@@ -141,13 +141,13 @@ public class LudoBoard implements ILudoBoard {
 	}
 
 	// Add the home base definitions for a player
-	public void addBaseHomeDefs(String col, Vector<ICoordinate> baseHome) {
+	public void addBaseHomeDefs(String col, Vector<Coordinate> baseHome) {
 		IPlayer pl = getPlayer(col);
 		pl.setHomePositions(baseHome);
 	}
 
 	// Add the way home definitions for a player
-	public void addWayHomeDefs(String col, Vector<ICoordinate> wayHome) {
+	public void addWayHomeDefs(String col, Vector<Coordinate> wayHome) {
 		IPlayer pl = getPlayer(col);
 		if (pl == null) {
 			return;
@@ -204,7 +204,7 @@ public class LudoBoard implements ILudoBoard {
 	public void recalcPositions() {
 		// WayHome
 		for (IPlayer p : players.values()) {
-			for (ICoordinate c : p.getWayHomePositions()) {
+			for (Coordinate c : p.getWayHomePositions()) {
 				c.x = recalcX(c.x);
 				c.y = recalcX(c.y);
 			}
@@ -212,14 +212,14 @@ public class LudoBoard implements ILudoBoard {
 
 		// IPlayer Homes
 		for (IPlayer p : players.values()) {
-			for (ICoordinate c : p.getHomePositions()) {
+			for (Coordinate c : p.getHomePositions()) {
 				c.x = recalcX(c.x);
 				c.y = recalcX(c.y);
 			}
 		}
 
 		// Moving path
-		for (ICoordinate c : movingPath) {
+		for (Coordinate c : movingPath) {
 			c.x = recalcX(c.x);
 			c.y = recalcX(c.y);
 		}

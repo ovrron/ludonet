@@ -26,8 +26,8 @@ import android.widget.ImageButton;
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
 import com.ronny.ludo.model.Game;
-import com.ronny.ludo.model.IBrikke;
-import com.ronny.ludo.model.ICoordinate;
+import com.ronny.ludo.model.IPiece;
+import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.IPlayer;
 import com.ronny.ludo.model.PlayerColor;
 
@@ -41,7 +41,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int current_Y = 0;
 	private int minX, maxX;
 	private int minY, maxY;
-	private int boardImageX, boardImageY; // bredde, høyde på bildet
+	private int boardImageX, boardImageY; // bredde, hï¿½yde pï¿½ bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
 	// private Bitmap knapper;
@@ -106,7 +106,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	}
 
 	/**
-     * Sjekker om et flytt skal håndteres og utfører dette.
+     * Sjekker om et flytt skal hï¿½ndteres og utfï¿½rer dette.
      */
    
    private boolean handleMove(float currentX, float currentY) {
@@ -123,8 +123,8 @@ public class LudoSurfaceView extends SurfaceView implements
     }
 
 	/**
-	 * Sjekke pan limits for å se om disse er forenelig med definert
-	 * skalering/størrelse
+	 * Sjekke pan limits for ï¿½ se om disse er forenelig med definert
+	 * skalering/stï¿½rrelse
 	 */
 	private void checkViewLimits() {
 		if (current_X < minX) {
@@ -265,7 +265,7 @@ public class LudoSurfaceView extends SurfaceView implements
 				.setGraphicsResolution(boardImageX, boardImageY);
 
 		Log.d(TAG, "Load image : " + boardImageX + ", " + boardImageY);
-		// Først når vi vet størrelsen på bildet kan vi re-kalkulere...
+		// Fï¿½rst nï¿½r vi vet stï¿½rrelsen pï¿½ bildet kan vi re-kalkulere...
 		Game.getInstance().getLudoBoard().recalcPositions();
 
 		// knapperDrawable = getResources().getDrawable(R.drawable.b4);
@@ -298,7 +298,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	}
 
 	/**
-	 * Set scale for å se hele brettet.
+	 * Set scale for ï¿½ se hele brettet.
 	 */
 	public void setScaleFullBoard() {
 
@@ -378,7 +378,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
 		placePlayerButtons(canvas);
 
-		// Tegn b4 på canvas
+		// Tegn b4 pï¿½ canvas
 		// knapperDrawable.setBounds(current_X + 100, current_Y + 100,
 		// current_X + 150, current_Y + 150);
 		// knapperDrawable.draw(canvas);
@@ -393,11 +393,11 @@ public class LudoSurfaceView extends SurfaceView implements
 		for (PlayerColor pc : PlayerColor.values()) {
 			IPlayer p = Game.getInstance().getLudoBoard().getPlayer(pc);
 
-			// for(ICoordinate co : p.getHomePositions()) {
+			// for(Coordinate co : p.getHomePositions()) {
 			// plotPoint(canvas, co.x, co.y);
 			// }
 
-			for (IBrikke brikke : p.getBrikker()) {
+			for (IPiece brikke : p.getBrikker()) {
 				plotBrikke(canvas, brikke);
 			}
 
@@ -405,15 +405,15 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	}
 
-	private void plotBrikke(Canvas c, IBrikke b) {
-		// IBrikke farge
+	private void plotBrikke(Canvas c, IPiece b) {
+		// IPiece farge
 		String str = b.getId();
 		int knappeid = getResources().getIdentifier(str, "drawable",
 				"com.ronny.ludo");
 		Bitmap brik = BitmapFactory.decodeResource(getResources(), knappeid);
 		int w = brik.getWidth() / 2;
 		Drawable dr = getResources().getDrawable(knappeid);
-		ICoordinate co = b.getCurrentPosition();
+		Coordinate co = b.getCurrentPosition();
 		int x = co.x;
 		int y = co.y;
 		// Rect bnds = dr.getBounds();

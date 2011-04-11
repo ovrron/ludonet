@@ -38,10 +38,10 @@ public class LudoActivity extends LudoCommonActivity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		// Load board definisjoner - lastes før inflating.
+		// Load board definisjoner - lastes fï¿½r inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 		
-		// TODO på lasting av board
+		// TODO pï¿½ lasting av board
 		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
 		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
 		
@@ -49,11 +49,11 @@ public class LudoActivity extends LudoCommonActivity {
 		
 		//parseXmlDefs();
 		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
-			//TODO Håndter feil ved lasting av brettdefinisjon
+			//TODO Hï¿½ndter feil ved lasting av brettdefinisjon
 			//Vis feilmelding og ev. avslutt
 		}
 	
-// DENNE ER FLYTTET SIDEN VI TRENGER Størrelsen på bildet før vi tar en recalc.		
+// DENNE ER FLYTTET SIDEN VI TRENGER Stï¿½rrelsen pï¿½ bildet fï¿½r vi tar en recalc.		
 //		Game.getInstance().getLudoBoard().recalcPositions();
 		// End load board.
 
@@ -132,8 +132,8 @@ public class LudoActivity extends LudoCommonActivity {
 		String strName = null;
 		String col = "unknown"; // IPlayer color
 		int whatToParse = 0; // 1 is base, 2=way home
-		Vector<ICoordinate> wayHome = new Vector<ICoordinate>();
-		Vector<ICoordinate> baseHome = new Vector<ICoordinate>();
+		Vector<Coordinate> wayHome = new Vector<Coordinate>();
+		Vector<Coordinate> baseHome = new Vector<Coordinate>();
 
 		// Alle felles felter
 		try {
@@ -155,7 +155,7 @@ public class LudoActivity extends LudoCommonActivity {
 								"x"));
 						int y = Integer.parseInt(defs.getAttributeValue(null,
 								"y"));
-						ICoordinate co = new ICoordinate();
+						Coordinate co = new Coordinate();
 						co.pos = pos;
 						co.x = x;
 						co.y = y;

@@ -1,6 +1,6 @@
 package com.ronny.ludo.model;
 
-public interface ITerning
+public interface IDie
 {
 	int roll();
 	int getEyes();

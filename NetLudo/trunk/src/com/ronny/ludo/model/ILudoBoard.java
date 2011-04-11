@@ -15,7 +15,7 @@ public interface ILudoBoard{
 	 */
 	public void playerMove(PlayerColor theColor, int theBrikke, int theMove);
 	IPlayer getPlayer(PlayerColor color);
-	// Returnere en spiller basert på farge
+	// Returnere en spiller basert pï¿½ farge
 	IPlayer getPlayer(String theColor);
 	// Add commond fields - the path to move on
 	public void addCommon(int pos, int x, int y);
@@ -24,21 +24,21 @@ public interface ILudoBoard{
 	 * @param position
 	 * @return
 	 */
-	public ICoordinate getBoardPosition(int position);
+	public Coordinate getBoardPosition(int position);
 	/**
-	 * Brikker beveger seg i økende lengde fra 'home'. Dette er mapping til index fra relativ posisjon
+	 * Brikker beveger seg i ï¿½kende lengde fra 'home'. Dette er mapping til index fra relativ posisjon
 	 * @param position
 	 * @return
 	 */
 	public int getPathNumberFromRelativeMove(int currentPosition, int startingPosition);
-	// Definerer første start i brettet ut fra home base
+	// Definerer fï¿½rste start i brettet ut fra home base
 	public void addPlayerInfo(String playerColor, int firsMovePosition);
 	// Sets the position to when the
 	public void setWayHomePosition(String playerColor, int fieldToStartWayHome);
 	// Add the home base definitions for a player
-	public void addBaseHomeDefs(String col, Vector<ICoordinate> baseHome);
+	public void addBaseHomeDefs(String col, Vector<Coordinate> baseHome);
 	// Add the way home definitions for a player
-	public void addWayHomeDefs(String col, Vector<ICoordinate> wayHome);
+	public void addWayHomeDefs(String col, Vector<Coordinate> wayHome);
 //	public void getHomePosition(PlayerColor color, int t);
 	/**
 	 * Set the initial resolution the board definitions where read from

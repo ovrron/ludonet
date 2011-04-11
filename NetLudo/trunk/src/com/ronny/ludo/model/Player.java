@@ -14,26 +14,26 @@ public class Player implements IPlayer{
 	private String iconPrefix = null;
 	
 	private boolean isActive = false;
-	private int firstPositionOnBoard = 0; // Første posisjon i definisjonen av hovedsporet rundt bordet - se ILudoBoard.movingPath
-	private int lastPositionBeforeWayHome = 0; // Hvor mange steg skal gås før vi starter 'innover'
-	private Vector<ICoordinate> homePositions = new Vector<ICoordinate>();
-	private Vector<ICoordinate> wayHomePositions = new Vector<ICoordinate>();
+	private int firstPositionOnBoard = 0; // Fï¿½rste posisjon i definisjonen av hovedsporet rundt bordet - se ILudoBoard.movingPath
+	private int lastPositionBeforeWayHome = 0; // Hvor mange steg skal gï¿½s fï¿½r vi starter 'innover'
+	private Vector<Coordinate> homePositions = new Vector<Coordinate>();
+	private Vector<Coordinate> wayHomePositions = new Vector<Coordinate>();
 
-	// Brikkene tilhører egentlig Game, men er fordelt på spiller
-	private IBrikke brikker[] = new Brikke[4];
+	// Brikkene tilhï¿½rer egentlig Game, men er fordelt pï¿½ spiller
+	private IPiece brikker[] = new Piece[4];
 
 	public Player(PlayerColor color,ILudoBoard owner) {
 		this.owner = owner;
 		this.setColor(color);
 		for (int i = 0; i < 4; i++) {
-			brikker[i] = new Brikke(this);
+			brikker[i] = new Piece(this);
 			brikker[i].setHousePosition(i);
 		}
 		// default prefix er farge hvis ingen ting er gitt...
 		iconPrefix = ""+color.toString().toLowerCase().charAt(0);
 	}
 
-	public IBrikke[] getBrikker() {
+	public IPiece[] getBrikker() {
 		return brikker; 
 	}
 	
@@ -72,7 +72,7 @@ public class Player implements IPlayer{
 		return color;
 	}
 
-	// Sette første posisjon ut fra home
+	// Sette fï¿½rste posisjon ut fra home
 	public void setFirstBoardPosition(int firsMovePosition) {
 		firstPositionOnBoard = firsMovePosition;
 	}
@@ -80,7 +80,7 @@ public class Player implements IPlayer{
 		return firstPositionOnBoard;
 	}
 
-	// Siste posisjon før vi starter på vi inn i brettet.
+	// Siste posisjon fï¿½r vi starter pï¿½ vi inn i brettet.
 	public void setStartWayHomePosition(int fieldToStartWayHome) {
 		lastPositionBeforeWayHome = fieldToStartWayHome;
 	}
@@ -89,23 +89,23 @@ public class Player implements IPlayer{
 	}
 
 	// Sette koordinater for posisjon i home
-	public void setHomePositions(Vector<ICoordinate> baseHome) {
+	public void setHomePositions(Vector<Coordinate> baseHome) {
 		homePositions = baseHome;
 //		Log.d(TAG,"IPlayer hom<"+color.toString()+" + base home + "+homePositions);
 	}
 	
-	public Vector<ICoordinate> getHomePositions() {
+	public Vector<Coordinate> getHomePositions() {
 //		Log.d(TAG,"IPlayer hom>"+color.toString()+" + base home + "+homePositions);
 		return homePositions;
 	}
 
-	// Setter koordinater for 'way home' til mål
-	public void setWayHomePositions(Vector<ICoordinate> wayHome) {
+	// Setter koordinater for 'way home' til mï¿½l
+	public void setWayHomePositions(Vector<Coordinate> wayHome) {
 		wayHomePositions = wayHome;		
 //		Log.d(TAG,"IPlayer way<"+color.toString()+" + way home + "+wayHomePositions);
 	}
 	
-	public Vector<ICoordinate> getWayHomePositions() {
+	public Vector<Coordinate> getWayHomePositions() {
 //		Log.d(TAG,"IPlayer way>"+color.toString()+" + way home + "+wayHomePositions);
 		return wayHomePositions;		
 	}
@@ -116,24 +116,24 @@ public class Player implements IPlayer{
 	}
 
 	//
-	public ICoordinate getBoardPosition(int numberOfMovesFromhome) {
+	public Coordinate getBoardPosition(int numberOfMovesFromhome) {
 		int boardIndex = owner.getPathNumberFromRelativeMove(numberOfMovesFromhome, firstPositionOnBoard);
-		ICoordinate co = owner.getBoardPosition(boardIndex);
+		Coordinate co = owner.getBoardPosition(boardIndex);
 		return co;
 	}
 
 	public void moveBrikke(int theBrikke, int theMove) {
-		IBrikke b = brikker[theBrikke];
+		IPiece b = brikker[theBrikke];
 //		int brikkeMoves = b.getBoardPosition();
 		b.moveForward(theMove);
 		
 		// Sjekk om brikken 
 //		if(brikkeMoves + theMove > getStartWayHomePosition()) {
 //			int delta = etStartWayHomePosition() - brikkeMoves;
-//			b.setOnWayHome(); // Sett at vi er på vei hjem
-//			b.setBoardPosition(delta); // ... og at vi er kommet så langt inn				
+//			b.setOnWayHome(); // Sett at vi er pï¿½ vei hjem
+//			b.setBoardPosition(delta); // ... og at vi er kommet sï¿½ langt inn				
 //		} else if(currentPos + theMove > movingPath.size()) {
-//			// Vi er kommet til en grense og må fortsette 'over' vektoren
+//			// Vi er kommet til en grense og mï¿½ fortsette 'over' vektoren
 //		
 //		}else {
 //			// Vi kan flytte normalt
@@ -141,13 +141,13 @@ public class Player implements IPlayer{
 //		}
 //		
 //		int currentPos = b.getBoardPosition();
-//		// Sjekk om vi er på vei hjem
+//		// Sjekk om vi er pï¿½ vei hjem
 //		if(currentPos + theMove > p.getStartWayHomePosition()) {
 //			int delta = p.getStartWayHomePosition() - currentPos;
 //			b.setOnWayHome();
 //			b.setBoardPosition(delta);				
 //		} else if(currentPos + theMove > movingPath.size()) {
-//			// Vi er kommet til en grense og må fortsette 'over' vektoren
+//			// Vi er kommet til en grense og mï¿½ fortsette 'over' vektoren
 //		
 //		}else {
 //			// Vi kan flytte normalt
@@ -159,7 +159,7 @@ public class Player implements IPlayer{
 
 	public void DumpGame() {
 		Log.d("DUMP","  Player : "+color.toString());
-		for(ICoordinate c : homePositions) {
+		for(Coordinate c : homePositions) {
 			Log.d("DUMP","    Homes : "+c);
 		}
 	}

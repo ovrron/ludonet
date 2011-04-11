@@ -1,20 +1,20 @@
 package com.ronny.ludo.model;
 
 
-public class ICoordinate{
+public class Coordinate{
 	public int pos; // optional
 	public int x;
 	public int y;
 
-	public ICoordinate() {
+	public Coordinate() {
 	}
-	public ICoordinate(ICoordinate co) {
+	public Coordinate(Coordinate co) {
 		this.pos = co.pos;
 		this.x = co.x;
 		this.y = co.y;
 	}
 
-	public ICoordinate(int pos, int x, int y) {
+	public Coordinate(int pos, int x, int y) {
 		this.pos = pos;
 		this.x = x;
 		this.y = y;

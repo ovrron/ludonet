@@ -9,7 +9,7 @@ import android.content.res.XmlResourceParser;
 import android.util.Log;
 
 import com.ronny.ludo.model.Game;
-import com.ronny.ludo.model.ICoordinate;
+import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.IPlayer;
 
 public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
@@ -18,7 +18,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	
 	
 	/**
-	 * Parse definisjon på de ludo-boards vi har tilgjengelige i denne versjonen.
+	 * Parse definisjon pï¿½ de ludo-boards vi har tilgjengelige i denne versjonen.
 	 *  
 	 * @param defs
 	 * @return
@@ -90,7 +90,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	}
 
 	/**
-	 * Commons - den veien alle må gå på brettet
+	 * Commons - den veien alle mï¿½ gï¿½ pï¿½ brettet
 	 * 
 	 * @param defs
 	 * @return
@@ -137,15 +137,15 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	
 	/**
 	 * 
-	 * Spilledata - dvs. Første steg ut på brettet, vei hjem og siste definisjon på common path
-	 * før vi vandrer hjemover.
+	 * Spilledata - dvs. Fï¿½rste steg ut pï¿½ brettet, vei hjem og siste definisjon pï¿½ common path
+	 * fï¿½r vi vandrer hjemover.
 	 * 
 	 * @param defs
 	 * @return
 	 */
-	//TODO Her må vi også legge inn mal for brikkenavn - 
-	// dvs. xxx1 er brikke med 1, xxx2 er 2 brikker i høyden etc...
-	// Må også kunne benyttes i Brikke-klassen...
+	//TODO Her mï¿½ vi ogsï¿½ legge inn mal for brikkenavn - 
+	// dvs. xxx1 er brikke med 1, xxx2 er 2 brikker i hï¿½yden etc...
+	// Mï¿½ ogsï¿½ kunne benyttes i Piece-klassen...
 	private boolean behandleSpillerData(XmlResourceParser defs) {
 		boolean retVal = true;
 		boolean ferdig = false;
@@ -154,8 +154,8 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 		String col = "unknown"; // Player color
 		
 		int whatToParse = 0; // 1 is base, 2=way home
-		Vector<ICoordinate> wayHome = new Vector<ICoordinate>();
-		Vector<ICoordinate> baseHome = new Vector<ICoordinate>();
+		Vector<Coordinate> wayHome = new Vector<Coordinate>();
+		Vector<Coordinate> baseHome = new Vector<Coordinate>();
 
 		try {
 			eventType = defs.getEventType();
@@ -181,7 +181,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 								"x"));
 						int y = Integer.parseInt(defs.getAttributeValue(null,
 								"y"));
-						ICoordinate co = new ICoordinate();
+						Coordinate co = new Coordinate();
 						co.pos = pos;
 						co.x = x;
 						co.y = y;

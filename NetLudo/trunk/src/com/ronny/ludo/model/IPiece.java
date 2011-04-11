@@ -1,7 +1,7 @@
 package com.ronny.ludo.model;
 
 
-public interface IBrikke{
+public interface IPiece{
 	
 //	void setOnWayHome();
 	public void setIsAtGoal();
@@ -16,10 +16,12 @@ public interface IBrikke{
 	 * 
 	 * @return
 	 */
-	public ICoordinate getCurrentPosition();
+	public Coordinate getCurrentPosition();
 	public void placeBrikkeOnBoard();
 	// Get the string id til bitmap denne representerer
 	public String getId();
 	// Flytte en brikke litt
 	public void moveForward(int theMove);
+	public boolean isHome();
+	public boolean isOnWayToGoal();
 }
