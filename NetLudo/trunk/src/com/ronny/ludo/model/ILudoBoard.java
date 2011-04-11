@@ -61,4 +61,5 @@ public interface ILudoBoard{
 	 */
 	void recalcPositions();
 	public void DumpGame();
+	public PlayerColor getNextPlayerColor(PlayerColor playerColor);
 }
