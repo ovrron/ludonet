@@ -13,7 +13,7 @@ public class Player implements IPlayer{
 	private PlayerColor color;
 	private String iconPrefix = null;
 	
-	private boolean isActive = false;
+	private boolean isActive = true; // Satt for test. Skal være false og styres av controller.
 	private int firstPositionOnBoard = 0; // Første posisjon i definisjonen av hovedsporet rundt bordet - se ILudoBoard.movingPath
 	private int lastPositionBeforeWayHome = 0; // Hvor mange steg skal gås før vi starter 'innover'
 	private Vector<Coordinate> homePositions = new Vector<Coordinate>();
