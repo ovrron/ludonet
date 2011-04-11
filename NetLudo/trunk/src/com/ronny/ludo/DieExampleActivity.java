@@ -26,7 +26,6 @@ public class DieExampleActivity extends LudoCommonActivity
 		imgButtonDie.setOnClickListener(new OnClickListener()
 		{
 			
-			@Override
 			public void onClick(View v)
 			{
 				imgButtonDie.setImageBitmap(null);
@@ -38,7 +37,6 @@ public class DieExampleActivity extends LudoCommonActivity
 	        	final AnimationDrawable frameAnimation = (AnimationDrawable) imgButtonDie.getBackground();
 	        	imgButtonDie.post(new Runnable()
 	            {
-	    			@Override
 	    			public void run()
 	    			{
 	    				MediaPlayer mp;
