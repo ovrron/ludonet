@@ -1,10 +1,11 @@
 package com.ronny.ludo.model;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Vector;
 
 import junit.framework.Assert;
-
 import android.util.Log;
 
 import com.ronny.ludo.helper.LudoConstants;
@@ -16,7 +17,7 @@ public class LudoBoard implements ILudoBoard {
 	private int imX = 0, imY = 0; // Target image resolution
 
 	private Vector<Coordinate> movingPath = new Vector<Coordinate>(); // Veien rundt bordet.
-	private HashMap<PlayerColor, IPlayer> players = new HashMap<PlayerColor, IPlayer>();
+	private LinkedHashMap<PlayerColor, IPlayer> players = new LinkedHashMap<PlayerColor, IPlayer>();
 
 	public LudoBoard() {
 		players.put(PlayerColor.RED, new Player(PlayerColor.RED,this));
@@ -231,5 +232,26 @@ public class LudoBoard implements ILudoBoard {
 		for(IPlayer p : players.values()) {
 			p.DumpGame();
 		}
+	}
+	
+	public PlayerColor getNextPlayerColor(PlayerColor playerColor)
+	{
+		IPlayer[] playersArray = (IPlayer[]) players.values().toArray();
+		int i;
+		for(i=0;i<playersArray.length;i++)
+		{
+			if(playersArray[i].getColor().compareTo(playerColor)==0)
+			{
+				if(i+1<playersArray.length)
+				{
+					return playersArray[i+1].getColor();
+				}
+				else
+				{
+					return playersArray[0].getColor();
+				}
+			}
+		}
+		return null;
 	}
 }
