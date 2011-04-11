@@ -1,5 +1,7 @@
 package com.ronny.ludo.model;
 
+import java.util.List;
+
 
 public interface IPiece{
 	
@@ -17,11 +19,17 @@ public interface IPiece{
 	 * @return
 	 */
 	public Coordinate getCurrentPosition();
-	public void placeBrikkeOnBoard();
+	public void placePieceOnBoard();
 	// Get the string id til bitmap denne representerer
 	public String getId();
 	// Flytte en brikke litt
 	public void moveForward(int theMove);
 	public boolean isHome();
 	public boolean isOnWayToGoal();
+	public boolean isEnabled();
+	public void setEnabled(boolean enabled);
+	public List<IPiece> getInTowerWith();
+	public void addInTowerWith(IPiece piece);
+	public void clearInTowerWith();
+	public void placePieceInHouse();
 }

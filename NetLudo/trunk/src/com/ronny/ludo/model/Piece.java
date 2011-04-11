@@ -1,5 +1,8 @@
 package com.ronny.ludo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.util.Log;
 
 public class Piece implements IPiece{
@@ -10,10 +13,11 @@ public class Piece implements IPiece{
 	 * (home), 0..n]
 	 */
 	private int boardPosition = -1;
-
-	private int numberOfElements = 1; // Antall brikker i høyden 1..4
+//	private int numberOfElements = 1; // Antall brikker i høyden 1..4
 	private int housePosition = -1; // position in the 'house'
 	private boolean isAtGoal = false; // true hvis brikke er i mål
+	private boolean enabled = true; //brikken er med i spillet (ikke som en del av et tårn)
+	private List<IPiece> inTowerWith = null;
 	
 	//TODO denne må beregnes etter hvert flytt
 	private boolean isOnWayToGoal = false; // true hvis brikke er på tur i mål
@@ -29,6 +33,35 @@ public class Piece implements IPiece{
 //		isOnWayHome = true;
 //	}
 
+	public boolean isEnabled()
+	{
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+
+	public List<IPiece> getInTowerWith()
+	{
+		return inTowerWith;
+	}
+
+	public void addInTowerWith(IPiece piece)
+	{
+		if(inTowerWith==null)
+		{
+			inTowerWith = new ArrayList<IPiece>();
+		}
+		inTowerWith.add(piece);
+	}
+	
+	public void clearInTowerWith()
+	{
+		inTowerWith=null;
+	}
+	
 	public void setIsAtGoal() {
 		isAtGoal = true;
 	}
@@ -111,10 +144,26 @@ public class Piece implements IPiece{
 		boardPosition = owner.getFirstBoardPosition();
 	}
 	
+	//TODO Denne må implementeres
+	public void placePieceInHouse()
+	{
+		
+	}
 
 	// Get the string id til bitmap denne representerer
 	public String getId() {
-		String ret = owner.getIconPrefix() + Integer.toString(numberOfElements);
+		String ret = null;
+		if(enabled)
+		{
+			if(inTowerWith==null || inTowerWith.size()==0)
+			{
+				ret = owner.getIconPrefix() + "1";
+			}
+			else
+			{
+				ret = owner.getIconPrefix() + Integer.toString(inTowerWith.size()+1);
+			}
+		}
 		return ret;
 	}
 
@@ -137,13 +186,6 @@ public class Piece implements IPiece{
 	public boolean isOnWayToGoal()
 	{
 		return isOnWayToGoal;
-	}
-
-	@Override
-	public void placeBrikkeOnBoard()
-	{
-		// TODO Auto-generated method stub
-		
 	}
 
 }
