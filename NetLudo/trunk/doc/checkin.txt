@@ -1,6 +1,18 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110411 RØ: 
+	Brikke: 
+		ny egenskap enabled
+		ny list med andre brikker den er i tårn med
+		tilpasset metoden som henter imageid
+	Regler:
+		endret islegalmove til å returnere true/false
+		laget regel for å håndtere hva som skal skje etter en brikke har flyttet. ikke helt ferdig da vi må støtte flytting av tårn
+		Implementere Rekkefølgefunksjon. 		
+	GUI:
+		Låst alle aktivitetene i portrait mode, unngår skjermrotering
+
 20110411 RØ: Refaktorert Brikke til Piece, Terning til Die og ICoordinate til Coordinate.
 				Lagt inn regelklasse
 				Lagt inn terningeksempelaktivitet
