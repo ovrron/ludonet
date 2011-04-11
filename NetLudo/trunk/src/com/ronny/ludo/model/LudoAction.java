@@ -3,5 +3,5 @@ package com.ronny.ludo.model;
 public enum LudoAction {
 	MOVE_PAWN, // Flytt en brikke (eller fler)
 	RELEASE_PAWN, // Flytt ut brikke fra depot
-	MOVE_TO_BASE // Piece sl�tt inn til depot	
+	MOVE_TO_BASE // Piece slått inn til depot	
 }

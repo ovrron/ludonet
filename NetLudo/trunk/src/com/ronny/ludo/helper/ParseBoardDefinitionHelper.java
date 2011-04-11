@@ -18,7 +18,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	
 	
 	/**
-	 * Parse definisjon p� de ludo-boards vi har tilgjengelige i denne versjonen.
+	 * Parse definisjon på de ludo-boards vi har tilgjengelige i denne versjonen.
 	 *  
 	 * @param defs
 	 * @return
@@ -90,7 +90,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	}
 
 	/**
-	 * Commons - den veien alle m� g� p� brettet
+	 * Commons - den veien alle må gå på brettet
 	 * 
 	 * @param defs
 	 * @return
@@ -137,15 +137,15 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	
 	/**
 	 * 
-	 * Spilledata - dvs. F�rste steg ut p� brettet, vei hjem og siste definisjon p� common path
-	 * f�r vi vandrer hjemover.
+	 * Spilledata - dvs. Første steg ut på brettet, vei hjem og siste definisjon på common path
+	 * før vi vandrer hjemover.
 	 * 
 	 * @param defs
 	 * @return
 	 */
-	//TODO Her m� vi ogs� legge inn mal for brikkenavn - 
-	// dvs. xxx1 er brikke med 1, xxx2 er 2 brikker i h�yden etc...
-	// M� ogs� kunne benyttes i Piece-klassen...
+	//TODO Her må vi også legge inn mal for brikkenavn - 
+	// dvs. xxx1 er brikke med 1, xxx2 er 2 brikker i høyden etc...
+	// Må også kunne benyttes i Piece-klassen...
 	private boolean behandleSpillerData(XmlResourceParser defs) {
 		boolean retVal = true;
 		boolean ferdig = false;

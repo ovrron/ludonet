@@ -3,7 +3,7 @@ package com.ronny.ludo.model;
 
 public class BrikkeMgr implements IBrikkeMgr{
 
-//	// Brikkene tilh�rer egentlig Game, men er fordelt p� spiller
+//	// Brikkene tilhører egentlig Game, men er fordelt på spiller
 //	private Piece brikker[4] = {};
 //	
 

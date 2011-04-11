@@ -1,23 +1,28 @@
 Her legger vi inn hva vi har sjekket inn...
-Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
+Husk Ã¥ legge inn //TODO i koden hvor ting gjenstÃ¥r - slik at vi kan bruke det aktivt
 
-20110410 KEM: Oppdatert LudoSurfeceView og Game for å håndtere klikk og å gjøre flytt på brikke.
-			Klikk fungerer pt kun i fullscale modus. Rød starter og så går rekkefølgen rundt brettet.
-			For demo gjøres et random antall flytt av en brikke ved klikk. 
+20110411 RÃ˜: Refaktorert Brikke til Piece, Terning til Die og ICoordinate til Coordinate.
+				Lagt inn regelklasse
+				Lagt inn terningeksempelaktivitet
+				Hadde litt problemer med encoding og endret mitt workspace til Ã¥ bruke textfileencoding=utf8
+				
+20110410 KEM: Oppdatert LudoSurfeceView og Game for Ã¥ hÃ¥ndtere klikk og Ã¥ gjÃ¸re flytt pÃ¥ brikke.
+			Klikk fungerer pt kun i fullscale modus. RÃ¸d starter og sÃ¥ gÃ¥r rekkefÃ¸lgen rundt brettet.
+			For demo gjÃ¸res et random antall flytt av en brikke ved klikk. 
 			
 20110401 RHA: CliServer er oppdatert med kode som skal kunne fungere for ferdig applikasjon.
 			Rammeverket er ferdig, men vi trenger eks. en TurnManager som vi snakket om,
-			som også har kontroll over utdelt farge og client connections...   jeg kan begynne på det..
+			som ogsÃ¥ har kontroll over utdelt farge og client connections...   jeg kan begynne pÃ¥ det..
 
-20110331 RØ: Oppdatert splash- og startaktivitene (med tilhørende elementer)
-20110324 RHA: Oppdatert def for ludobrett 2 + legge lasting av bildet og skalering på rett plass.
+20110331 RÃ˜: Oppdatert splash- og startaktivitene (med tilhÃ¸rende elementer)
+20110324 RHA: Oppdatert def for ludobrett 2 + legge lasting av bildet og skalering pÃ¥ rett plass.
 
 20110324 RHA: Laget mulighet for def av brikke-ikon + parsing av tilgjengelige brett.
-			Default brikke er fargebokstav + høyde (som før). 
+			Default brikke er fargebokstav + hÃ¸yde (som fÃ¸r). 
 			Psykobrett er ikke definert enda - xml er samme som for ludoboard1
 
-20110323 RØ: Lagt inn rammeverk for splashscreen og startscreen 
+20110323 RÃ˜: Lagt inn rammeverk for splashscreen og startscreen 
 20110323 RHA: Laget folder support. Starter emulator klient og tjener (etter leksjonen)
-		og spør etter 'serial' kjører ip-forwarding som trengs.
-20110323 RØ: refakotert interfacenavnene og tilhørende klasser
+		og spÃ¸r etter 'serial' kjÃ¸rer ip-forwarding som trengs.
+20110323 RÃ˜: refakotert interfacenavnene og tilhÃ¸rende klasser
 20110323 Rha: Lagt til nytt psyko-brett. Ingen xml enda.

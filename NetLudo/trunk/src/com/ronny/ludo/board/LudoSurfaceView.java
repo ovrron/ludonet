@@ -41,7 +41,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int current_Y = 0;
 	private int minX, maxX;
 	private int minY, maxY;
-	private int boardImageX, boardImageY; // bredde, h�yde p� bildet
+	private int boardImageX, boardImageY; // bredde, høyde på bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
 	// private Bitmap knapper;
@@ -106,7 +106,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	}
 
 	/**
-     * Sjekker om et flytt skal h�ndteres og utf�rer dette.
+     * Sjekker om et flytt skal håndteres og utfører dette.
      */
    
    private boolean handleMove(float currentX, float currentY) {
@@ -123,8 +123,8 @@ public class LudoSurfaceView extends SurfaceView implements
     }
 
 	/**
-	 * Sjekke pan limits for � se om disse er forenelig med definert
-	 * skalering/st�rrelse
+	 * Sjekke pan limits for å se om disse er forenelig med definert
+	 * skalering/størrelse
 	 */
 	private void checkViewLimits() {
 		if (current_X < minX) {
@@ -265,7 +265,7 @@ public class LudoSurfaceView extends SurfaceView implements
 				.setGraphicsResolution(boardImageX, boardImageY);
 
 		Log.d(TAG, "Load image : " + boardImageX + ", " + boardImageY);
-		// F�rst n�r vi vet st�rrelsen p� bildet kan vi re-kalkulere...
+		// Først når vi vet størrelsen på bildet kan vi re-kalkulere...
 		Game.getInstance().getLudoBoard().recalcPositions();
 
 		// knapperDrawable = getResources().getDrawable(R.drawable.b4);
@@ -298,7 +298,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	}
 
 	/**
-	 * Set scale for � se hele brettet.
+	 * Set scale for å se hele brettet.
 	 */
 	public void setScaleFullBoard() {
 
@@ -378,7 +378,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
 		placePlayerButtons(canvas);
 
-		// Tegn b4 p� canvas
+		// Tegn b4 på canvas
 		// knapperDrawable.setBounds(current_X + 100, current_Y + 100,
 		// current_X + 150, current_Y + 150);
 		// knapperDrawable.draw(canvas);

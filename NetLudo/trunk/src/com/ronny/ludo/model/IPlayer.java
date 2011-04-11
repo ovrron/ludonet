@@ -11,16 +11,16 @@ public interface IPlayer
 	public PlayerColor getColor();
 	public String getIconPrefix();
 	public void setIconPrefix(String newPrefix);
-	// Sette f�rste posisjon ut fra home
+	// Sette første posisjon ut fra home
 	public void setFirstBoardPosition(int firsMovePosition);
 	public int getFirstBoardPosition();
-	// Siste posisjon f�r vi starter p� vi inn i brettet.
+	// Siste posisjon før vi starter på vi inn i brettet.
 	public void setStartWayHomePosition(int fieldToStartWayHome);
 	public int getStartWayHomePosition();
 	// Sette koordinater for posisjon i home
 	public void setHomePositions(Vector<Coordinate> baseHome);
 	public Vector<Coordinate> getHomePositions();
-	// Setter koordinater for 'way home' til m�l
+	// Setter koordinater for 'way home' til mål
 	public void setWayHomePositions(Vector<Coordinate> wayHome);
 	public Vector<Coordinate> getWayHomePositions();
 	public Coordinate getBoardPosition(int numberOfMovesFromhome);

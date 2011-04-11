@@ -10,31 +10,31 @@ import android.util.Log;
 
 /**
  * FORSLAG TIL SPILLEREGLER:
- * 1. 2-4 personer kan delta i spillet. Hver spiller f�r 4 brikker av samme farge og anbringer disse i et firkantet felt (g�rden) av samme farge som brikkene.
- * 2. Det kastes med en terning som viser 1-6. Det spilles p� brettet fra h�yre til venstre. Den som har de r�de brikkene begynner, nestemann til venstre fortsetter.
- * 3. Ingen brikke kommer ut av g�rden f�r eieren kaster 6. (Her kan vi kanskje legge inn valg for flere for � f� fortgang i spillet (f.eks. 1 og 6)) Seinere flyttes brikkene til venstre etter terningkastene.
- * 4. Kastes p� nytt 6, kan en etter �nske enten f�re en brikke ut av g�rden eller bringe en brikke videre p� feltet. Alle kast p� 6 gir rett til et nytt kast. Er en ikke i stand til � flytte en brikke, mister en kastet.
- * 5. Setter et kast en spiller i stand til � besette en plass hvor en motstanders brikke st�r, blir denne sl�tt ut og m� begynne forfra. Alts� ikke mulig � stille seg ved siden av. 
- * 6. Er plassen opptatt av en av ens egne brikker, blir den nye brikken ogs� anbrakt her. To brikker av samme farge sperrer vegen (danner port) for brikker av andre farger. S� lenge porten st�r, kan ingen av disse brikkene sl�s ut.
+ * 1. 2-4 personer kan delta i spillet. Hver spiller får 4 brikker av samme farge og anbringer disse i et firkantet felt (gården) av samme farge som brikkene.
+ * 2. Det kastes med en terning som viser 1-6. Det spilles på brettet fra høyre til venstre. Den som har de røde brikkene begynner, nestemann til venstre fortsetter.
+ * 3. Ingen brikke kommer ut av gården før eieren kaster 6. (Her kan vi kanskje legge inn valg for flere for å få fortgang i spillet (f.eks. 1 og 6)) Seinere flyttes brikkene til venstre etter terningkastene.
+ * 4. Kastes på nytt 6, kan en etter ønske enten føre en brikke ut av gården eller bringe en brikke videre på feltet. Alle kast på 6 gir rett til et nytt kast. Er en ikke i stand til å flytte en brikke, mister en kastet.
+ * 5. Setter et kast en spiller i stand til å besette en plass hvor en motstanders brikke står, blir denne slått ut og må begynne forfra. Altså ikke mulig å stille seg ved siden av. 
+ * 6. Er plassen opptatt av en av ens egne brikker, blir den nye brikken også anbrakt her. To brikker av samme farge sperrer vegen (danner port) for brikker av andre farger. Så lenge porten står, kan ingen av disse brikkene slås ut.
  * 7. Kan en motspiller ikke flytte andre av sine brikker, mister han kastet.
- * 8. N�r en brikke den midtlinjen som f�rer til dens �hjem� (det sted p� midtfeltet som har brikkens farge), f�res den framover denne midtlinjen. Hjemmet n�s bare ved � kaste det n�yaktige antall �yne. Kastes det for mange, m� brikken bli st�ende der den er.
- * 9. Et t�rn kan flyttes det antall plasser som man f�r �yne p� terningen, delt p� to. F�r man for eksempel terningkast 4, kan man flytte et t�rn 2 plasser fremover. *Dersom man f�r et oddetall over 1, kan man ogs� flytte t�rnet i sin helhet p� samme m�te, men man er da tvunget til � demontere det for � "bruke opp" det siste �yet. F�r man terningkast 5, kan man alts� flytte �verste brikke 5 felter eller flytte t�rnet 2 felter og �verste brikke et felt. Det er ikke mulig � lage et t�rn p� f�rste felt utenfor basen. En brikke M� flyttes fra dette feltet f�r neste brikke kan flyttes ut.
- * Regel 9 over er kanskje vanskelig � implementere. Hvordan velge enkelt om man vil flytte begge eller bare en brikke?
+ * 8. Når en brikke den midtlinjen som fører til dens "hjem" (det sted på midtfeltet som har brikkens farge), føres den framover denne midtlinjen. Hjemmet nås bare ved å kaste det nøyaktige antall øyne. Kastes det for mange, må brikken bli stående der den er.
+ * 9. Et tårn kan flyttes det antall plasser som man før øyne på terningen, delt på to. Før man for eksempel terningkast 4, kan man flytte et tårn 2 plasser fremover. *Dersom man får et oddetall over 1, kan man også flytte tårnet i sin helhet på samme måte, men man er da tvunget til å demontere det for å "bruke opp" det siste øyet. Får man terningkast 5, kan man altså flytte øverste brikke 5 felter eller flytte tårnet 2 felter og øverste brikke et felt. Det er ikke mulig å lage et tårn på første felt utenfor basen. En brikke må flyttes fra dette feltet før neste brikke kan flyttes ut.
+ * Regel 9 over er kanskje vanskelig å implementere. Hvordan velge enkelt om man vil flytte begge eller bare en brikke?
  */
 
 public class Game implements ILudoEventListener {
 
-	// Siden vi er en av fargene, s� m� vi lagre 'v�r' farge.
+	// Siden vi er en av fargene, så må vi lagre 'vår' farge.
 	// private PlayerColor localColor;
 
 	private List<ILudoEventListener> requestListeners = new ArrayList<ILudoEventListener>();
 	
-	//TODO Tur m� flyttes til comm-mgr og behandling av slikt...
+	//TODO Tur må flyttes til comm-mgr og behandling av slikt...
 	@SuppressWarnings("unused")
-	private PlayerColor currentTurnColor = PlayerColor.RED; // R�d starter
+	private PlayerColor currentTurnColor = PlayerColor.RED; // Rød starter
 															// alltid
 
-	//TODO M� sees i sammenheng med flere lokale spillere.	
+	//TODO Må sees i sammenheng med flere lokale spillere.	
 	@SuppressWarnings("unused")
 	private IPlayer localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
@@ -71,9 +71,9 @@ public class Game implements ILudoEventListener {
 
 	
 	/**
-	 *  Returnere en spiller basert p� farge
+	 *  Returnere en spiller basert på farge
 	 *  
-	 * @param theColor fargen p� spiller
+	 * @param theColor fargen på spiller
 	 * @return IPlayer
 	 */
 	public IPlayer getPlayerInfo(String theColor) {
@@ -82,7 +82,7 @@ public class Game implements ILudoEventListener {
 	}
 
 	/**
-	 *  Returnere en spiller basert p� farge
+	 *  Returnere en spiller basert på farge
 	 *  
 	 * @param theColor String med fargenavn
 	 * @return
@@ -125,10 +125,10 @@ public class Game implements ILudoEventListener {
     }
 	
 	/**
-	 * Hente ut status p� bordet akkurat n� - slik at nye klienter evt. kan hoppe p�
-	 * for � f�lge spillet...
+	 * Hente ut status på bordet akkurat nå - slik at nye klienter evt. kan hoppe på
+	 * for å følge spillet...
 	 * 
-	 * @return string med definisjonen av bordet akkurat n�.
+	 * @return string med definisjonen av bordet akkurat nå.
 	 */
 	public String getCurrentStatus() {
 		//TODO ikke prioritert oppgave .
@@ -177,8 +177,8 @@ public class Game implements ILudoEventListener {
 
 	// Listener sink for event.
 	public void ludoActionEvent(IGameEvent event) {
-		// Lokale endringer gj�r vi selv. - eller s� gj�r vi det p� en
-		// eventbasert total-l�sning
+		// Lokale endringer gjør vi selv. - eller så gjør vi det på en
+		// eventbasert total-løsning
 		// Mer om dette senere i diskusjon av modellen
 		// if(event.getColor() == localColor) {
 		// return;
@@ -190,7 +190,7 @@ public class Game implements ILudoEventListener {
 
 	// Game moves
 
-	// Event listener og h�ndtering
+	// Event listener og håndtering
 	public void addEventListener(ILudoEventListener client) {
 		requestListeners.add(client);
 	}
@@ -211,7 +211,7 @@ public class Game implements ILudoEventListener {
 	}
 
 	// Utils
-	// Returnere en spiller basert p� farge
+	// Returnere en spiller basert på farge
 	public static PlayerColor convertPlayerColor(String theColor) {
 		PlayerColor ret = null;
 		if (theColor.compareToIgnoreCase("RED") == 0) {
@@ -238,7 +238,7 @@ public class Game implements ILudoEventListener {
 	}
 	
     /**
-     * H�ndterer et flytt hvis gyldig brikke er valgt
+     * Håndterer et flytt hvis gyldig brikke er valgt
      * 
      * @param xPos x-posisjon valgt
      * @param yPos y-posisjon valgt

@@ -11,15 +11,15 @@ public class Piece implements IPiece{
 	 */
 	private int boardPosition = -1;
 
-	private int numberOfElements = 1; // Antall brikker i h�yden 1..4
+	private int numberOfElements = 1; // Antall brikker i høyden 1..4
 	private int housePosition = -1; // position in the 'house'
-	private boolean isAtGoal = false; // true hvis brikke er i m�l
+	private boolean isAtGoal = false; // true hvis brikke er i mål
 	
 	//TODO denne må beregnes etter hvert flytt
 	private boolean isOnWayToGoal = false; // true hvis brikke er på tur i mål
 	
 //	@SuppressWarnings("unused")
-//	private boolean isOnWayHome = false; // true hvis brikke er i m�l
+//	private boolean isOnWayHome = false; // true hvis brikke er i mål
 
 	public Piece(IPlayer owner) {
 		this.owner = owner;
@@ -75,7 +75,7 @@ public class Piece implements IPiece{
 			
 			
 			if( boardPosition > owner.getStartWayHomePosition()) {
-				// Vi er p� vei inn
+				// Vi er på vei inn
 				int wayHpos = boardPosition - owner.getStartWayHomePosition() - 1;
 				co = owner.getWayHomePositions().elementAt(wayHpos);
 			} else {
@@ -127,7 +127,7 @@ public class Piece implements IPiece{
 		
 		Log.d("IPiece"," Col: "+owner.getColor().toString()+"IPiece: "+housePosition+" Current pos: "+boardPosition+" move: "+theMove);
 		boardPosition += theMove;
-		// Sjekk om vi har g�tt for langt...
+		// Sjekk om vi har gått for langt...
 		if (boardPosition >= (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
 			boardPosition = owner.getWayHomePositions().size() + owner.getStartWayHomePosition();
 			isAtGoal = true;

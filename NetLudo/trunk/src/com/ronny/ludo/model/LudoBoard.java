@@ -59,13 +59,13 @@ public class LudoBoard implements ILudoBoard {
 			p.moveBrikke(theBrikke, theMove);
 			
 //			int currentPos = b.getBoardPosition();
-//			// Sjekk om vi er p� vei hjem
+//			// Sjekk om vi er på vei hjem
 //			if(currentPos + theMove > p.getStartWayHomePosition()) {
 //				int delta = p.getStartWayHomePosition() - currentPos;
 //				b.setOnWayHome();
 //				b.setBoardPosition(delta);				
 //			} else if(currentPos + theMove > movingPath.size()) {
-//				// Vi er kommet til en grense og m� fortsette 'over' vektoren
+//				// Vi er kommet til en grense og må fortsette 'over' vektoren
 //			
 //			}else {
 //				// Vi kan flytte normalt
@@ -79,7 +79,7 @@ public class LudoBoard implements ILudoBoard {
 		return pl;
 	}
 
-	// Returnere en spiller basert p� farge
+	// Returnere en spiller basert på farge
 	public IPlayer getPlayer(String theColor) {
 		IPlayer ret = null;
 		if (theColor.compareToIgnoreCase("RED") == 0) {
@@ -110,7 +110,7 @@ public class LudoBoard implements ILudoBoard {
 	}
 
 	/**
-	 * Brikker beveger seg i �kende lengde fra 'home'. Dette er mapping til index fra relativ posisjon
+	 * Brikker beveger seg i økende lengde fra 'home'. Dette er mapping til index fra relativ posisjon
 	 * @param position
 	 * @return
 	 */
@@ -122,7 +122,7 @@ public class LudoBoard implements ILudoBoard {
 	}
 
 
-	// Definerer f�rste start i brettet ut fra home base
+	// Definerer første start i brettet ut fra home base
 	public void addPlayerInfo(String playerColor, int firsMovePosition) {
 		IPlayer pl = Game.getInstance().getPlayerInfo(playerColor);
 		if (pl == null) {

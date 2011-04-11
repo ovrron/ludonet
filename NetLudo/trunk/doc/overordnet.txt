@@ -1,15 +1,15 @@
 Startpunkt for dok...
 
 
-Overordnede mål for funksjonalitet / løsning
+Overordnede mÃ¥l for funksjonalitet / lÃ¸sning
 
 
 Nettludo med forskjellige brett.
 Opptil 4 aktive spillere.
-(Feature: registrering av 'spillere' som bare ser på aktivt spill)
+(Feature: registrering av 'spillere' som bare ser pÃ¥ aktivt spill)
 (Endring: antall brikker lages dynamisk?)
 
-* Designmål
+* DesignmÃ¥l
 Brett/spill lages dynamisk med xml-definisjon
 Kommunikasjons-manager (CommMgr) som er uavhengig av rolle som klient/server
 Spill (Game-klasse) som behandler meldinger fra CommMgr.
@@ -19,64 +19,64 @@ Spill (Game-klasse) som behandler meldinger fra CommMgr.
 
 1 - Spilleregler
 	1. 2-4 personer kan delta i spillet. 
-		Hver spiller får 4 brikker av samme farge og anbringer disse i et firkantet felt (gården) av samme farge som brikkene.
+		Hver spiller fÃ¥r 4 brikker av samme farge og anbringer disse i et firkantet felt (gÃ¥rden) av samme farge som brikkene.
  	2. Det kastes med en terning som viser 1-6. 
- 		Det spilles på brettet fra høyre til venstre. Den som har de røde brikkene begynner, nestemann til venstre fortsetter.
- 	3. Ingen brikke kommer ut av gården før eieren kaster 6. 
- 		(Her kan vi kanskje legge inn valg for flere for å få fortgang i spillet (f.eks. 1 og 6)) 
+ 		Det spilles pÃ¥ brettet fra hÃ¸yre til venstre. Den som har de rÃ¸de brikkene begynner, nestemann til venstre fortsetter.
+ 	3. Ingen brikke kommer ut av gÃ¥rden fÃ¸r eieren kaster 6. 
+ 		(Her kan vi kanskje legge inn valg for flere for Ã¥ fÃ¥ fortgang i spillet (f.eks. 1 og 6)) 
  		Seinere flyttes brikkene til venstre etter terningkastene.
-	4. Kastes på nytt 6, kan en etter ønske enten føre en brikke ut av gården eller bringe en brikke videre på feltet. 
-		Alle kast på 6 gir rett til et nytt kast. Er en ikke i stand til å flytte en brikke, mister en kastet.
-	5. Setter et kast en spiller i stand til å besette en plass hvor en motstanders brikke står, 
-		blir denne slått ut og må begynne forfra. Altså ikke mulig å stille seg ved siden av. 
-	6. Er plassen opptatt av en av ens egne brikker, blir den nye brikken også anbrakt her. 
+	4. Kastes pÃ¥ nytt 6, kan en etter Ã¸nske enten fÃ¸re en brikke ut av gÃ¥rden eller bringe en brikke videre pÃ¥ feltet. 
+		Alle kast pÃ¥ 6 gir rett til et nytt kast. Er en ikke i stand til Ã¥ flytte en brikke, mister en kastet.
+	5. Setter et kast en spiller i stand til Ã¥ besette en plass hvor en motstanders brikke stÃ¥r, 
+		blir denne slÃ¥tt ut og mÃ¥ begynne forfra. AltsÃ¥ ikke mulig Ã¥ stille seg ved siden av. 
+	6. Er plassen opptatt av en av ens egne brikker, blir den nye brikken ogsÃ¥ anbrakt her. 
 		To brikker av samme farge sperrer vegen (danner port) for brikker av andre farger. 
-		Så lenge porten står, kan ingen av disse brikkene slås ut.
+		SÃ¥ lenge porten stÃ¥r, kan ingen av disse brikkene slÃ¥s ut.
 	7. Kan en motspiller ikke flytte andre av sine brikker, mister han kastet.
-	8. Når en brikke den midtlinjen som fører til dens «hjem» (det sted på midtfeltet som har brikkens farge), 
-		føres den framover denne midtlinjen. Hjemmet nås bare ved å kaste det nøyaktige antall øyne. 
-		Kastes det for mange, må brikken bli stående der den er.
-	9. Et tårn kan flyttes det antall plasser som man får øyne på terningen, delt på to. 
-		Får man for eksempel terningkast 4, kan man flytte et tårn 2 plasser fremover. 
-		Dersom man får et oddetall over 1, kan man også flytte tårnet i sin helhet på samme måte, 
-		men man er da tvunget til å demontere det for å "bruke opp" det siste øyet. 
-		Får man terningkast 5, kan man altså flytte øverste brikke 5 felter eller flytte tårnet 2 felter 
-		og øverste brikke et felt. Det er ikke mulig å lage et tårn på første felt utenfor basen. 
-		En brikke MÅ flyttes fra dette feltet før neste brikke kan flyttes ut.
+	8. NÃ¥r en brikke den midtlinjen som fÃ¸rer til dens "hjem" (det sted pÃ¥ midtfeltet som har brikkens farge), 
+		fÃ¸res den framover denne midtlinjen. Hjemmet nÃ¥s bare ved Ã¥ kaste det nÃ¸yaktige antall Ã¸yne. 
+		Kastes det for mange, mÃ¥ brikken bli stÃ¥ende der den er.
+	9. Et tÃ¥rn kan flyttes det antall plasser som man fÃ¥r Ã¸yne pÃ¥ terningen, delt pÃ¥ to. 
+		FÃ¥r man for eksempel terningkast 4, kan man flytte et tÃ¥rn 2 plasser fremover. 
+		Dersom man fÃ¥r et oddetall over 1, kan man ogsÃ¥ flytte tÃ¥rnet i sin helhet pÃ¥ samme mÃ¥te, 
+		men man er da tvunget til Ã¥ demontere det for Ã¥ "bruke opp" det siste Ã¸yet. 
+		FÃ¥r man terningkast 5, kan man altsÃ¥ flytte Ã¸verste brikke 5 felter eller flytte tÃ¥rnet 2 felter 
+		og Ã¸verste brikke et felt. Det er ikke mulig Ã¥ lage et tÃ¥rn pÃ¥ fÃ¸rste felt utenfor basen. 
+		En brikke mÃ¥ flyttes fra dette feltet fÃ¸r neste brikke kan flyttes ut.
 	
-	Regel 9 over er kanskje vanskelig å implementere. Hvordan "enkelt" velge om man vil flytte begge eller bare en brikke?
+	Regel 9 over er kanskje vanskelig Ã¥ implementere. Hvordan "enkelt" velge om man vil flytte begge eller bare en brikke?
 
 
 * Interaksjon
 
 1 - Oppstart
 - innlesing av hoved-xml som beskriver antall brett tilgjengelige.
-	(skal vi ha med thumbnail på brett ?)
+	(skal vi ha med thumbnail pÃ¥ brett ?)
 	
 - Bruker velger rolle som klient eller server
 	Ved 'server'
 		Velg hvilket brett som skal benyttes
-		Ip-adresse vises - venter på registrering av klienter
+		Ip-adresse vises - venter pÃ¥ registrering av klienter
 		(Feature
-		Valg om å kunne fortsette til spillet (registrering lukkes)
+		Valg om Ã¥ kunne fortsette til spillet (registrering lukkes)
 	Ved 'klient'
 		skriv inn server-ip
 		
-	Spill starter når server melder fra.
+	Spill starter nÃ¥r server melder fra.
 	
 2 - Spill
-- Spiller kan forlate spillet når vedkommede ønsker
+- Spiller kan forlate spillet nÃ¥r vedkommede Ã¸nsker
 
 * Kommunikasjon
 
-Så enkel som mulig: kommaseparert String - eks med verdier: farge, brikkeNummer, moves, opts
-opts: Tallverdi for : flytt, slå inn, sett brikke oppå en annen... 
+SÃ¥ enkel som mulig: kommaseparert String - eks med verdier: farge, brikkeNummer, moves, opts
+opts: Tallverdi for : flytt, slÃ¥ inn, sett brikke oppÃ¥ en annen... 
 
 
 
 ---------------------------------------------------------------------------------------------
-----------------------------~~~~~~¤¤¤§§[ AVKLARINGER ]§§¤¤¤~~~~~~----------------------------
+----------------------------~~~~~~=====[ AVKLARINGER ]=====~~~~~~----------------------------
 ---------------------------------------------------------------------------------------------
 
 20110323
-	SPILLEREGLER - må bli enige om spilleregler. se forslag under Forutsetninger over.
+	SPILLEREGLER - mÃ¥ bli enige om spilleregler. se forslag under Forutsetninger over.

@@ -38,10 +38,10 @@ public class LudoActivity extends LudoCommonActivity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		// Load board definisjoner - lastes f�r inflating.
+		// Load board definisjoner - lastes før inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 		
-		// TODO p� lasting av board
+		// TODO på lasting av board
 		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
 		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
 		
@@ -49,11 +49,11 @@ public class LudoActivity extends LudoCommonActivity {
 		
 		//parseXmlDefs();
 		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
-			//TODO H�ndter feil ved lasting av brettdefinisjon
+			//TODO Håndter feil ved lasting av brettdefinisjon
 			//Vis feilmelding og ev. avslutt
 		}
 	
-// DENNE ER FLYTTET SIDEN VI TRENGER St�rrelsen p� bildet f�r vi tar en recalc.		
+// DENNE ER FLYTTET SIDEN VI TRENGER Størrelsen på bildet før vi tar en recalc.		
 //		Game.getInstance().getLudoBoard().recalcPositions();
 		// End load board.
 

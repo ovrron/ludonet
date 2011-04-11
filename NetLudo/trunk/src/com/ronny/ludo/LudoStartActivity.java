@@ -163,7 +163,7 @@ public class LudoStartActivity extends Activity
 				
 					//TODO legg inn tekst som skal sendes i strings.xml
 					//TODO lage mulighet for en venneliste med telefonnr som man kan velge fra
-					//TODO kanskje mulighet for å sende epost også
+					//TODO kanskje mulighet for Ã¥ sende epost ogsÃ¥
 					String msgText = ipAddressCurrent + " "+ getResources().getString(R.string.splash_invite_text);
 			    	//Intent msg = new Intent(Intent.ACTION_SEND);
 			    	//msg.setType("text/plain");

@@ -14,12 +14,12 @@ public class Player implements IPlayer{
 	private String iconPrefix = null;
 	
 	private boolean isActive = false;
-	private int firstPositionOnBoard = 0; // F�rste posisjon i definisjonen av hovedsporet rundt bordet - se ILudoBoard.movingPath
-	private int lastPositionBeforeWayHome = 0; // Hvor mange steg skal g�s f�r vi starter 'innover'
+	private int firstPositionOnBoard = 0; // Første posisjon i definisjonen av hovedsporet rundt bordet - se ILudoBoard.movingPath
+	private int lastPositionBeforeWayHome = 0; // Hvor mange steg skal gås før vi starter 'innover'
 	private Vector<Coordinate> homePositions = new Vector<Coordinate>();
 	private Vector<Coordinate> wayHomePositions = new Vector<Coordinate>();
 
-	// Brikkene tilh�rer egentlig Game, men er fordelt p� spiller
+	// Brikkene tilhører egentlig Game, men er fordelt på spiller
 	private IPiece brikker[] = new Piece[4];
 
 	public Player(PlayerColor color,ILudoBoard owner) {
@@ -72,7 +72,7 @@ public class Player implements IPlayer{
 		return color;
 	}
 
-	// Sette f�rste posisjon ut fra home
+	// Sette første posisjon ut fra home
 	public void setFirstBoardPosition(int firsMovePosition) {
 		firstPositionOnBoard = firsMovePosition;
 	}
@@ -80,7 +80,7 @@ public class Player implements IPlayer{
 		return firstPositionOnBoard;
 	}
 
-	// Siste posisjon f�r vi starter p� vi inn i brettet.
+	// Siste posisjon før vi starter på vi inn i brettet.
 	public void setStartWayHomePosition(int fieldToStartWayHome) {
 		lastPositionBeforeWayHome = fieldToStartWayHome;
 	}
@@ -99,7 +99,7 @@ public class Player implements IPlayer{
 		return homePositions;
 	}
 
-	// Setter koordinater for 'way home' til m�l
+	// Setter koordinater for 'way home' til mål
 	public void setWayHomePositions(Vector<Coordinate> wayHome) {
 		wayHomePositions = wayHome;		
 //		Log.d(TAG,"IPlayer way<"+color.toString()+" + way home + "+wayHomePositions);
@@ -130,10 +130,10 @@ public class Player implements IPlayer{
 		// Sjekk om brikken 
 //		if(brikkeMoves + theMove > getStartWayHomePosition()) {
 //			int delta = etStartWayHomePosition() - brikkeMoves;
-//			b.setOnWayHome(); // Sett at vi er p� vei hjem
-//			b.setBoardPosition(delta); // ... og at vi er kommet s� langt inn				
+//			b.setOnWayHome(); // Sett at vi er på vei hjem
+//			b.setBoardPosition(delta); // ... og at vi er kommet så langt inn				
 //		} else if(currentPos + theMove > movingPath.size()) {
-//			// Vi er kommet til en grense og m� fortsette 'over' vektoren
+//			// Vi er kommet til en grense og må fortsette 'over' vektoren
 //		
 //		}else {
 //			// Vi kan flytte normalt
@@ -141,13 +141,13 @@ public class Player implements IPlayer{
 //		}
 //		
 //		int currentPos = b.getBoardPosition();
-//		// Sjekk om vi er p� vei hjem
+//		// Sjekk om vi er på vei hjem
 //		if(currentPos + theMove > p.getStartWayHomePosition()) {
 //			int delta = p.getStartWayHomePosition() - currentPos;
 //			b.setOnWayHome();
 //			b.setBoardPosition(delta);				
 //		} else if(currentPos + theMove > movingPath.size()) {
-//			// Vi er kommet til en grense og m� fortsette 'over' vektoren
+//			// Vi er kommet til en grense og må fortsette 'over' vektoren
 //		
 //		}else {
 //			// Vi kan flytte normalt
