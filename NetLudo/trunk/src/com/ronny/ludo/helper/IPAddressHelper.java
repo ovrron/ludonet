@@ -6,6 +6,8 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import android.util.Log;
 
+// se http://www.krvarma.com/posts/android/getting-ip-address-of-the-device-in-android/
+
 public class IPAddressHelper
 {
 	private static final String TAG = "-IPAddress-:";
