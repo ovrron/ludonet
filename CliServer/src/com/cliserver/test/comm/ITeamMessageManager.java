@@ -49,6 +49,8 @@ public interface ITeamMessageManager {
 	 */
 	public void closeRegistration();
 	
+	public boolean isServer();
+	
 	/**
 	 * Handler remover for administrative/debug messages from the message system
 	 * @param handle

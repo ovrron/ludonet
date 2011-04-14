@@ -1,5 +1,7 @@
 package com.cliserver.test;
 
+import java.util.Vector;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +24,7 @@ public class Server extends Activity implements ILudoMessageReceiver {
 	private Button btnClose = null;
 	private Button btnSend = null;
 	private ArrayAdapter<String> dataAdapter;
+	
 	
 	private TeamMessageMgr tmm = null;
 //	private ExampleMessageBroker emb = null;
@@ -53,21 +56,21 @@ public class Server extends Activity implements ILudoMessageReceiver {
 			
 		};
 		// Create server handle - client messages from server
-//		Handler hndCli = new Handler() {
-//
-//			/* This is the message handler which receives messages
-//			 * from the TeamMessageManager
-//			 * 
-//			 * @see android.os.Handler#handleMessage(android.os.Message)
-//			 */
-//			@Override
-//			public void handleMessage(Message msg) {
+		Handler brokerMessages = new Handler() {
+
+			/* This is the message handler which receives messages
+			 * from the TeamMessageManager
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
 //				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
-//				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
-//				dataAdapter.add("*C("+client+")*"+theMessage);
-//			}
-//			
-//		};
+				String theMessage = (String)msg.obj; //getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
+				dataAdapter.add("*CM*"+theMessage);
+			}
+			
+		};
 		
 		TextView txv = (TextView) findViewById(R.id.textIP);
 		txv.setText("IP: " + IPAddressHelper.getLocalIpAddress());
@@ -79,8 +82,9 @@ public class Server extends Activity implements ILudoMessageReceiver {
 		tmm.addAdminListener(hnd);
 		
 		// Create broker object
-		//emb = new ExampleMessageBroker(this,tmm);
-		emb = new LudoMessageBroker(this,tmm);
+		emb = new LudoMessageBroker(tmm);
+		// Add my handler as receiver
+		emb.addListener(brokerMessages);
 		
 		// Start the server
 		tmm.start();

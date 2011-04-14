@@ -11,7 +11,7 @@
 	<Button android:layout_height="wrap_content" android:text="Connect"
 		android:id="@+id/btnConnect" android:layout_width="fill_parent"></Button>
 	<TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Message to send"></TextView>
-	<EditText android:text="RED,0,4,0" android:layout_width="match_parent"
+	<EditText android:text="G,M,RED,0,4" android:layout_width="match_parent"
 		android:id="@+id/editClientMessage" android:layout_height="wrap_content"></EditText>
 	<Button android:layout_height="wrap_content" android:text="Send message"
 		android:id="@+id/btnSendMsg" android:layout_width="fill_parent"></Button>

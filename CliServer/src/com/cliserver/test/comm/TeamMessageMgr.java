@@ -76,7 +76,6 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		this.setName("TeamMessageMgr");
 		listeners = new ArrayList<Handler>();
 		adminListeners = new ArrayList<Handler>();
-		// clients = new Vector<TeamMessageMgr.ClientHandlerThread>();
 		clients = new HashMap<Integer, TeamMessageMgr.ClientHandlerThread>();
 	}
 
@@ -392,27 +391,25 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	// }
 
 	/**
-	 * Distribute message to all clients via handler.
+	 * Distribute message to all listening clients via handlers.
 	 * 
 	 * @param theMessage
 	 */
 	private void distributeMessage(Serializable theMessage,
 			ClientHandlerThread caller) {
 		Log.d("TEAM*MANAGER", "Distribute message: " + theMessage);
+		
 		for (Handler l : listeners) {
 			try {
 				Message toClient = l.obtainMessage();
-				Bundle b = toClient.getData();
-				b.putInt(BUNDLE_CLIENTID, caller.getServerId());
-				b.putSerializable(BUNDLE_MESSAGE, theMessage);
 
-//				String msgTosend = caller.getServerId().toString() + "|" + theMessage;
+				Bundle b = toClient.getData();
+				// The client id
+				b.putInt(BUNDLE_CLIENTID, caller.getServerId());
+				// The message
+				b.putSerializable(BUNDLE_MESSAGE, theMessage);
 				
-//				Message toClient = l.obtainMessage();
-//				toClient.obj = theMessage;
-//				l.sendMessage(toClient);
-				
-				// toClient.obj = caller.getServerId() + "," + theMessage;
+				// Send the message
 				l.sendMessage(toClient);
 			} catch (Exception e) {
 				sendAdmMsg(ADMIN_MESSAGE_ID,"Exception : " + e.toString(),ADMIN_OPERATION_EXCEPTION);
@@ -431,12 +428,12 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		listeners.add(messageBroakerClient);
 	}
 
-	public void removeListener(Handler messageBroakerClient) {
-		listeners.remove(messageBroakerClient);
-	}
-
 	public void addAdminListener(Handler adminListenerHandler) {
 		adminListeners.add(adminListenerHandler);
+	}
+
+	public void removeListener(Handler messageBroakerClient) {
+		listeners.remove(messageBroakerClient);
 	}
 
 	public void removeAdminListener(Handler adminListenerHandler) {
@@ -508,30 +505,15 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		}
 	}
 
-	/**
-	 * Call to initiate a client connection to an ip-address
-	 * 
-	 * @param ipadr
-	 * @return 0 if success
-	 */
-//	public int initClientConnection(InetAddress ipadr) {
-//		currentRole = "Client";
-//		Socket s = null;
-//		int ret = 0;
-//		try {
-//			Log.d("TeamMessageMgr(" + currentRole + ")",
-//					"C: Connecting to server " + PORTIN);
-//			s = new Socket(ipadr, PORTIN);
-//			Log.d("TeamMessageMgr(" + currentRole + ")",
-//					"C: Connected to server" + s.toString());
-//			ret = addClientThread(s);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			ret = 2;
-//		}
-//		return ret;
-//	}
 
+	/**
+	 * Check state - ig this is a server instance or client instance.
+	 * @return true if this manager is acting as a server.
+	 */
+	public boolean isServer() {
+		return isServer;
+	}
+	
 	/**
 	 * Call to initiate a client connection to an ip-address
 	 * 
@@ -540,6 +522,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	 */
 	public int initClientConnection(String ipadr) {
 		currentRole = "Client";
+		isServer = false;
 		Socket s = null;
 		int ret = 0;
 		try {

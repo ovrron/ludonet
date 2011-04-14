@@ -97,29 +97,30 @@ public class Client extends Activity implements ILudoMessageReceiver {
 		tmm = new TeamMessageMgr();
 		tmm.addAdminListener(hnd); // Administrative messages
 
-//      // Can do this to recive message directly to myself...		
-//      // Create server handle - client messages from server
-//		Handler hndCli = new Handler() {
-//
-//			/*
-//			 * This is the message handler which receives messages from the
-//			 * TeamMessageManager
-//			 * 
-//			 * @see android.os.Handler#handleMessage(android.os.Message)
-//			 */
-//			@Override
-//			public void handleMessage(Message msg) {
-//				dataAdapter.add("*C*" + (String) msg.obj);
-//			}
-//
-//		};
-//		tmm.addListener(hndCli);
+		// Create server handle - client messages from server
+		Handler brokerMessages = new Handler() {
+
+			/* This is the message handler which receives messages
+			 * from the TeamMessageManager
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+//				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
+				String theMessage = (String)msg.obj;//msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
+				dataAdapter.add("*CM*"+theMessage);
+			}
+			
+		};
 
 		// Create broker object
 //		emb = new ExampleMessageBroker(this, tmm);
 	
-		emb = new LudoMessageBroker(this, tmm);
-		// Start the server
+//		emb = new LudoMessageBroker(this, tmm);
+		emb = new LudoMessageBroker(tmm);
+		emb.addListener(brokerMessages);
+		// Start the messaging server
 		tmm.start();
 
 	}
