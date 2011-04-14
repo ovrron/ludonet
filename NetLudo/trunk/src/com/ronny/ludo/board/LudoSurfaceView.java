@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
+import com.ronny.ludo.model.Die;
 import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.IPiece;
 import com.ronny.ludo.model.Coordinate;
@@ -37,11 +38,11 @@ public class LudoSurfaceView extends SurfaceView implements
 	private float lastTwoXMoves[] = new float[2];
 	private float lastTwoYMoves[] = new float[2];
 	private int moveHistorySize = 0;
-	private int current_X = 0;
-	private int current_Y = 0;
+	private int current_X = 0; // Dette er offset i X-retning for bildet i forhold til det vi ser på skjerm
+	private int current_Y = 0; // Dette er offset i Y-retning for bildet i forhold til det vi ser på skjerm
 	private int minX, maxX;
 	private int minY, maxY;
-	private int boardImageX, boardImageY; // bredde, hÃ¸yde pÃ¥ bildet
+	private int boardImageX, boardImageY; // bredde, høyde på bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
 	// private Bitmap knapper;
@@ -104,6 +105,18 @@ public class LudoSurfaceView extends SurfaceView implements
 
 		return true;
 	}
+	
+	
+	// Utility for debugging - redraw brett
+	private void debugRedrawBoard() {
+		Canvas c = holder.lockCanvas(null);
+		 Paint foodPaint = new Paint();
+		 foodPaint.setColor(Color.BLACK);
+		 synchronized (holder) {
+			 onDraw(c);
+		 }
+		 holder.unlockCanvasAndPost(c);
+	}
 
 	/**
      * Sjekker om et flytt skal hÃ¥ndteres og utfÃ¸rer dette.
@@ -112,19 +125,58 @@ public class LudoSurfaceView extends SurfaceView implements
    private boolean handleMove(float currentX, float currentY) {
 
         boolean ret = false;
-        Log.d("TouchEvent getBrikke", "current_X " + currentX + ", current_Y " + currentY);
+        Log.d("TouchEvent getBrikke", "currentX " + currentX + ", currentY " + currentY);
+        Log.d("TouchEvent getBrikke", "current_X " + current_X + ", current_Y " + current_Y);
         Log.d("TouchEvent getBrikke", "boardImageX " + boardImageX + ", boardImageY " + boardImageY);
-        double currentXBoard = (double) currentX / currentScale;
-        double currentYBoard = (double) currentY / currentScale;
+        
+        Game.getInstance().getPlayerInfo(PlayerColor.RED).DumpGame();
+        
+        // Finn x på board - legg til offset
+        double currentXBoard = (double) (-1*current_X) + currentX/currentScale;
+        // Finn y på board - legg til offset
+        double currentYBoard = (double) (-1*current_Y) + currentY/currentScale;
+        
         double delta = 0.08 * boardImageX;
         Log.d("TouchEvent getBrikke", "currentXBoard " + currentXBoard + ", currentYBoard " + currentYBoard + ", delta " + delta);
-        ret = Game.getInstance().handleMove((int) currentXBoard, (int) currentYBoard, delta);
+        
+        
+        IPiece pp = Game.getInstance().getPieceNearPos((int) currentXBoard, (int) currentYBoard, delta);
+        
+        
+        //TEST FLYTT
+        if(pp != null) {
+        	boolean bo = pp.canPieceMove(5);
+        	if(bo) {
+        		Coordinate cc = pp.getPositionAtBoardPosition(5);
+        		Game.getInstance().playerMove(pp.getColor(), pp.getHousePosition(), 5);
+        		debugRedrawBoard();
+        	}
+        }
+
+        
+        
+        // ******************************************DEBUG
+        // Plot på skjerm
+        currentXBoard = currentX / currentScale;
+        currentYBoard = currentY / currentScale;
+     
+        Canvas c = holder.lockCanvas(null);
+        Paint foodPaint = new Paint();
+        foodPaint.setColor(Color.BLACK);
+        synchronized (holder) {
+        	onDraw(c);
+        }
+        c.drawCircle((int)currentXBoard, (int)currentYBoard, (int)delta, foodPaint);
+        holder.unlockCanvasAndPost(c);
+        // ****************************************** DEBUG END		 
+
+//        ret = Game.getInstance().handleMove((int) currentXBoard, (int) currentYBoard, delta);
         return ret;
     }
 
 	/**
-	 * Sjekke pan limits for Ã¥ se om disse er forenelig med definert
-	 * skalering/stÃ¸rrelse
+	 * Sjekke pan limits for å se om disse er forenelig med definert
+	 * skalering/størrelse
 	 */
 	private void checkViewLimits() {
 		if (current_X < minX) {
@@ -331,7 +383,7 @@ public class LudoSurfaceView extends SurfaceView implements
 		mThread.setRunning(true);
 		Log.d(TAG, "Starting drawThread");
 		// TODO STARTER IKKE THREAD HER - dette er for debug tegning
-		mThread.start();
+		//mThread.start();
 
 		// Tegn initielt bilde
 		Canvas c = holder.lockCanvas(null);

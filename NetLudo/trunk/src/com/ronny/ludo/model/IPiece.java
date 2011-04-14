@@ -9,6 +9,7 @@ public interface IPiece{
 	public void setIsAtGoal();
 	public boolean isAtGoal();
 	public IPlayer getOwner();
+	public PlayerColor getColor();
 	public void setBoardPosition(int boardPosition);
 	public int getBoardPosition();
 	public void setHousePosition(int housePosition);
@@ -19,6 +20,20 @@ public interface IPiece{
 	 * @return
 	 */
 	public Coordinate getCurrentPosition();
+	/**
+	 * Finn koordinater til brikke på et visst antall flytt. 
+	 * @param newPos posisjon (boardPosition)
+	 * @return Coordinate eller null hvis antallet er lengre enn Goal (?)
+	 */
+	public Coordinate getPositionAtBoardPosition(int newPos);
+	
+	/**
+	 * Kan en brikke flytte så mange plasser fram 
+	 * @param numPos antall posisjoner fram
+	 * @return true hvis den kan flytte, false hvis den ikke kan det. (Regler?)
+	 */
+	public boolean canPieceMove(int numPos);
+	
 	public void placePieceOnBoard();
 	// Get the string id til bitmap denne representerer
 	public String getId();

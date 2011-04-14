@@ -162,6 +162,14 @@ public class Player implements IPlayer{
 		for(Coordinate c : homePositions) {
 			Log.d("DUMP","    Homes : "+c);
 		}
+		Log.d("DUMP","  Player : "+color.toString());
+		for(IPiece b : brikker) {
+			if(b.isHome()) { 
+				Log.d("DUMP","    Brikkepos : Home");
+			} else {
+				Log.d("DUMP","    Brikkepos : "+b);
+			}
+		}
 	}
 
 }

@@ -71,11 +71,15 @@ public class Piece implements IPiece{
 	}
 	
 	public boolean isHome() {
-		return boardPosition==housePosition;
+		return boardPosition==-1;
 	}
 
 	public IPlayer getOwner() {
 		return owner;
+	}
+
+	public PlayerColor getColor() {
+		return owner.getColor();
 	}
 
 	public void setBoardPosition(int boardPosition) {
@@ -114,28 +118,6 @@ public class Piece implements IPiece{
 			} else {
 				co = owner.getBoardPosition(boardPosition);
 			}
-//			
-//			
-//			
-//			// Check goal - or last point
-//			if (isOnWayHome) {
-//				if (boardPosition < owner.getWayHomePositions().size()) {
-//					co = owner.getWayHomePositions().elementAt(boardPosition);
-//				} else {
-//					co = owner.getWayHomePositions().elementAt(
-//							owner.getWayHomePositions().size());
-//				}
-//			} else {
-//				if (isAtGoal) {
-//					// Siste element i wayHome-listen
-//					co = owner.getWayHomePositions().elementAt(
-//							owner.getWayHomePositions().size());
-//				} else {
-//					// and we are still on the board
-//					// Positions are -1..n - relative from 'home'
-//					co = owner.getBoardPosition(boardPosition);
-//				}
-//			}
 		}
 		return co;
 	}
@@ -147,7 +129,7 @@ public class Piece implements IPiece{
 	//TODO Denne mÃ¥ implementeres
 	public void placePieceInHouse()
 	{
-		
+		boardPosition = -1; // Settes til 'i huset'
 	}
 
 	// Get the string id til bitmap denne representerer
@@ -186,6 +168,42 @@ public class Piece implements IPiece{
 	public boolean isOnWayToGoal()
 	{
 		return isOnWayToGoal;
+	}
+
+	public Coordinate getPositionAtBoardPosition(int newPos) {
+		// 
+		if(newPos >= (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
+			return null;
+		}
+		
+		Coordinate co = null;
+		if (newPos < 0) {
+			// Still in house - position housePosition
+			co = owner.getHomePositions().elementAt(housePosition);
+		} else {
+			
+			if( newPos > owner.getStartWayHomePosition()) {
+				// Vi er på vei inn
+				int wayHpos = newPos - owner.getStartWayHomePosition() - 1;
+				co = owner.getWayHomePositions().elementAt(wayHpos);
+			} else {
+				co = owner.getBoardPosition(newPos);
+			}
+		}
+		
+		return co;
+	}
+
+	public boolean canPieceMove(int numPos) {
+		// TODO Her burde vi konferere med regler ?
+		if ( (boardPosition + numPos) > (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
+			return false;
+		}
+		return true;
+	}
+	
+	public String toString() {
+		return owner.getBoardPosition(boardPosition).toString();
 	}
 
 }

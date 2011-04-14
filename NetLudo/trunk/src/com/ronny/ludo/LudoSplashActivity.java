@@ -24,10 +24,15 @@ public class LudoSplashActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-
-        startDieFrameAnimation(true);
-        MediaPlayer mp = MediaPlayer.create(getBaseContext(),R.raw.viacom2);
-        mp.start();
+        
+        // Faststart for debug
+        startActivity(new Intent(LudoSplashActivity.this, LudoStartActivity.class));
+    	LudoSplashActivity.this.finish();
+    	// End faststart
+    	
+//        startDieFrameAnimation(true);
+//        MediaPlayer mp = MediaPlayer.create(getBaseContext(),R.raw.viacom2);
+//        mp.start();
     }
 
     private void startAnimation()

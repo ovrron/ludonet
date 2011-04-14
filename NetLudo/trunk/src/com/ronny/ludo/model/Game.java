@@ -240,7 +240,36 @@ public class Game implements ILudoEventListener {
 		getLudoBoard().playerMove( theColor,  theBrikke,  theMove);		
 	}
 	
+	
+	/**
+	 * Finn ut om posisjonen oppgitt kan kalles et trykk på en brikke som tilhører den som skal flytte. 
+	 * 
+	 * @param xPos x-posisjon på skjerm
+	 * @param yPos y-posisjon på skjerm
+	 * @param delta 
+	 * @return IPiece hvis den finnes
+	 */
+	public IPiece getPieceNearPos(int xPos, int yPos, double delta) {
+		IPiece retP = null;
+		int brikkeNo = 0;
+		IPlayer player = getLudoBoard().getPlayer(getcurrentTurnColor());
+		for (IPiece brikke : player.getBrikker()) {
+            Coordinate c = brikke.getCurrentPosition();
+            Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + ": " + c.x + "," + c.y);
+            if (((c.x - delta) < xPos) && ((c.x + delta) > xPos) && ((c.y - delta) < yPos)
+                    && ((c.y + delta) > yPos)) {
+            	retP = brikke; 
+                Log.d("getPieceNearPos(LB)", "handleMove: farge: " + getcurrentTurnColor());
+                Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + " skal flyttes.");
+                return retP;
+            }
+            brikkeNo++;
+        }
+		
+		return retP;
+	}
     /**
+     * TODO
      * HÃ¥ndterer et flytt hvis gyldig brikke er valgt
      * 
      * @param xPos x-posisjon valgt

@@ -8,7 +8,7 @@ import android.view.SurfaceHolder;
 public class DrawingThread extends Thread {
 	private static String TAG = "DrawingThread";
 	
-	private final static int sleepInterval = 1000;
+	private final static int sleepInterval = 30000;
 	private SurfaceHolder mSurfaceHolder;
 	private LudoSurfaceView mLudoView;
 	private boolean mRun = false;
@@ -40,7 +40,7 @@ public class DrawingThread extends Thread {
 	public void run() {
 		   Canvas c;
 		   Log.d("DRAWINGTHREAD", "----STARTER");
-		   mySleep(3000);
+		   mySleep(18000);
 		   int teller = 0;
 		   while (isRunning()) {
 				c=null;
