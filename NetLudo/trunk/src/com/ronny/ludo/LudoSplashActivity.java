@@ -26,7 +26,7 @@ public class LudoSplashActivity extends Activity {
         setContentView(R.layout.splash);
         
         // Faststart for debug
-        startActivity(new Intent(LudoSplashActivity.this, LudoStartActivity.class));
+        startActivity(new Intent(LudoSplashActivity.this, LudoChooseGameActivity.class));
     	LudoSplashActivity.this.finish();
     	// End faststart
     	
@@ -98,7 +98,7 @@ public class LudoSplashActivity extends Activity {
                 u.setVisibility(ImageView.INVISIBLE);
                 d.setVisibility(ImageView.INVISIBLE);
                 o.setVisibility(ImageView.INVISIBLE);
-            	startActivity(new Intent(LudoSplashActivity.this, LudoStartActivity.class));
+            	startActivity(new Intent(LudoSplashActivity.this, LudoStartNewGameActivity.class));
             	LudoSplashActivity.this.finish();
             }
 

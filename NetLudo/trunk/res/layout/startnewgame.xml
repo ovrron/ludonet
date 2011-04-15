@@ -4,49 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    
-    <!-- Client server valg -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:id="@+id/layoutClientServer"
-    	android:orientation="vertical"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	>
-		<RadioGroup 
-			android:id="@+id/radioGroupGameType" 
-			android:layout_width="wrap_content" 
-			android:layout_alignParentLeft="true" 
-			android:layout_height="wrap_content"
-			>
-    		<RadioButton 
-    			android:layout_width="wrap_content" 
-    			android:layout_height="wrap_content" 
-    			android:id="@+id/radioHostGame" 
-    			android:text="@string/splash_radio_host_game" 
-    			android:checked="true" 
-    			android:typeface="normal"
-    			>
-    		</RadioButton>
-    		<RadioButton 
-    			android:layout_width="wrap_content" 
-    			android:layout_height="wrap_content" 
-    			android:id="@+id/radioJoinGame" 
-    			android:text="@string/splash_radio_join_game"
-    			>
-			</RadioButton>
-    	</RadioGroup>
-    	<ImageView 
-    		android:layout_height="wrap_content" 
-    		android:src="@drawable/splitter" 
-    		android:layout_width="fill_parent" 
-    		android:id="@+id/imageViewSplitter1" 
-    		android:scaleType="fitXY" 
-    		android:layout_marginBottom="4pt" 
-    		android:layout_marginTop="4pt"
-    		>
-		</ImageView>
-	</LinearLayout>
-    
+        
     <!-- IP -->		
     <LinearLayout 
     	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,10 +12,11 @@
     	android:orientation="vertical"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
+    	android:layout_marginTop="10pt"
     	>
 		<TextView 
     		android:id="@+id/textIp" 
-			android:text="@string/splash_tekst_ip_server" 
+			android:text="@string/start_tekst_ip_server" 
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:textStyle="bold"
@@ -77,8 +36,8 @@
 				android:layout_height="wrap_content" 				
 				android:maxLines="1" 
 				android:maxLength="15" 
-				android:tag="@string/splash_edittext_ip" 
-				android:text="@string/splash_edittext_ip"
+				android:tag="@string/start_edittext_ip" 
+				android:text="@string/start_edittext_ip"
 				android:selectAllOnFocus="true"
 				android:minWidth="15px"
 				android:singleLine="true"
@@ -86,7 +45,7 @@
 			</EditText>
 	    	<Button 
 	    		android:layout_alignParentRight="true"
-	    		android:text="@string/splash_button_ip_server" 
+	    		android:text="@string/start_button_ip_server" 
 	    		android:layout_width="wrap_content" 
 	    		android:id="@+id/buttonIP" 
 	    		android:layout_height="wrap_content">
@@ -114,7 +73,7 @@
     	>
 		<TextView 
     		android:id="@+id/textPlayers" 
-			android:text="@string/splash_text_players" 
+			android:text="@string/start_text_players" 
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:textStyle="bold">
@@ -184,14 +143,13 @@
     	android:layout_height="wrap_content"
     	>	
     	<Button 
-    		android:text="@string/splash_button_start_game" 
+    		android:text="@string/start_button_start_game" 
     		android:layout_width="wrap_content" 
-    		android:id="@+id/buttonStartGame" 
     		android:layout_height="wrap_content" 
     		android:layout_centerHorizontal="true" 
     		android:layout_centerVertical="true" 
     		android:layout_alignParentBottom="true"
-    		>
+    		android:id="@+id/buttonPlayGame">
     	</Button>
     </RelativeLayout>
 </LinearLayout>

@@ -2,7 +2,7 @@ package com.ronny.ludo;
 
 import android.app.Activity;
 
-public class LudoCommonActivity extends Activity {
+public class _SLETT_LudoCommonActivity extends Activity {
     
 }
 

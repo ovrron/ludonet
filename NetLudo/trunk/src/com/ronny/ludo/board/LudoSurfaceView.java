@@ -38,11 +38,11 @@ public class LudoSurfaceView extends SurfaceView implements
 	private float lastTwoXMoves[] = new float[2];
 	private float lastTwoYMoves[] = new float[2];
 	private int moveHistorySize = 0;
-	private int current_X = 0; // Dette er offset i X-retning for bildet i forhold til det vi ser på skjerm
-	private int current_Y = 0; // Dette er offset i Y-retning for bildet i forhold til det vi ser på skjerm
+	private int current_X = 0; // Dette er offset i X-retning for bildet i forhold til det vi ser pï¿½ skjerm
+	private int current_Y = 0; // Dette er offset i Y-retning for bildet i forhold til det vi ser pï¿½ skjerm
 	private int minX, maxX;
 	private int minY, maxY;
-	private int boardImageX, boardImageY; // bredde, høyde på bildet
+	private int boardImageX, boardImageY; // bredde, hï¿½yde pï¿½ bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
 	// private Bitmap knapper;
@@ -131,9 +131,9 @@ public class LudoSurfaceView extends SurfaceView implements
         
         Game.getInstance().getPlayerInfo(PlayerColor.RED).DumpGame();
         
-        // Finn x på board - legg til offset
+        // Finn x pï¿½ board - legg til offset
         double currentXBoard = (double) (-1*current_X) + currentX/currentScale;
-        // Finn y på board - legg til offset
+        // Finn y pï¿½ board - legg til offset
         double currentYBoard = (double) (-1*current_Y) + currentY/currentScale;
         
         double delta = 0.08 * boardImageX;
@@ -156,7 +156,7 @@ public class LudoSurfaceView extends SurfaceView implements
         
         
         // ******************************************DEBUG
-        // Plot på skjerm
+        // Plot pï¿½ skjerm
         currentXBoard = currentX / currentScale;
         currentYBoard = currentY / currentScale;
      
@@ -175,8 +175,8 @@ public class LudoSurfaceView extends SurfaceView implements
     }
 
 	/**
-	 * Sjekke pan limits for å se om disse er forenelig med definert
-	 * skalering/størrelse
+	 * Sjekke pan limits for ï¿½ se om disse er forenelig med definert
+	 * skalering/stï¿½rrelse
 	 */
 	private void checkViewLimits() {
 		if (current_X < minX) {
@@ -443,6 +443,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	private void placePlayerButtons(Canvas canvas) {
 		// Way home
 		for (PlayerColor pc : PlayerColor.values()) {
+			if(pc !=PlayerColor.NONE) {
 			IPlayer p = Game.getInstance().getLudoBoard().getPlayer(pc);
 
 			// for(Coordinate co : p.getHomePositions()) {
@@ -451,6 +452,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
 			for (IPiece brikke : p.getBrikker()) {
 				plotBrikke(canvas, brikke);
+			}
 			}
 
 		}

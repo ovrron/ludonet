@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutSplash"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+
+    <LinearLayout 
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/ludologolayout"
+    	android:orientation="horizontal"
+    	android:layout_centerHorizontal="true"
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+    	<ImageView 
+    		android:id="@+id/imageViewL" 
+    		android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" 
+    		android:src="@drawable/l" 
+    		android:layout_marginTop="100px"
+    		>
+    	</ImageView>    		
+    	<ImageView 
+    		android:id="@+id/imageViewU" 
+    		android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" 
+    		android:src="@drawable/u" 
+    		android:layout_marginTop="100px"
+    		>
+    	</ImageView>
+    	<ImageView 
+    		android:id="@+id/imageViewD" 
+    		android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" 
+    		android:src="@drawable/d" 
+    		android:layout_marginTop="100px"
+    		>
+    	</ImageView>    		
+    	<ImageView 
+    		android:id="@+id/imageViewO" 
+    		android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" 
+    		android:src="@drawable/o" 
+    		android:layout_marginTop="100px"
+    		>
+    	</ImageView>
+    </LinearLayout>
+
+    
+    <!-- IP -->		
+    <LinearLayout 
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:id="@+id/layoutIP1"
+    	android:orientation="vertical"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content" android:layout_marginTop="20pt">
+		<TextView 
+    		android:id="@+id/textIp" 
+			android:text="@string/start_tekst_ip_client" 
+    		android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" 
+    		android:textStyle="bold"
+    		android:layout_marginTop="10pt">
+    	</TextView>
+		<RelativeLayout 
+			xmlns:android="http://schemas.android.com/apk/res/android"
+	    	android:id="@+id/layoutIP2"
+	    	android:orientation="horizontal"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	>
+			<EditText 
+				android:id="@+id/editTextIP" 
+				android:layout_alignParentLeft="true"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 				
+				android:maxLines="1" 
+				android:maxLength="15" 
+				android:text="@string/start_edittext_ip"
+				android:selectAllOnFocus="true"
+				android:minWidth="15px"
+				android:singleLine="true"
+				>
+			</EditText>
+	    	<Button 
+	    		android:layout_alignParentRight="true"
+	    		android:text="@string/start_button_ip_client" 
+	    		android:layout_width="wrap_content" 
+	    		android:id="@+id/buttonIP" 
+	    		android:layout_height="wrap_content">
+	    	</Button>	
+		</RelativeLayout>    	
+	</LinearLayout>
+	
+	<!-- Start spill -->
+</LinearLayout>

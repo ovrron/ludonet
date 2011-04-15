@@ -2,6 +2,7 @@ package com.ronny.ludo;
 
 import java.util.Vector;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +14,7 @@ import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
 import com.ronny.ludo.model.Game;
 
-public class LudoActivity extends LudoCommonActivity {
+public class LudoActivity extends Activity {
 	private String TAG = "-Ludo-:";
 
 	private ImageButton zoomInButton;

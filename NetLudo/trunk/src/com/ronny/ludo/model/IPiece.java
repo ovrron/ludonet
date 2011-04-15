@@ -21,14 +21,14 @@ public interface IPiece{
 	 */
 	public Coordinate getCurrentPosition();
 	/**
-	 * Finn koordinater til brikke på et visst antall flytt. 
+	 * Finn koordinater til brikke pï¿½ et visst antall flytt. 
 	 * @param newPos posisjon (boardPosition)
 	 * @return Coordinate eller null hvis antallet er lengre enn Goal (?)
 	 */
 	public Coordinate getPositionAtBoardPosition(int newPos);
 	
 	/**
-	 * Kan en brikke flytte så mange plasser fram 
+	 * Kan en brikke flytte sï¿½ mange plasser fram 
 	 * @param numPos antall posisjoner fram
 	 * @return true hvis den kan flytte, false hvis den ikke kan det. (Regler?)
 	 */
@@ -47,4 +47,5 @@ public interface IPiece{
 	public void addInTowerWith(IPiece piece);
 	public void clearInTowerWith();
 	public void placePieceInHouse();
+	public String toString();
 }

@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import com.ronny.ludo.model.Die;
 
 
-public class DieExampleActivity extends LudoCommonActivity 
+public class DieExampleActivity extends _SLETT_LudoCommonActivity 
 {
 
 	/** Called when the activity is first created. */
