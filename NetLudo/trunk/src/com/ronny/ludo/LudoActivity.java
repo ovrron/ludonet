@@ -3,6 +3,8 @@ package com.ronny.ludo;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
+import com.ronny.ludo.model.Die;
 import com.ronny.ludo.model.Game;
 
 public class LudoActivity extends Activity {
@@ -70,6 +73,8 @@ public class LudoActivity extends Activity {
 		zoomInButton.setOnClickListener(zoomInListener);
 		zoomFitButton.setOnClickListener(zoomFitListener);
 		zoomOutButton.setOnClickListener(zoomOutListener);
+		
+		initDie();
 		
 		//TEST
 		// Test av mod
@@ -237,6 +242,8 @@ public class LudoActivity extends Activity {
 
 	}
 */
+	
+	
 	private OnClickListener zoomInListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Zoom in");
@@ -258,4 +265,40 @@ public class LudoActivity extends Activity {
 		}
 	};
 
+	private void initDie()
+	{
+		final Die die = new Die();
+		final ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
+		imgButtonDie.setOnClickListener(new OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				imgButtonDie.setImageBitmap(null);
+				final int eyes = die.roll();
+				int animationId = getResources().getIdentifier("die"+eyes+"anim", "drawable", "com.ronny.ludo");
+				imgButtonDie.clearAnimation();
+				imgButtonDie.setBackgroundResource(animationId);
+	        	final AnimationDrawable frameAnimation = (AnimationDrawable) imgButtonDie.getBackground();
+	        	imgButtonDie.post(new Runnable()
+	            {
+	    			public void run()
+	    			{
+	    				MediaPlayer mp;
+	    				if(eyes==6)
+	    				{
+	    					 mp = MediaPlayer.create(getBaseContext(),R.raw.shake_and_roll_6);
+	    				}
+	    				else
+	    				{
+	    					 mp = MediaPlayer.create(getBaseContext(),R.raw.shake_and_roll);
+	    				}
+	    		        mp.start();
+	    				frameAnimation.start();
+	    				surface.setThrow(eyes);
+	    			}  		        
+	            });
+			}
+		});
+	}
+	
 }

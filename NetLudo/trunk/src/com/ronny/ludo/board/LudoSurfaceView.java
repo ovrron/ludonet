@@ -25,10 +25,9 @@ import android.widget.ImageButton;
 
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
-import com.ronny.ludo.model.Die;
+import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.IPiece;
-import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.IPlayer;
 import com.ronny.ludo.model.PlayerColor;
 
@@ -52,6 +51,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	// private ImageView knappView;
 
 	private static String TAG = "SurfView";
+	private int currentThrow = 0;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -145,10 +145,11 @@ public class LudoSurfaceView extends SurfaceView implements
         
         //TEST FLYTT
         if(pp != null) {
-        	boolean bo = pp.canPieceMove(5);
+        	
+        	boolean bo = pp.canPieceMove(currentThrow);
         	if(bo) {
-        		Coordinate cc = pp.getPositionAtBoardPosition(5);
-        		Game.getInstance().playerMove(pp.getColor(), pp.getHousePosition(), 5);
+        		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
+        		Game.getInstance().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
         	}
         }
@@ -434,7 +435,6 @@ public class LudoSurfaceView extends SurfaceView implements
 		// knapperDrawable.setBounds(current_X + 100, current_Y + 100,
 		// current_X + 150, current_Y + 150);
 		// knapperDrawable.draw(canvas);
-
 	}
 
 	/**
@@ -627,6 +627,11 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	}
 
+	public void setThrow(int eyes)
+	{
+		currentThrow = eyes;
+	}
+	
 	@SuppressWarnings("unused")
 	public void debug(int teller) {
 		// PlayerColor c = PlayerColor.BLUE;
@@ -692,5 +697,4 @@ public class LudoSurfaceView extends SurfaceView implements
 		// Game.getInstance().playerMove(c,0,1);
 		// }
 	}
-
 }
