@@ -1,6 +1,10 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110415: RØ:
+		Lagt til en terning på LudoAktivitet. Ser slett ikke bra ut ennå men nå kan man kaste og flytte røde brikker for testen sin del
+		Lagt til noen nye startaktiviteter
+
 20110411: KEM: 
 	Game:
 		Forbdret handleMove og ny metode findOtherPicesAtCoordinate samt kall til regler for håndtering 
