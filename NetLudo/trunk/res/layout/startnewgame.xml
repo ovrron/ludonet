@@ -86,42 +86,41 @@
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="center_horizontal"
 	    	>
-	    	<ImageView 
+	    	<ImageButton 
+	    		android:id="@+id/imageButtonPlayerRed" 
 	    		android:layout_height="wrap_content" 
-	    		android:src="@drawable/player_red_unchecked" 
-	    		android:layout_width="wrap_content" 
-	    		android:id="@+id/imageViewPlayerRed"
+	    		android:layout_width="wrap_content"
 	    		android:layout_marginLeft="3pt" 
 	    		android:layout_marginRight="3pt"
-	    		>
-			</ImageView>
-			<ImageView 
+	    		android:background="@null" android:src="@drawable/player_red_local">
+	    	</ImageButton>
+	    	<ImageButton 
+	    		android:id="@+id/imageButtonPlayerGreen" 
+	    		android:src="@drawable/player_green_unchecked"
 	    		android:layout_height="wrap_content" 
-	    		android:src="@drawable/player_green_unchecked" 
-	    		android:layout_width="wrap_content" 
-	    		android:id="@+id/imageViewPlayerGreen"
+	    		android:layout_width="wrap_content"
 	    		android:layout_marginLeft="3pt" 
 	    		android:layout_marginRight="3pt"
-	    		>
-			</ImageView>
-	    	<ImageView 
+	    		android:background="@null">
+	    	</ImageButton>
+	    	<ImageButton 
+	    		android:id="@+id/imageButtonPlayerYellow" 
+	    		android:src="@drawable/player_yellow_unchecked"
 	    		android:layout_height="wrap_content" 
-	    		android:src="@drawable/player_yellow_unchecked" 
-	    		android:layout_width="wrap_content" 
-	    		android:id="@+id/imageViewPlayerYellow"
+	    		android:layout_width="wrap_content"
 	    		android:layout_marginLeft="3pt" 
 	    		android:layout_marginRight="3pt"
-	    		>
-			</ImageView>
-	    	<ImageView 
+	    		android:background="@null">
+	    	</ImageButton>
+	    	<ImageButton 
+	    		android:id="@+id/imageButtonPlayerBlue" 
+	    		android:src="@drawable/player_blue_unchecked"
 	    		android:layout_height="wrap_content" 
-	    		android:src="@drawable/player_blue_unchecked" 
-	    		android:layout_width="wrap_content" 
-	    		android:id="@+id/imageViewPlayerBlue"
+	    		android:layout_width="wrap_content"
 	    		android:layout_marginLeft="3pt" 
 	    		android:layout_marginRight="3pt"
-	    		>
-			</ImageView>	
+	    		android:background="@null">
+	    	</ImageButton>
 		</LinearLayout>
     	<ImageView 
     		android:layout_height="wrap_content" 

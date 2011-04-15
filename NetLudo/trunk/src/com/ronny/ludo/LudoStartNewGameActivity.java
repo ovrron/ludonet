@@ -9,8 +9,8 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.ronny.ludo.helper.IPAddressHelper;
 
@@ -26,10 +26,10 @@ public class LudoStartNewGameActivity extends Activity
 	private Button buttonPlayGame = null;
 	private Button buttonInvite = null;
 //	private TextView textViewIP = null;
-	private ImageView imageViewPlayerRed = null;
-	private ImageView imageViewPlayerGreen = null;
-	private ImageView imageViewPlayerYellow = null;
-	private ImageView imageViewPlayerBlue = null;
+	private ImageButton imageButtonPlayerRed = null;
+	private ImageButton imageButtonPlayerGreen = null;
+	private ImageButton imageButtonPlayerYellow = null;
+	private ImageButton imageButtonPlayerBlue = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -50,24 +50,24 @@ public class LudoStartNewGameActivity extends Activity
     	editTextIP = (EditText) findViewById(R.id.editTextIP);
     	buttonInvite = (Button) findViewById(R.id.buttonIP);
     	buttonPlayGame = (Button) findViewById(R.id.buttonPlayGame);
-    	imageViewPlayerRed = (ImageView) findViewById(R.id.imageViewPlayerRed);
-    	imageViewPlayerGreen = (ImageView) findViewById(R.id.imageViewPlayerGreen);
-    	imageViewPlayerYellow = (ImageView) findViewById(R.id.imageViewPlayerYellow);
-    	imageViewPlayerBlue = (ImageView) findViewById(R.id.imageViewPlayerBlue);
+    	imageButtonPlayerRed = (ImageButton) findViewById(R.id.imageButtonPlayerRed);
+    	imageButtonPlayerGreen = (ImageButton) findViewById(R.id.imageButtonPlayerGreen);
+    	imageButtonPlayerYellow = (ImageButton) findViewById(R.id.imageButtonPlayerYellow);
+    	imageButtonPlayerBlue = (ImageButton) findViewById(R.id.imageButtonPlayerBlue);
  		ipAddressCurrent = new IPAddressHelper().getLocalIpAddress();
  		if(ipAddressCurrent==null)
     	{
  			editTextIP.setText(getResources().getString(R.string.start_edittext_no_network));
     		buttonInvite.setEnabled(false);
     		buttonPlayGame.setEnabled(false);
-    		stopPlayerFrameAnimation(imageViewPlayerRed);
+    		stopPlayerFrameAnimation(imageButtonPlayerRed);
     	}
     	else
     	{
     		editTextIP.setText(ipAddressCurrent);
     		buttonInvite.setEnabled(true);
     		buttonPlayGame.setEnabled(true);
-    		startPlayerFrameAnimation(imageViewPlayerRed);
+    		startPlayerFrameAnimation(imageButtonPlayerRed);
     		//imageViewPlayerRed.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.player_red_check));
     	}
  		editTextIP.setEnabled(false);
@@ -212,9 +212,9 @@ public class LudoStartNewGameActivity extends Activity
      * 
      * @param players, tabell med imageviews som representerer spillere
      */
-    private void startPlayerFrameAnimation(ImageView... players)
+    private void startPlayerFrameAnimation(ImageButton... players)
     {
-    	for(ImageView player:players)
+    	for(ImageButton player:players)
     	{
     		player.setBackgroundResource(R.drawable.playeranim);
         	final AnimationDrawable frameAnimation = (AnimationDrawable) player.getBackground();
@@ -234,9 +234,9 @@ public class LudoStartNewGameActivity extends Activity
      * 
      * @param players, tabell med imageviews som representerer spillere
      */
-    private void stopPlayerFrameAnimation(ImageView... players)
+    private void stopPlayerFrameAnimation(ImageButton... players)
     {
-       	for(ImageView player:players)
+       	for(ImageButton player:players)
     	{
        		player.setBackgroundDrawable(null);
 //       		AnimationDrawable frameAnimation = (AnimationDrawable) player.getBackground();
