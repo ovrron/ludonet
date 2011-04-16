@@ -59,7 +59,7 @@
 	    <Button 
 	    	android:id="@+id/buttonStartNewGame" 
 	    	android:layout_height="wrap_content" 
-	    	android:text="@string/chosegame_button_host_game" 
+	    	android:text="@string/choosegame_button_host_game" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_gravity="center_horizontal" 
 	    	android:layout_marginTop="10pt"
@@ -68,7 +68,7 @@
 	    <Button 
 	    	android:id="@+id/buttonJoinGame" 
 	    	android:layout_height="wrap_content" 
-	    	android:text="@string/chosegame_button_join_game" 
+	    	android:text="@string/choosegame_button_join_game" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_gravity="center_horizontal" 
 	    	android:layout_marginTop="10pt"

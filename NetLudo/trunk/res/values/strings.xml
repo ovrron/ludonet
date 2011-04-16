@@ -2,17 +2,23 @@
 <resources>
     <string name="hello">Hello World, LudoActivity!</string>
     <string name="app_name">LudoNet (C)</string>
-    <string name="chosegame_button_host_game">Start ett nytt spill</string>
-    <string name="chosegame_button_join_game">Kople til et eksisterende spill</string>
+    <string name="choosegame_button_host_game">Start ett nytt spill</string>
+    <string name="choosegame_button_join_game">Kople til et eksisterende spill</string>
     <string name="start_radio_host_game">Start ett nytt spill</string>
     <string name="start_radio_join_game">Kople til et eksisterende spill</string>
     <string name="start_tekst_ip_server">Din IP-adresse:</string>
     <string name="start_tekst_ip_client">Angi IP-adresse:</string>
     <string name="start_text_players">Spillere:</string>
+    <string name="start_tekst_local">= lokal spiller</string>
+    <string name="start_tekst_remote">= ekstern spiller</string>
+    <string name="start_tekst_player_info">Klikk på fargeknappene for dine valg.
+    \nRød farge er alltid deg.
+    \nSpillere som ikke er lokal eller ekstern er ikke aktive.</string>
     <string name="start_button_ip_server">Send invitasjon</string>
     <string name="start_button_ip_client">Kople til</string>
     <string name="start_button_start_game">Spill LUDO</string>
     <string name="start_edittext_ip">xxx.xxx.xxx.xxx</string>
     <string name="start_edittext_no_network">No network available</string>
     <string name="start_invite_text">inviterer deg til et spennende slag ludo.</string>
+    
 </resources>

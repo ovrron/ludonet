@@ -2,7 +2,11 @@ package com.ronny.ludo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,7 +14,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.ronny.ludo.helper.IPAddressHelper;
 
@@ -21,16 +24,85 @@ import com.ronny.ludo.helper.IPAddressHelper;
  */
 public class LudoStartNewGameActivity extends Activity 
 {
+	/**
+	 * 
+	 * @author ovrron
+	 * Hjelpeklasse for å teste ut valgene på spillerne
+	 * Må vel ta i bruk en framtidig turnmanager isteden kanskje
+	 *
+	 */
+	private class Player
+	{
+		private PlayerState playerState;
+		private ImageButton button;
+		
+		public Player(PlayerState playerState, ImageButton button)
+		{
+			this.playerState = playerState;
+			this.button = button;
+		}
+		
+		//Troggle mellom de forskjellige statene
+		public void setNextState()
+		{
+			boolean connected = false;
+			playerState = playerState.nextState();
+			if(playerState.compareTo(PlayerState.LOCAL)==0) connected = true;
+			setPlayerState(playerState, button);
+			setConnected(connected);
+			
+		}
+		
+		//Lokal er alltid connected. Dersom ekstern spiller er tilkoplet må også denne kalles
+		public void setConnected(boolean connected)
+		{
+			if(connected)
+			{
+				startPlayerFrameAnimation(button);
+			}
+			else
+			{
+				stopPlayerFrameAnimation(button);
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @author ovrron
+	 * 
+	 */
+	private enum PlayerState 
+	{
+		FREE, LOCAL, REMOTE;
+		public PlayerState nextState()
+		{
+			if(this.compareTo(FREE)==0)
+			{
+				return LOCAL;
+			}
+			else if(this.compareTo(LOCAL)==0)
+			{
+				return REMOTE;
+			}
+			else
+			{
+				return FREE;
+			}
+		}
+	};
 	private String ipAddressCurrent = null;
 	private EditText editTextIP = null;
 	private Button buttonPlayGame = null;
 	private Button buttonInvite = null;
-//	private TextView textViewIP = null;
 	private ImageButton imageButtonPlayerRed = null;
 	private ImageButton imageButtonPlayerGreen = null;
 	private ImageButton imageButtonPlayerYellow = null;
 	private ImageButton imageButtonPlayerBlue = null;
-	
+	private Player playerRed = null;
+	private Player playerGreen = null;
+	private Player playerYellow = null;
+	private Player playerBlue = null;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -46,7 +118,6 @@ public class LudoStartNewGameActivity extends Activity
      */
     private void init()
     {
-//    	textViewIP = (TextView) findViewById(R.id.textIp);
     	editTextIP = (EditText) findViewById(R.id.editTextIP);
     	buttonInvite = (Button) findViewById(R.id.buttonIP);
     	buttonPlayGame = (Button) findViewById(R.id.buttonPlayGame);
@@ -54,129 +125,70 @@ public class LudoStartNewGameActivity extends Activity
     	imageButtonPlayerGreen = (ImageButton) findViewById(R.id.imageButtonPlayerGreen);
     	imageButtonPlayerYellow = (ImageButton) findViewById(R.id.imageButtonPlayerYellow);
     	imageButtonPlayerBlue = (ImageButton) findViewById(R.id.imageButtonPlayerBlue);
+    	playerRed = new Player(PlayerState.LOCAL, imageButtonPlayerRed);
+    	playerGreen = new Player(PlayerState.FREE, imageButtonPlayerGreen);
+    	playerYellow = new Player(PlayerState.FREE, imageButtonPlayerYellow);
+    	playerBlue = new Player(PlayerState.FREE, imageButtonPlayerBlue);
+    	
  		ipAddressCurrent = new IPAddressHelper().getLocalIpAddress();
  		if(ipAddressCurrent==null)
     	{
  			editTextIP.setText(getResources().getString(R.string.start_edittext_no_network));
     		buttonInvite.setEnabled(false);
     		buttonPlayGame.setEnabled(false);
-    		stopPlayerFrameAnimation(imageButtonPlayerRed);
+    		playerRed.setConnected(false);
     	}
     	else
     	{
     		editTextIP.setText(ipAddressCurrent);
     		buttonInvite.setEnabled(true);
     		buttonPlayGame.setEnabled(true);
-    		startPlayerFrameAnimation(imageButtonPlayerRed);
-    		//imageViewPlayerRed.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.player_red_check));
+    		playerRed.setConnected(true);
     	}
  		editTextIP.setEnabled(false);
-// 		buttonInvite.setText(getResources().getString(R.string.start_button_ip_server));
-// 		textViewIP.setText(getResources().getString(R.string.start_tekst_ip_server));
-    	
-    	
+ 		initImageButtonListeners();
     	initButtonListeners();
-    	//configureGuiElements();
-    	//initEditTextListener();
+    	
     }
     
-    /**
-     * 
-     */
-//    private void initRadioButtonListener()
-//    {
-//
-//    	RadioGroup rg = (RadioGroup) findViewById(R.id.radioGroupGameType);
-//    	rg.setOnCheckedChangeListener(new OnCheckedChangeListener() 
-//    	{
-//    		public void onCheckedChanged (RadioGroup group, int checkedId)
-//    		{
-//    			configureGuiElements();
-//    		}
-//    	});
-//    }
-
-    /**
-     * 
-     */
-//    private void configureGuiElements()
-//    {
-//    	if(radioButtonHostGame.isChecked())
-//    	{
-//     		ipAddressCurrent = new IPAddressHelper().getLocalIpAddress();
-//     		if(ipAddressCurrent==null)
-//        	{
-//     			editTextIP.setText(getResources().getString(R.string.start_edittext_no_network));
-//        		buttonInviteJoin.setEnabled(false);
-//        		buttonStartGame.setEnabled(false);
-//        		stopPlayerFrameAnimation(imageViewPlayerRed);
-//        	}
-//        	else
-//        	{
-//        		editTextIP.setText(ipAddressCurrent);
-//        		buttonInviteJoin.setEnabled(true);
-//        		buttonStartGame.setEnabled(true);
-//        		startPlayerFrameAnimation(imageViewPlayerRed);
-//        		//imageViewPlayerRed.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.player_red_check));
-//        	}
-//     		editTextIP.setEnabled(false);
-//     		buttonInviteJoin.setText(getResources().getString(R.string.start_button_ip_server));
-//     		textViewIP.setText(getResources().getString(R.string.start_tekst_ip_server));
-//    	}
-//		else
-//		{
-//     		buttonInviteJoin.setText(getResources().getString(R.string.start_button_ip_client));
-//     		textViewIP.setText(getResources().getString(R.string.start_tekst_ip_client));
-//     		editTextIP.setText(ipAddressJoin);
-//     		editTextIP.setEnabled(true);
-//    		if(ipAddressCurrent==null)
-//    		{
-//				buttonInviteJoin.setEnabled(false);
-//	    		buttonStartGame.setEnabled(false);
-//    		}
-//    		else
-//    		{
-//				buttonInviteJoin.setEnabled(true);
-//    		}
-//    		stopPlayerFrameAnimation(imageViewPlayerRed);
-//		}
-//    }
     
-    /**
-     * 
-     */
-//    private void initEditTextListener()
-//    {
-//    	editTextIP.setOnKeyListener(new OnKeyListener()
-//    	{
-//
-//			//@Override
-//			public boolean onKey(View v, int keyCode, KeyEvent event)
-//			{
-//				ipAddressJoin = editTextIP.getText().toString();
-//				return false;
-//			}
-//    		
-//    	});
-//    }
+    private void initImageButtonListeners()
+    {
+    	//,imageButtonPlayerRed.setOnClickListener(imageButtonListener);
+    	imageButtonPlayerGreen.setOnClickListener(new OnClickListener() 
+    	{
+    		public void onClick(View v) 
+    		{
+    			playerGreen.setNextState();
+    		}
+    	});
+    	imageButtonPlayerYellow.setOnClickListener(new OnClickListener() 
+    	{
+    		public void onClick(View v) 
+    		{
+    			playerYellow.setNextState();
+    		}
+    	});
+    	imageButtonPlayerBlue.setOnClickListener(new OnClickListener() 
+    	{
+    		public void onClick(View v) 
+    		{
+    			playerBlue.setNextState();
+    		}
+    	});
+    }
     
     /**
      * 
      */
     private void initButtonListeners()
     {
-    	if(ipAddressCurrent==null)
-    	{
-
-    	}    	
-    	
     	buttonPlayGame.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
 				Intent ludoIntent = new Intent(v.getContext(), LudoActivity.class);
 				startActivity(ludoIntent);
-				//startActivity(new Intent(LudoStartActivity.this, LudoActivity.class));
 				
 			}
 		});
@@ -212,7 +224,7 @@ public class LudoStartNewGameActivity extends Activity
      * 
      * @param players, tabell med imageviews som representerer spillere
      */
-    private void startPlayerFrameAnimation(ImageButton... players)
+    public void startPlayerFrameAnimation(ImageButton... players)
     {
     	for(ImageButton player:players)
     	{
@@ -220,7 +232,7 @@ public class LudoStartNewGameActivity extends Activity
         	final AnimationDrawable frameAnimation = (AnimationDrawable) player.getBackground();
             player.post(new Runnable()
             {
- //   			@Override
+            	@Override
     			public void run()
     			{
     				frameAnimation.start();
@@ -234,7 +246,7 @@ public class LudoStartNewGameActivity extends Activity
      * 
      * @param players, tabell med imageviews som representerer spillere
      */
-    private void stopPlayerFrameAnimation(ImageButton... players)
+    public void stopPlayerFrameAnimation(ImageButton... players)
     {
        	for(ImageButton player:players)
     	{
@@ -243,4 +255,104 @@ public class LudoStartNewGameActivity extends Activity
 //       		frameAnimation.stop();
     	}
     }
+
+    private PlayerState getPlayerState(ImageButton player)
+    {
+    	Drawable d = player.getDrawable();
+    	if(d.equals(getResources().getDrawable(R.drawable.player_red_local))||d.equals(getResources().getDrawable(R.drawable.player_green_local))||d.equals(getResources().getDrawable(R.drawable.player_yellow_local))||d.equals(getResources().getDrawable(R.drawable.player_blue_local)))
+    	{
+    		return PlayerState.LOCAL;
+    	}
+    	else if(d.equals(getResources().getDrawable(R.drawable.player_red_remote))||d.equals(getResources().getDrawable(R.drawable.player_green_remote))||d.equals(getResources().getDrawable(R.drawable.player_yellow_remote))||d.equals(getResources().getDrawable(R.drawable.player_blue_remote)))
+    	{
+    		return PlayerState.REMOTE;
+    	}
+    	else
+    	{
+    		return PlayerState.FREE;
+    	}
+    	
+    }
+    
+    private int getPlayerResID(PlayerState playerState, ImageButton player)
+    {
+    	Resources res = getResources();
+   		
+    	final String PLAYER ="player_";
+   		String playerName = null;
+   		String state = null;
+   		
+   		switch (playerState)
+		{
+			case FREE:
+	   			state = "_unchecked";			
+				break;
+
+			case LOCAL:
+				state = "_local";		
+				break;
+	
+			case REMOTE:
+				state = "_remote";
+				break;
+
+			default:
+				state = null;
+				break;
+		}
+   			
+   		switch (player.getId())
+		{
+			case R.id.imageButtonPlayerRed:
+				playerName = "red";
+				break;
+
+			case R.id.imageButtonPlayerGreen:
+				playerName = "green";
+				break;
+
+			case R.id.imageButtonPlayerYellow:
+				playerName = "yellow";
+				break;
+
+			case R.id.imageButtonPlayerBlue:
+				playerName = "blue";
+				break;
+
+			default:
+				playerName = null;
+				break;
+		}
+   		
+   		try
+   		{
+   			return res.getIdentifier(PLAYER+playerName+state, "drawable", "com.ronny.ludo");
+   		}
+   		catch(Exception e)
+   		{
+   			return 0;
+   		}
+    }
+    
+    /**
+     * 
+     * @param players, tabell med imageviews som representerer spillere
+     */
+    public void setPlayerState(PlayerState playerState, ImageButton... players)
+    {
+       	for(ImageButton player:players)
+    	{
+       		int resID = getPlayerResID(playerState, player);
+       		try
+       		{
+       			Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), resID);
+	        	player.setImageBitmap(imageBitmap);
+       		}
+       		catch(Exception e)
+       		{
+       			
+       		}
+    	}    	
+    }
 }
+
