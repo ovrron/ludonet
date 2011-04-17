@@ -145,8 +145,8 @@ public class LudoSurfaceView extends SurfaceView implements
         
         //TEST FLYTT
         if(pp != null) {
-        	
-        	boolean bo = pp.canPieceMove(currentThrow);
+
+            boolean bo = pp.canPieceMove(currentThrow);
         	if(bo) {
         		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
         		Game.getInstance().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
@@ -451,12 +451,13 @@ public class LudoSurfaceView extends SurfaceView implements
 			// }
 
 			for (IPiece brikke : p.getBrikker()) {
-				plotBrikke(canvas, brikke);
-			}
-			}
+			    if (brikke.isEnabled()){
+			        plotBrikke(canvas, brikke);
 
+                }
+			}
+			}
 		}
-
 	}
 
 	private void plotBrikke(Canvas c, IPiece b) {
