@@ -3,7 +3,7 @@ Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det 
 
 29110417: KEM:
 		Smårettinger i regler
-		Game playerMove tatt i bruk regler. Kan bygge og flytte tårn. 
+		Game playerMove tatt i bruk regler. Kan bygge og flytte tårn. Kan slå inn tårn av annen farge.
 
 20110416: RØ:
 		Jobbet litt mer med startnewgame aktiviteten. Lagt til test på å velge lokal og ekstern spiller osv.
