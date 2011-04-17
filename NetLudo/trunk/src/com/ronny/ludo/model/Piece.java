@@ -3,6 +3,8 @@ package com.ronny.ludo.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ronny.ludo.rules.StandardRules;
+
 import android.util.Log;
 
 public class Piece implements IPiece{
@@ -21,6 +23,7 @@ public class Piece implements IPiece{
 	
 	//TODO denne må beregnes etter hvert flytt
 	private boolean isOnWayToGoal = false; // true hvis brikke er på tur i mål
+	private StandardRules rules = new StandardRules();
 	
 //	@SuppressWarnings("unused")
 //	private boolean isOnWayHome = false; // true hvis brikke er i mål
@@ -183,7 +186,7 @@ public class Piece implements IPiece{
 		} else {
 			
 			if( newPos > owner.getStartWayHomePosition()) {
-				// Vi er p� vei inn
+				// Vi er p� vei inn
 				int wayHpos = newPos - owner.getStartWayHomePosition() - 1;
 				co = owner.getWayHomePositions().elementAt(wayHpos);
 			} else {
@@ -195,11 +198,13 @@ public class Piece implements IPiece{
 	}
 
 	public boolean canPieceMove(int numPos) {
-		// TODO Her burde vi konferere med regler ?
-		if ( (boardPosition + numPos) > (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
-			return false;
-		}
-		return true;
+	    Boolean ret=false;
+	    ret = rules.isLegalMove(this, numPos);
+	    return ret; 
+//		if ( (boardPosition + numPos) > (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
+//			return false;
+//		}
+//		return true;
 	}
 	
 	public String toString() {
