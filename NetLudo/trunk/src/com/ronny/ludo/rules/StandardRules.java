@@ -116,6 +116,11 @@ public class StandardRules implements IRules
 				for(IPiece p:pieces)
 				{
 					p.setEnabled(false);
+					if (p.getInTowerWith()!= null){
+					    for (IPiece pUnder : p.getInTowerWith()){
+					        piece.addInTowerWith(pUnder);
+					    }
+					}
 					p.clearInTowerWith();
 					piece.addInTowerWith(p);
 				}
