@@ -38,7 +38,7 @@ public class LudoBoard implements ILudoBoard {
 	 * @param theBrikke
 	 * @param theMove
 	 */
-	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
+	public IPiece playerMove(PlayerColor theColor, int theBrikke, int theMove) {
 		IPlayer p = getPlayer(theColor);
 		IPiece b = p.getBrikker()[theBrikke];
 		if (theMove > 6) {
@@ -73,6 +73,7 @@ public class LudoBoard implements ILudoBoard {
 //				b.addMove(theMove);;
 //			}
 		}
+		return b; 
 	}
 
 	public IPlayer getPlayer(PlayerColor color) {
