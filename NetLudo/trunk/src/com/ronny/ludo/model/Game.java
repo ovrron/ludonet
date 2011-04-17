@@ -237,15 +237,20 @@ public class Game implements ILudoEventListener {
 	 * @param theMove
 	 */
 	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
-		getLudoBoard().playerMove( theColor,  theBrikke,  theMove);		
+	    ArrayList<IPiece> pices = new ArrayList<IPiece>();
+	    IPiece brikkeFlyttet = getLudoBoard().playerMove( theColor,  theBrikke,  theMove);
+	    //Coordinate newC = brikke.getCurrentPosition();
+		// Slår inn andre brikker eller slår sammen til tårn hvis andre brikker på pos
+		pices = findOtherPicesAtCoordinate(brikkeFlyttet);
+        rules.handleMove(brikkeFlyttet, pices);
 	}
 	
 	
 	/**
-	 * Finn ut om posisjonen oppgitt kan kalles et trykk p� en brikke som tilh�rer den som skal flytte. 
+	 * Finn ut om posisjonen oppgitt kan kalles et trykk p� en brikke som tilh�rer den som skal flytte. 
 	 * 
-	 * @param xPos x-posisjon p� skjerm
-	 * @param yPos y-posisjon p� skjerm
+	 * @param xPos x-posisjon p� skjerm
+	 * @param yPos y-posisjon p� skjerm
 	 * @param delta 
 	 * @return IPiece hvis den finnes
 	 */
@@ -254,15 +259,17 @@ public class Game implements ILudoEventListener {
 		int brikkeNo = 0;
 		IPlayer player = getLudoBoard().getPlayer(getcurrentTurnColor());
 		for (IPiece brikke : player.getBrikker()) {
-            Coordinate c = brikke.getCurrentPosition();
-            Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + ": " + c.x + "," + c.y);
-            if (((c.x - delta) < xPos) && ((c.x + delta) > xPos) && ((c.y - delta) < yPos)
-                    && ((c.y + delta) > yPos)) {
-            	retP = brikke; 
-                Log.d("getPieceNearPos(LB)", "handleMove: farge: " + getcurrentTurnColor());
-                Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + " skal flyttes.");
-                return retP;
-            }
+		    if (brikke.isEnabled()) {
+		        Coordinate c = brikke.getCurrentPosition();
+		        Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + ": " + c.x + "," + c.y);
+		        if (((c.x - delta) < xPos) && ((c.x + delta) > xPos) && ((c.y - delta) < yPos)
+		                && ((c.y + delta) > yPos)) {
+		            retP = brikke; 
+		            Log.d("getPieceNearPos(LB)", "handleMove: farge: " + getcurrentTurnColor());
+		            Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + " skal flyttes.");
+		            return retP;
+		            }
+		    }
             brikkeNo++;
         }
 		
@@ -327,13 +334,15 @@ public class Game implements ILudoEventListener {
             IPlayer player = getLudoBoard().getPlayer(playerColor);
             if (player!= null && player.isActive()){
                 for (IPiece brikkeTest : player.getBrikker()) {
-                    Coordinate cTest = brikkeTest.getCurrentPosition();
-                    // Sjekker om brikkene er på samme koordinater og at brikkene ikke er av samme farge og homeposition
-                    if (currentC.equals(cTest) && 
-                            !((brikkeFlytt.getOwner().getColor().compareTo(playerColor)==0) && 
-                                    brikkeFlytt.getHousePosition()==brikkeTest.getHousePosition())) {
-                        pices.add(brikkeTest);
-                        Log.d("Game", "findOtherPicesAtCoordinate: rules må håndtere: " + brikkeTest);
+                    if (brikkeTest.isEnabled()){
+                        Coordinate cTest = brikkeTest.getCurrentPosition();
+                        // Sjekker om brikkene er på samme koordinater og at brikkene ikke er av samme farge og homeposition
+                        if (currentC.equals(cTest) && 
+                                !((brikkeFlytt.getOwner().getColor().compareTo(playerColor)==0) && 
+                                        brikkeFlytt.getHousePosition()==brikkeTest.getHousePosition())) {
+                            pices.add(brikkeTest);
+                            Log.d("Game", "findOtherPicesAtCoordinate: rules må håndtere: " + brikkeTest);
+                        }
                     }
                 }
             }
