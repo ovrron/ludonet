@@ -116,6 +116,7 @@ public class StandardRules implements IRules
 				for(IPiece p:pieces)
 				{
 					p.setEnabled(false);
+                    // Tar eksisternde tårn inn i tårn
 					if (p.getInTowerWith()!= null){
 					    for (IPiece pUnder : p.getInTowerWith()){
 					        piece.addInTowerWith(pUnder);
@@ -131,6 +132,13 @@ public class StandardRules implements IRules
 				for(IPiece p:pieces)
 				{
 					p.placePieceInHouse();
+					if (p.getInTowerWith()!= null){
+					    // løser opp alle brikker i tårnet og slår hjem
+                        for (IPiece pUnder : p.getInTowerWith()){
+                            pUnder.setEnabled(true);
+                            pUnder.placePieceInHouse();
+                        }
+                    }
 					p.clearInTowerWith();
 					p.setEnabled(true);
 				}				
