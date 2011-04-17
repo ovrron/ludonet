@@ -13,7 +13,7 @@ public interface ILudoBoard{
 	 * @param theBrikke
 	 * @param theMove
 	 */
-	public void playerMove(PlayerColor theColor, int theBrikke, int theMove);
+	public IPiece playerMove(PlayerColor theColor, int theBrikke, int theMove);
 	IPlayer getPlayer(PlayerColor color);
 	// Returnere en spiller basert på farge
 	IPlayer getPlayer(String theColor);
