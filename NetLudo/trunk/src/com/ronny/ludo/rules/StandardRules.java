@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPiece;
+import com.ronny.ludo.model.PieceAction;
 import com.ronny.ludo.model.PlayerColor;
 
 public class StandardRules implements IRules
@@ -100,7 +101,32 @@ public class StandardRules implements IRules
 		}
 	}
 
-	//TODO Her må det vel inn to lister. Kan jo f.eks. flytte ett tårn oppå et annet
+    public List< PieceAction > getPieceActionList(IPiece piece, List< IPiece > pieces) {
+       
+        List<PieceAction> actionList = new ArrayList<PieceAction>();
+        
+        //Det finnes ingen brikker der fra før
+        if(pieces==null || pieces.size()==0)
+        {
+            actionList = null;
+        }
+        else
+        {
+            //Det finnes minst en brikke der fra før med samme farge
+            if(piece.getOwner().getColor().compareTo(pieces.get(0).getOwner().getColor())==0)
+            {
+                actionList.add(PieceAction.MOVE_TO_TOWER);
+            }
+            //Det finnes minst en brikke der fra før med en annen farge         
+            else
+            {
+                actionList.add(PieceAction.MOVE_TO_BASE);
+            }
+        }
+        return actionList;
+    }
+    
+	//TODO IKKE I BRUK. ER FLYTTET TIL GAME
 	public boolean handleMove(IPiece piece, List<IPiece> pieces)
 	{
 		//Det finnes ingen brikker der fra før
