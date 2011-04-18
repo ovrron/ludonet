@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.ronny.ludo.helper.LudoConstants;
 import com.ronny.ludo.rules.StandardRules;
 
 import android.util.Log;
@@ -232,18 +233,79 @@ public class Game  {
 	 * @param theMove
 	 */
 	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
-		// Var 
-		// getLudoBoard().playerMove( theColor,  theBrikke,  theMove);		
-		
-		// Ny
-	    ArrayList<IPiece> pices = new ArrayList<IPiece>();
+	    ArrayList<IPiece> pieces = new ArrayList<IPiece>();
+	    List<PieceAction> actionList = new ArrayList<PieceAction>();
+	    //Flytter current brikke
+	    if (theBrikke == -1) {
+	        theMove = LudoConstants.MOVE_FROM_HOUSE;
+	    }
 	    IPiece brikkeFlyttet = getLudoBoard().playerMove( theColor,  theBrikke,  theMove);
-	    //Coordinate newC = brikke.getCurrentPosition();
-		// Slår inn andre brikker eller slår sammen til tårn hvis andre brikker på pos
-		pices = findOtherPicesAtCoordinate(brikkeFlyttet);
-        rules.handleMove(brikkeFlyttet, pices);
+	    // Finner alle andre brikker på target posisjon
+		pieces = this.findOtherPicesAtCoordinate(brikkeFlyttet);
+		//  Tatt ut: rules.handleMove(brikkeFlyttet, pices);
+		// Henter action for hver brikke på target posisjon
+		actionList = rules.getPieceActionList(brikkeFlyttet, pieces); 
+		// Utfører actions for hver brikke på target posisjon
+		this.handlePieceActionList(brikkeFlyttet, pieces, actionList);
+		setnextTurnColorTest();
 	}
 	
+    /**
+     * handlePieceActionList utfører actions på brikker basert på actionlist
+     * @param piece
+     * @param pieces
+     * @param actionList
+     * @return boolean hvis actions er utført
+     */	
+	private boolean handlePieceActionList(IPiece piece, ArrayList< IPiece > pieces, List< PieceAction > actionList) {
+
+	    int numElements = -1;
+	    boolean ret = true;
+        if (piece==null || pieces==null || actionList==null){
+            ret = false;
+        }
+        for (IPiece pHit:pieces){
+            numElements = numElements + 1;
+            PieceAction action = actionList.get(numElements);
+            if (action!=null){
+                switch (action) {
+                
+                    case MOVE_TO_TOWER:  // Tar eksisternde brikke / tårn inn i nytt tårn
+                        if (pHit.getInTowerWith()!= null){
+                            for (IPiece pUnder : pHit.getInTowerWith()){
+                                piece.addInTowerWith(pUnder);
+                            }
+                        }
+                        pHit.clearInTowerWith();
+                        pHit.setEnabled(false);
+                        piece.addInTowerWith(pHit);
+                        break;
+                        
+                    case MOVE_TO_BASE:   // slår hjem brikken / brikker i tårnet
+                        if (pHit.getInTowerWith()!= null){
+                            for (IPiece pUnder : pHit.getInTowerWith()){
+                                pUnder.setEnabled(true);
+                                pUnder.placePieceInHouse();
+                            }
+                        }
+                        pHit.clearInTowerWith();
+                        pHit.setEnabled(true); 
+                        pHit.placePieceInHouse();
+                        break;
+                        
+                    case MOVE_SIDE_BY_SIDE:
+                        // Not implementet
+                        break;
+                        
+                    default:
+                        // ugyldig action
+                        break;
+                }
+            }
+        }
+        return ret;
+    }
+
 	
 	/**
 	 * Finn ut om posisjonen oppgitt kan kalles et trykk p� en brikke som tilh�rer den som skal flytte. 
@@ -275,7 +337,7 @@ public class Game  {
 		return retP;
 	}
     /**
-     * TODO
+     * KEM: DENNE ER IKKE I BRUK. KODEN ER FLYTTET TIL playerMove
      * Håndterer et flytt hvis gyldig brikke er valgt
      * 
      * @param xPos x-posisjon valgt
