@@ -179,7 +179,7 @@ public class LudoMessageBroker {
 		 * CP - Current Player :
 		 *  	A,CP,<color>
 		 * Game verdier (G) 
-		 *  T - terning er kastet T,farge, øyne
+		 *  T - terning er kastet T,farge, ï¿½yne
 		 *  	G,T,<color>,<value> 
 		 *  M - Flytt en brikke
 		 *  	G,M,<color>,<piece id>,<moves>
@@ -212,11 +212,17 @@ public class LudoMessageBroker {
 		if (messageParts[0].equals("A")) { // Administrative messages
 
 			if (messageParts[1].equals("C")) {
-				// Klient spør etter farge
+				// Klient spï¿½r etter farge
+				PlayerColor pc = PlayerColor.NONE;
+				PlayerColor plc = PlayerColor.NONE;
 				Log.d("Ludo(A):", clientId + " Asking for color");
-				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
-				PlayerColor pc = GameHolder.getInstance().getTurnManager().getFreeColor(TurnManager.PlayerLocation.REMOTE,plc,true);
-
+				if(messageParts.length<3) {
+					// No color asked for - give a random
+					plc = PlayerColor.RED;
+				} else {
+					plc = PlayerColor.getColorFromString(messageParts[2]);
+				}
+				pc = GameHolder.getInstance().getTurnManager().getFreeColor(TurnManager.PlayerLocation.REMOTE,plc,true);
 				// Send answer to client klient
 				currentServer.sendMessageToClient("A,CA," + pc.toString(), clientId);
 			}
@@ -246,7 +252,7 @@ public class LudoMessageBroker {
 			}
 		}
 
-		// Her skal meldingen også distribueres videre til lyttere av BROKER
+		// Her skal meldingen ogsï¿½ distribueres videre til lyttere av BROKER
 
 		Log.d("BROKER", "Distribute message: " + message);
 
@@ -320,6 +326,13 @@ public class LudoMessageBroker {
 	 */
 	public void sendPlayerToPlay(PlayerColor color) {
 		distributeMessage("A,CI," + color.toString());
+	}
+
+	/**
+	 * Send a message to the server, requesting a color.
+	 */
+	public void sendGimmeAColor() {
+		distributeMessage("A,C");
 	}
 
 }

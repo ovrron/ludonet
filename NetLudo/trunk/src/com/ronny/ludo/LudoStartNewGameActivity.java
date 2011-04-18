@@ -340,7 +340,7 @@ public class LudoStartNewGameActivity extends Activity {
 		buttonPlayGame.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
-				// Test på turn-manager om den holder vann...
+				// Test pï¿½ turn-manager om den holder vann...
 				// PlayerColor p =
 				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
 				// + p.toString());
@@ -394,7 +394,7 @@ public class LudoStartNewGameActivity extends Activity {
 				// TEST END
 
 				// Closeregistation
-				GameHolder.getInstance().getMessageManager().openRegistration();
+				GameHolder.getInstance().getMessageManager().closeRegistration();
 				
 				// Start game
 				Intent ludoIntent = new Intent(v.getContext(),

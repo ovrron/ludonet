@@ -25,6 +25,7 @@ public class GameHolder  {
 	private LudoMessageBroker messageBroker = null;  // Message broker
 	private TeamMessageMgr messageManager = null;  // MessageManager is always needed
 	private TurnManager turnManager = null;
+	private PlayerColor localClientColor = PlayerColor.NONE;
 	
 	// Singleton type class
 	private static GameHolder INSTANCE = null; 
@@ -94,6 +95,20 @@ public class GameHolder  {
 	 */
 	public void setTurnManager(TurnManager turnManager) {
 		this.turnManager = turnManager;
+	}
+
+	/**
+	 * @return the localClientColor
+	 */
+	public PlayerColor getLocalClientColor() {
+		return localClientColor;
+	}
+
+	/**
+	 * @param localClientColor the localClientColor to set
+	 */
+	public void setLocalClientColor(PlayerColor localClientColor) {
+		this.localClientColor = localClientColor;
 	}
 	
 //	// TurnManager slot holder
