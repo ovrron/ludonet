@@ -247,7 +247,7 @@ public class Game  {
 		actionList = rules.getPieceActionList(brikkeFlyttet, pieces); 
 		// Utfører actions for hver brikke på target posisjon
 		this.handlePieceActionList(brikkeFlyttet, pieces, actionList);
-		setnextTurnColorTest();
+		//setnextTurnColorTest();
 	}
 	
     /**
