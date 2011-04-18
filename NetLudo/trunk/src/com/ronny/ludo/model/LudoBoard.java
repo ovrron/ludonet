@@ -1,7 +1,5 @@
 package com.ronny.ludo.model;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Vector;
 
@@ -126,7 +124,9 @@ public class LudoBoard implements ILudoBoard {
 
 	// Definerer første start i brettet ut fra home base
 	public void addPlayerInfo(String playerColor, int firsMovePosition) {
-		IPlayer pl = Game.getInstance().getPlayerInfo(playerColor);
+		//TODO Verifiser at denne linen som ble endret faktisk fungerer
+		//IPlayer pl = GameHolder.getInstance().getGame().getPlayerInfo(playerColor);
+		IPlayer pl = getPlayer(playerColor);
 		if (pl == null) {
 			return;
 		}
@@ -254,5 +254,13 @@ public class LudoBoard implements ILudoBoard {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Reset the game
+	 */
+	public void resetGame() {
+		// TODO Auto-generated method stub
+		
 	}
 }

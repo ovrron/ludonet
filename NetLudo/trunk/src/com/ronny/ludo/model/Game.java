@@ -24,7 +24,7 @@ import android.util.Log;
  * Regel 9 over er kanskje vanskelig å implementere. Hvordan velge enkelt om man vil flytte begge eller bare en brikke?
  */
 
-public class Game implements ILudoEventListener {
+public class Game  {
 
 	// Siden vi er en av fargene, så må vi lagre 'vår' farge.
 	// private PlayerColor localColor;
@@ -43,35 +43,30 @@ public class Game implements ILudoEventListener {
 	private ILudoBoard ludoBoard = new LudoBoard();
 	private String gameImageName = null;
 	private StandardRules rules = new StandardRules();
+	
+	// PLACEHOLDER for TurnManager
+	//private TurnManager turnManager = new TurnManager();
 
 	
 	// Singleton type game
-	private static Game INSTANCE = null; 
+//	private static Game INSTANCE = null; 
+//
+//	public static Game getInstance() {
+//		if(INSTANCE==null) {
+//			INSTANCE = new Game();
+//		}
+//		return INSTANCE;
+//	}
 
-	public static Game getInstance() {
-		if(INSTANCE==null) {
-			INSTANCE = new Game();
-		}
-		return INSTANCE;
-	}
-
-	private Game() {
-		
+	public Game() {
 		// Set up game
-		// Players are added by the ILudoBoard
-//		players = new HashMap<PlayerColor, IPlayer>();
-//		players.put(PlayerColor.RED, new IPlayer(PlayerColor.RED));
-//		players.put(PlayerColor.GREEN, new IPlayer(PlayerColor.GREEN));
-//		players.put(PlayerColor.YELLOW, new IPlayer(PlayerColor.YELLOW));
-//		players.put(PlayerColor.BLUE, new IPlayer(PlayerColor.BLUE));
-		
-		// Add player items
 	}
 	
 	public void startGame() {
 		
 	}
 
+	
 	
 	/**
 	 *  Returnere en spiller basert på farge
@@ -237,6 +232,10 @@ public class Game implements ILudoEventListener {
 	 * @param theMove
 	 */
 	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
+		// Var 
+		// getLudoBoard().playerMove( theColor,  theBrikke,  theMove);		
+		
+		// Ny
 	    ArrayList<IPiece> pices = new ArrayList<IPiece>();
 	    IPiece brikkeFlyttet = getLudoBoard().playerMove( theColor,  theBrikke,  theMove);
 	    //Coordinate newC = brikke.getCurrentPosition();
@@ -356,4 +355,14 @@ public class Game implements ILudoEventListener {
 		ludoBoard.DumpGame();
 		
 	}
+
+	/**
+	 * Reset the game
+	 */
+	public void resetGame() {
+		// TODO Auto-generated method stub
+		ludoBoard.resetGame();
+		
+	}
+	
 }

@@ -16,7 +16,7 @@
 <common pos="9" x="113" y="505"/>
 <common pos="10" x="57" y="505"/>
 <common pos="11" x="57" y="449"/>
-<common pos="12" x="57" y="393"/>
+<!-- common pos="12" x="57" y="393"/-->
 <common pos="13" x="57" y="393"/>
 <common pos="14" x="113" y="393"/>
 <common pos="15" x="169" y="393"/>
@@ -31,7 +31,7 @@
 <common pos="24" x="393" y="57"/>
 <common pos="25" x="449" y="57"/>
 <common pos="26" x="505" y="57"/>
-<common pos="27" x="505" y="57"/>
+<!-- common pos="27" x="505" y="57"/-->
 <common pos="28" x="505" y="113"/>
 <common pos="29" x="505" y="169"/>
 <common pos="30" x="505" y="225"/>

@@ -7,6 +7,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,6 +17,7 @@ import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
 import com.ronny.ludo.model.Die;
 import com.ronny.ludo.model.Game;
+import com.ronny.ludo.model.GameHolder;
 
 public class LudoActivity extends Activity {
 	private String TAG = "-Ludo-:";
@@ -49,7 +51,27 @@ public class LudoActivity extends Activity {
 		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
 		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
 		
-		Game.getInstance().DumpGame();
+//		GameHolder.getInstance().getGame().DumpGame();
+		
+		
+		
+		
+		
+		
+		// HER SKAL VI HA VALGT ET GAME - SOM ER OPPRETTET TIDLIGERE....
+		// VI LEGGER DET INN HER FOR Å FÅ TING TIL Å SNURRE
+		GameHolder.getInstance().setGame(new Game());
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//parseXmlDefs();
 		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
@@ -61,7 +83,7 @@ public class LudoActivity extends Activity {
 //		Game.getInstance().getLudoBoard().recalcPositions();
 		// End load board.
 
-		Game.getInstance().DumpGame();
+		GameHolder.getInstance().getGame().DumpGame();
 		
 		setContentView(R.layout.main);
 
@@ -299,6 +321,20 @@ public class LudoActivity extends Activity {
 	            });
 			}
 		});
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	        //Log.d(this.getClass().getName(), "back button pressed");
+			//TODO Disconnect other players
+			this.finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
+
 	}
 	
 }

@@ -27,6 +27,7 @@ import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.Game;
+import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPiece;
 import com.ronny.ludo.model.IPlayer;
 import com.ronny.ludo.model.PlayerColor;
@@ -34,6 +35,7 @@ import com.ronny.ludo.model.PlayerColor;
 public class LudoSurfaceView extends SurfaceView implements
 		SurfaceHolder.Callback {
 
+	int brikSize = 0;
 	private float lastTwoXMoves[] = new float[2];
 	private float lastTwoYMoves[] = new float[2];
 	private int moveHistorySize = 0;
@@ -129,7 +131,7 @@ public class LudoSurfaceView extends SurfaceView implements
         Log.d("TouchEvent getBrikke", "current_X " + current_X + ", current_Y " + current_Y);
         Log.d("TouchEvent getBrikke", "boardImageX " + boardImageX + ", boardImageY " + boardImageY);
         
-        Game.getInstance().getPlayerInfo(PlayerColor.RED).DumpGame();
+        GameHolder.getInstance().getGame().getPlayerInfo(PlayerColor.RED).DumpGame();
         
         // Finn x p� board - legg til offset
         double currentXBoard = (double) (-1*current_X) + currentX/currentScale;
@@ -137,10 +139,10 @@ public class LudoSurfaceView extends SurfaceView implements
         double currentYBoard = (double) (-1*current_Y) + currentY/currentScale;
         
         double delta = 0.08 * boardImageX;
+        delta = brikSize*currentScale;
         Log.d("TouchEvent getBrikke", "currentXBoard " + currentXBoard + ", currentYBoard " + currentYBoard + ", delta " + delta);
         
-        
-        IPiece pp = Game.getInstance().getPieceNearPos((int) currentXBoard, (int) currentYBoard, delta);
+        IPiece pp = GameHolder.getInstance().getGame().getPieceNearPos((int) currentXBoard, (int) currentYBoard, delta);
         
         
         //TEST FLYTT
@@ -149,7 +151,7 @@ public class LudoSurfaceView extends SurfaceView implements
             boolean bo = pp.canPieceMove(currentThrow);
         	if(bo) {
         		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
-        		Game.getInstance().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
+        		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
         	}
         }
@@ -303,7 +305,7 @@ public class LudoSurfaceView extends SurfaceView implements
 		matrix.postScale(1.0f, 1.0f);
 
 		// Hent navnet
-		String boardName = Game.getInstance().getGameImageName();
+		String boardName = GameHolder.getInstance().getGame().getGameImageName();
 		int boardId = getResources().getIdentifier(boardName, "drawable",
 				"com.ronny.ludo");
 
@@ -314,12 +316,12 @@ public class LudoSurfaceView extends SurfaceView implements
 
 		boardImageX = backgroundImage.getWidth();
 		boardImageY = backgroundImage.getHeight();
-		Game.getInstance().getLudoBoard()
+		GameHolder.getInstance().getGame().getLudoBoard()
 				.setGraphicsResolution(boardImageX, boardImageY);
 
 		Log.d(TAG, "Load image : " + boardImageX + ", " + boardImageY);
 		// Først når vi vet størrelsen på bildet kan vi re-kalkulere...
-		Game.getInstance().getLudoBoard().recalcPositions();
+		GameHolder.getInstance().getGame().getLudoBoard().recalcPositions();
 
 		// knapperDrawable = getResources().getDrawable(R.drawable.b4);
 	}
@@ -444,7 +446,7 @@ public class LudoSurfaceView extends SurfaceView implements
 		// Way home
 		for (PlayerColor pc : PlayerColor.values()) {
 			if(pc !=PlayerColor.NONE) {
-			IPlayer p = Game.getInstance().getLudoBoard().getPlayer(pc);
+			IPlayer p = GameHolder.getInstance().getGame().getLudoBoard().getPlayer(pc);
 
 			// for(Coordinate co : p.getHomePositions()) {
 			// plotPoint(canvas, co.x, co.y);
@@ -467,6 +469,7 @@ public class LudoSurfaceView extends SurfaceView implements
 				"com.ronny.ludo");
 		Bitmap brik = BitmapFactory.decodeResource(getResources(), knappeid);
 		int w = brik.getWidth() / 2;
+		brikSize = brik.getWidth();
 		Drawable dr = getResources().getDrawable(knappeid);
 		Coordinate co = b.getCurrentPosition();
 		int x = co.x;
@@ -641,45 +644,45 @@ public class LudoSurfaceView extends SurfaceView implements
 		// PlayerColor c = PlayerColor.RED;
 		if (true) {
 			if (teller == 0) {
-				Game.getInstance().playerMove(PlayerColor.RED, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
-				Game.getInstance().playerMove(PlayerColor.GREEN, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
-				Game.getInstance().playerMove(PlayerColor.YELLOW, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.YELLOW, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
-				Game.getInstance().playerMove(PlayerColor.BLUE, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.BLUE, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
 			}
 
 			if (teller > 0) {
-				Game.getInstance().playerMove(PlayerColor.RED, 0, 1);
-				Game.getInstance().playerMove(PlayerColor.GREEN, 0, 1);
-				Game.getInstance().playerMove(PlayerColor.YELLOW, 0, 1);
-				Game.getInstance().playerMove(PlayerColor.BLUE, 0, 1);
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0, 1);
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 0, 1);
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.YELLOW, 0, 1);
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.BLUE, 0, 1);
 			}
 		}
 
 		if (false) {
 			if (teller == 0) {
-				Game.getInstance().playerMove(PlayerColor.RED, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
-				Game.getInstance().playerMove(PlayerColor.GREEN, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
-				Game.getInstance().playerMove(PlayerColor.YELLOW, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.YELLOW, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
-				Game.getInstance().playerMove(PlayerColor.BLUE, 0,
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.BLUE, 0,
 						LudoConstants.MOVE_FROM_HOUSE);
 			}
 
 			if (teller > 0) {
-				Game.getInstance().playerMove(PlayerColor.RED, 0,
-						Game.getInstance().rollDie());
-				Game.getInstance().playerMove(PlayerColor.GREEN, 0,
-						Game.getInstance().rollDie());
-				Game.getInstance().playerMove(PlayerColor.YELLOW, 0,
-						Game.getInstance().rollDie());
-				Game.getInstance().playerMove(PlayerColor.BLUE, 0,
-						Game.getInstance().rollDie());
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0,
+						GameHolder.getInstance().getGame().rollDie());
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 0,
+						GameHolder.getInstance().getGame().rollDie());
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.YELLOW, 0,
+						GameHolder.getInstance().getGame().rollDie());
+				GameHolder.getInstance().getGame().playerMove(PlayerColor.BLUE, 0,
+						GameHolder.getInstance().getGame().rollDie());
 			}
 
 			if (teller > 30) {

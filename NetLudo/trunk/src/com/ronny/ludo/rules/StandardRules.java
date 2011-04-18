@@ -3,7 +3,7 @@ package com.ronny.ludo.rules;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ronny.ludo.model.Game;
+import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPiece;
 import com.ronny.ludo.model.PlayerColor;
 
@@ -155,7 +155,8 @@ public class StandardRules implements IRules
 		}
 		else
 		{
-			return Game.getInstance().getLudoBoard().getNextPlayerColor(currentPlayerColor);
+			//TODO Sp�r TurnManager - ikke game
+			return GameHolder.getInstance().getGame().getLudoBoard().getNextPlayerColor(currentPlayerColor);
 		}
 	}
 }

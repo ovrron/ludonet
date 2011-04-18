@@ -263,6 +263,6 @@
     		android:layout_centerVertical="true" 
     		android:layout_alignParentBottom="true"
     		android:id="@+id/buttonPlayGame">
-    	</Button>
+    	</Button> 
     </RelativeLayout>
 </LinearLayout>

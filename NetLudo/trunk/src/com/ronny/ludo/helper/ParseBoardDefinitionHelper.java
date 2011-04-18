@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.Coordinate;
+import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPlayer;
 
 public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
@@ -52,6 +53,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 		boolean retVal = true;
 		int eventType = -1;
 //		Game.getInstance(); // Initiering av brikker etc..?
+		GameHolder.getInstance().getGame().resetGame();
 		// TODO Reset Game-klassen.
 		
 		
@@ -63,7 +65,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 
 					if (strName.equals("image")) {
 						String thename = defs.getAttributeValue(null,"name");
-						Game.getInstance().setGameImageName(defs.getAttributeValue(null,"name"));
+						GameHolder.getInstance().getGame().setGameImageName(defs.getAttributeValue(null,"name"));
 					}
 
 					if (strName.equals("commonfields")) {
@@ -78,7 +80,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 								"x"));
 						int y = Integer.parseInt(defs.getAttributeValue(null,
 								"y"));
-						Game.getInstance().getLudoBoard().setDefinitionResolution(x,y);
+						GameHolder.getInstance().getGame().getLudoBoard().setDefinitionResolution(x,y);
 					}
 				}
 				eventType = defs.next();
@@ -113,7 +115,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 								"x"));
 						int y = Integer.parseInt(defs.getAttributeValue(null,
 								"y"));
-						Game.getInstance().getLudoBoard().addCommon(pos, x, y);
+						GameHolder.getInstance().getGame().getLudoBoard().addCommon(pos, x, y);
 						Log.d("Xml load", "Board pos " + x + ", " + y);
 					}
 				} else if (defs.getEventType() == XmlResourceParser.END_TAG) {
@@ -166,11 +168,11 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 						col = defs.getAttributeValue(null, "col");
 						int pos = Integer.parseInt(defs.getAttributeValue(null,
 								"firstmove"));
-						Game.getInstance().getLudoBoard()
+						GameHolder.getInstance().getGame().getLudoBoard()
 								.addPlayerInfo(col, pos);
 					} 
 					if (strName.equals("icon")) {
-						IPlayer pl = Game.getInstance().getPlayerInfo(col);
+						IPlayer pl = GameHolder.getInstance().getGame().getPlayerInfo(col);
 						String thePrefix = defs.getAttributeValue(null,"prefix");
 						pl.setIconPrefix(thePrefix);
 					}
@@ -202,7 +204,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 						whatToParse = 1;
 						int pos = Integer.parseInt(defs.getAttributeValue(null,
 								"start"));
-						Game.getInstance().getLudoBoard()
+						GameHolder.getInstance().getGame().getLudoBoard()
 								.setWayHomePosition(col, pos);
 					}
 				} else if (defs.getEventType() == XmlResourceParser.END_TAG) {
@@ -214,8 +216,8 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 					eventType = defs.next();
 				}
 			}
-			Game.getInstance().getLudoBoard().addBaseHomeDefs(col, baseHome);
-			Game.getInstance().getLudoBoard().addWayHomeDefs(col, wayHome);
+			GameHolder.getInstance().getGame().getLudoBoard().addBaseHomeDefs(col, baseHome);
+			GameHolder.getInstance().getGame().getLudoBoard().addWayHomeDefs(col, wayHome);
 
 		} catch (XmlPullParserException e) {
 			Log.e(TAG, "behandleSpillerData:Failed to load defs", e);
