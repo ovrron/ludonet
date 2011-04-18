@@ -46,12 +46,11 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int boardImageX, boardImageY; // bredde, h�yde p� bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
-	// private Bitmap knapper;
-	// private Drawable knapperDrawable;
 	private float currentScale = 1.0f;
 
-	// private ImageView knappView;
-
+	private boolean pickingPiece = false;
+	private PlayerColor pickingColor = PlayerColor.NONE;
+	
 	private static String TAG = "SurfView";
 	private int currentThrow = 0;
 
@@ -101,6 +100,12 @@ public class LudoSurfaceView extends SurfaceView implements
 			Log.d("TouchEvent", "--------- Action up - redraw " + current_X
 					+ ", " + current_Y);
 			Log.d("TouchEvent", "--------- ACTION_UP - redraw " + current_X + ", " + current_Y);
+			
+			// Check if we are picking a piece to move
+			if(pickingPiece) {
+				// Check if we got something.
+				// 	pickingColor is the current piece color which can be moved
+			}
             boolean flyttetOK = handleMove(event.getX(), event.getY());
             Log.d("TouchEvent", "----------------- " + flyttetOK + " ----------------------------------");
 		}
@@ -700,5 +705,37 @@ public class LudoSurfaceView extends SurfaceView implements
 		// } else if(teller>7) {
 		// Game.getInstance().playerMove(c,0,1);
 		// }
+	}
+
+
+	/**
+	 * @return the pickingPiece
+	 */
+	public boolean isPickingPiece() {
+		return pickingPiece;
+	}
+
+
+	/**
+	 * @param pickingPiece the pickingPiece to set
+	 */
+	public void setPickingPiece(boolean pickingPiece) {
+		this.pickingPiece = pickingPiece;
+	}
+
+
+	/**
+	 * @return the pickingColor
+	 */
+	public PlayerColor getPickingColor() {
+		return pickingColor;
+	}
+
+
+	/**
+	 * @param pickingColor the pickingColor to set
+	 */
+	public void setPickingColor(PlayerColor pickingColor) {
+		this.pickingColor = pickingColor;
 	}
 }
