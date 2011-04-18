@@ -1,6 +1,11 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 20110418: RHA:
+		Klient sender forespørsel om farge ved oppkobling.
+		(Server har ikke oppdatert bruken av farge enda)
+		Klient starter spillet etter å ha motatt farge.
+		Klientens farge er lagret i Gameholder.
+20110418: RHA:
 		Lagt til GameHolder (singleton).  Holder av Game, managers, regler etc.  Game er ikke lengre singleton.
 		Lagt til slik at klient/server skal begynne å fungere.  klient-del kan ikke koble opp enda mot server.
 		Mange rutiner for kommunikasjon er ikke lagt ferdig, men må taes underveis når vi ser spillets framgang (via broker).
