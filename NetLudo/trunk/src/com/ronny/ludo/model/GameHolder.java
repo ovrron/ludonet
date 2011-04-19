@@ -1,13 +1,8 @@
 package com.ronny.ludo.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import android.util.Log;
-
 import com.ronny.ludo.communication.LudoMessageBroker;
 import com.ronny.ludo.communication.TeamMessageMgr;
+import com.ronny.ludo.rules.IRules;
 import com.ronny.ludo.rules.StandardRules;
 
 /**
@@ -25,6 +20,7 @@ public class GameHolder  {
 	private LudoMessageBroker messageBroker = null;  // Message broker
 	private TeamMessageMgr messageManager = null;  // MessageManager is always needed
 	private TurnManager turnManager = null;
+	private IRules rules = new StandardRules();
 	private PlayerColor localClientColor = PlayerColor.NONE;
 	
 	// Singleton type class
@@ -39,6 +35,7 @@ public class GameHolder  {
 
 	// Instantiation prevention
 	private GameHolder() {
+	    rules.setTakeOffNumbers(2,4,6);
 	}
 
 	/**
@@ -89,6 +86,14 @@ public class GameHolder  {
 	public TurnManager getTurnManager() {
 		return turnManager;
 	}
+	
+	/**
+     * @return the rules
+     */
+    public IRules getRules()
+      {
+        return rules;
+      }
 
 	/**
 	 * @param turnManager the turnManager to set
