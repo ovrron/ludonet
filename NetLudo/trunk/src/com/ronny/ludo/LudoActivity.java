@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
 import com.ronny.ludo.model.Die;
 import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.GameHolder;
+import com.ronny.ludo.model.PlayerColor;
 
 public class LudoActivity extends Activity {
 	private String TAG = "-Ludo-:";
@@ -91,6 +93,7 @@ public class LudoActivity extends Activity {
 		zoomFitButton = (ImageButton) findViewById(R.id.zoomFit);
 		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
 		surface = (LudoSurfaceView) findViewById(R.id.image);
+		surface.setParentActivity(this);
 
 		zoomInButton.setOnClickListener(zoomInListener);
 		zoomFitButton.setOnClickListener(zoomFitListener);
@@ -287,6 +290,20 @@ public class LudoActivity extends Activity {
 		}
 	};
 
+	public void resetDie()
+	{
+		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
+		imgButtonDie.setBackgroundResource(R.drawable.die);
+	}
+	
+	public void setCurrentPlayer(PlayerColor color)
+	{
+		//Kanskje vise location også?
+		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
+		int id = getResources().getIdentifier("player_" + color.getColorAsString() + "_unchecked", "drawable", "com.ronny.ludo");
+		imageCurrentPlayer.setBackgroundResource(id);
+	}
+	
 	private void initDie()
 	{
 		final Die die = new Die();

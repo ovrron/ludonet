@@ -8,6 +8,7 @@ package com.ronny.ludo.board;
  * 
  * http://www.youtube.com/watch?v=N6YdwzAvwOA&feature=player_embedded
  */
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,10 +24,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageButton;
 
+import com.ronny.ludo.LudoActivity;
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
 import com.ronny.ludo.model.Coordinate;
-import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPiece;
 import com.ronny.ludo.model.IPlayer;
@@ -54,6 +55,8 @@ public class LudoSurfaceView extends SurfaceView implements
 	private static String TAG = "SurfView";
 	private int currentThrow = 0;
 
+	private LudoActivity parentActivity = null;
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
@@ -113,6 +116,10 @@ public class LudoSurfaceView extends SurfaceView implements
 		return true;
 	}
 	
+	public void setParentActivity(Activity parentActivity)
+	{
+		this.parentActivity = (LudoActivity)parentActivity;
+	}
 	
 	// Utility for debugging - redraw brett
 	private void debugRedrawBoard() {
@@ -158,6 +165,8 @@ public class LudoSurfaceView extends SurfaceView implements
         		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
         		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
+        		parentActivity.resetDie();
+        		//kode for å sette curentplayer: parentActivity.setCurrentPlayer(PlayerColor color)
         	}
         }
 
@@ -451,18 +460,19 @@ public class LudoSurfaceView extends SurfaceView implements
 		// Way home
 		for (PlayerColor pc : PlayerColor.values()) {
 			if(pc !=PlayerColor.NONE) {
-			IPlayer p = GameHolder.getInstance().getGame().getLudoBoard().getPlayer(pc);
-
-			// for(Coordinate co : p.getHomePositions()) {
-			// plotPoint(canvas, co.x, co.y);
-			// }
-
-			for (IPiece brikke : p.getBrikker()) {
-			    if (brikke.isEnabled()){
-			        plotBrikke(canvas, brikke);
-
-                }
-			}
+				//TODO KUN legg ut brikker for spillere som er med i spillet
+				IPlayer p = GameHolder.getInstance().getGame().getLudoBoard().getPlayer(pc);
+	
+				// for(Coordinate co : p.getHomePositions()) {
+				// plotPoint(canvas, co.x, co.y);
+				// }
+	
+				for (IPiece brikke : p.getBrikker()) {
+				    if (brikke.isEnabled()){
+				        plotBrikke(canvas, brikke);
+	
+	                }
+				}
 			}
 		}
 	}

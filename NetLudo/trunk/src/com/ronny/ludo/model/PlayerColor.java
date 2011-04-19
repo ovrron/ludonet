@@ -14,4 +14,20 @@ public enum PlayerColor {
 		}
 		return NONE;
 	}
+	
+	public String getColorAsString()
+	{
+		switch (this) {
+		case BLUE:
+			return "blue";
+		case GREEN:
+			return "green";
+		case YELLOW:
+			return "yellow";
+		case RED:
+			return "red";
+		default:
+			return null;
+		}
+	}
 }
