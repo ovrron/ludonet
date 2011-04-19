@@ -3,11 +3,6 @@ package com.ronny.ludo.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import com.ronny.ludo.helper.LudoConstants;
-import com.ronny.ludo.rules.IRules;
-import com.ronny.ludo.rules.StandardRules;
-
 import android.util.Log;
 
 
@@ -44,7 +39,7 @@ public class Game  {
 	private Random randomNumbers = new Random(); // random number generator
 	private ILudoBoard ludoBoard = new LudoBoard();
 	private String gameImageName = null;
-	private IRules rules = new StandardRules();
+	// private IRules rules = new StandardRules();
 	
 	// PLACEHOLDER for TurnManager
 	//private TurnManager turnManager = new TurnManager();
@@ -62,17 +57,17 @@ public class Game  {
 
 	public Game() {
 		// Set up game
-		rules.setTakeOffNumbers(2,4,6);
+	    // rules.setTakeOffNumbers(2,4,6); // Flyttet til GameHolder
 	}
 	
 	public void startGame() {
 		
 	}
 
-	public IRules getRules()
-	{
-		return rules;
-	}
+//	public IRules getRules()  // Flyttet til GameHolder
+//	{
+//		return rules;
+//	}
 	
 	/**
 	 *  Returnere en spiller basert på farge
@@ -246,7 +241,7 @@ public class Game  {
 		pieces = this.findOtherPicesAtCoordinate(brikkeFlyttet);
 		//  Tatt ut: rules.handleMove(brikkeFlyttet, pices);
 		// Henter action for hver brikke på target posisjon
-		actionList = rules.getPieceActionList(brikkeFlyttet, pieces); 
+		actionList = GameHolder.getInstance().getRules().getPieceActionList(brikkeFlyttet, pieces); 
 		// Utfører actions for hver brikke på target posisjon
 		this.handlePieceActionList(brikkeFlyttet, pieces, actionList);
 		//setnextTurnColorTest();
@@ -338,51 +333,6 @@ public class Game  {
 		
 		return retP;
 	}
-    /**
-     * KEM: DENNE ER IKKE I BRUK. KODEN ER FLYTTET TIL playerMove
-     * Håndterer et flytt hvis gyldig brikke er valgt
-     * 
-     * @param xPos x-posisjon valgt
-     * @param yPos y-posisjon valgt
-     * @param delta tillegg for yttergrenser
-     */
-    public boolean handleMove(int xPos, int yPos, double delta) {
-        int brikkeNo = -1;
-        ArrayList<IPiece> pices = new ArrayList<IPiece>();  
-        IPiece brikkeFlytt = null;
-        Log.d("IPiece(LB)", "handleMove: klikket: " + xPos + "," + yPos);
-        IPlayer player = getLudoBoard().getPlayer(getcurrentTurnColor());
-        for (IPiece brikke : player.getBrikker()) {
-            brikkeNo += 1;
-            Coordinate c = brikke.getCurrentPosition();
-            Log.d("IPiece(LB)", "handleMove: brikke " + brikkeNo + ": " + c.x + "," + c.y);
-            if (((c.x - delta) < xPos) && ((c.x + delta) > xPos) && ((c.y - delta) < yPos)
-                    && ((c.y + delta) > yPos)) {
-                brikkeFlytt = brikke; 
-                Log.d("IPiece(LB)", "handleMove: farge: " + getcurrentTurnColor());
-                Log.d("IPiece(LB)", "handleMove: brikke " + brikkeNo + " skal flyttes.");
-                break;
-            }
-        }
-        if (brikkeFlytt != null) {
-            // Die for test
-            Die terning = new Die();
-            int move = terning.roll();
-            Log.d("Game", "Die: " + move);
-            //move=2;
-            playerMove(getcurrentTurnColor(), brikkeNo, move);
-            pices = findOtherPicesAtCoordinate(brikkeFlytt);
-            rules.handleMove(brikkeFlytt, pices);
-            // for test setter neste farge sin tur
-            setnextTurnColorTest();
-            Log.d("IPiece(LB)", "handleMove: neste sin tur: " + getcurrentTurnColor());
-            return true;
-        }else{
-            Log.d("IPiece(LB)", "handleMove: neste sin tur: " + getcurrentTurnColor());
-            return false;
-        }
-    }
-    
     
     /**
      * Finner alle brikker på samme sted som current spiller nettopp flyttet til
