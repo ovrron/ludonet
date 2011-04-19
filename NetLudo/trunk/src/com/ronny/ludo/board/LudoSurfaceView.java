@@ -8,6 +8,8 @@ package com.ronny.ludo.board;
  * 
  * http://www.youtube.com/watch?v=N6YdwzAvwOA&feature=player_embedded
  */
+import java.util.Vector;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -56,6 +58,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	private int currentThrow = 0;
 
 	private LudoActivity parentActivity = null;
+	
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -108,9 +111,9 @@ public class LudoSurfaceView extends SurfaceView implements
 			if(pickingPiece) {
 				// Check if we got something.
 				// 	pickingColor is the current piece color which can be moved
+	            boolean flyttetOK = handleMove(event.getX(), event.getY());
+	            Log.d("TouchEvent", "----------------- " + flyttetOK + " ----------------------------------");
 			}
-            boolean flyttetOK = handleMove(event.getX(), event.getY());
-            Log.d("TouchEvent", "----------------- " + flyttetOK + " ----------------------------------");
 		}
 
 		return true;
@@ -163,6 +166,7 @@ public class LudoSurfaceView extends SurfaceView implements
             boolean bo = pp.canPieceMove(currentThrow);
         	if(bo) {
         		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
+        		GameHolder.getInstance().getMessageBroker().distributeMessage("G,M,"+ GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() + "," + currentThrow);
         		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
         		parentActivity.resetDie(); //
@@ -649,6 +653,7 @@ public class LudoSurfaceView extends SurfaceView implements
 	public void setThrow(int eyes)
 	{
 		currentThrow = eyes;
+		GameHolder.getInstance().getMessageBroker().distributeMessage("G,T,"+ GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() + "," + currentThrow);
 	}
 	
 	@SuppressWarnings("unused")

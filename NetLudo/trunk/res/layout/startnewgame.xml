@@ -13,13 +13,13 @@
     	android:layout_width="wrap_content" 
     	android:layout_height="wrap_content" 
     	android:layout_gravity="center_horizontal"
+    	android:layout_marginTop="10dip"
     	>
     	<ImageView 
     		android:id="@+id/imageViewL" 
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:src="@drawable/l" 
-    		android:layout_marginTop="30px"
     		>
     	</ImageView>    		
     	<ImageView 
@@ -27,7 +27,6 @@
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:src="@drawable/u" 
-    		android:layout_marginTop="30px"
     		>
     	</ImageView>
     	<ImageView 
@@ -35,7 +34,6 @@
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:src="@drawable/d" 
-    		android:layout_marginTop="30px"
     		>
     	</ImageView>    		
     	<ImageView 
@@ -43,7 +41,6 @@
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:src="@drawable/o" 
-    		android:layout_marginTop="30px"
     		>
     	</ImageView>
     </LinearLayout>        
@@ -54,7 +51,7 @@
     	android:orientation="vertical"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:layout_marginTop="10pt"
+    	android:layout_marginTop="10dip"
     	>
 		<TextView 
     		android:id="@+id/textIp" 
@@ -62,7 +59,7 @@
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:textStyle="bold"
-    		android:layout_marginLeft="3pt" 
+    		android:layout_marginLeft="3dip" 
     		>
     	</TextView>
 		<RelativeLayout 
@@ -82,9 +79,9 @@
 				android:tag="@string/start_edittext_ip" 
 				android:text="@string/start_edittext_ip"
 				android:selectAllOnFocus="true"
-				android:minWidth="15px"
+				android:minWidth="15dip"
 				android:singleLine="true"
-				android:layout_marginLeft="3pt" 
+				android:layout_marginLeft="3dip" 
 				>
 			</EditText>
 	    	<Button 
@@ -93,7 +90,7 @@
 	    		android:layout_width="wrap_content" 
 	    		android:id="@+id/buttonIP" 
 	    		android:layout_height="wrap_content"
-	    		android:layout_marginRight="3pt" 
+	    		android:layout_marginRight="3dip" 
 	    		>
 	    	</Button>	
 		</RelativeLayout>
@@ -103,8 +100,8 @@
 	    		android:layout_width="fill_parent" 
 	    		android:id="@+id/imageViewSplitter2" 
 	    		android:scaleType="fitXY" 
-	    		android:layout_marginBottom="4pt" 
-	    		android:layout_marginTop="4pt"
+	    		android:layout_marginBottom="4dip" 
+	    		android:layout_marginTop="4dip"
 	    		>
 			</ImageView>    	
 	</LinearLayout>
@@ -122,7 +119,7 @@
 			android:text="@string/start_text_players" 
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
-    		android:layout_marginLeft="3pt" 
+    		android:layout_marginLeft="3dip" 
     		android:textStyle="bold"
     		>
     	</TextView>  
@@ -138,8 +135,8 @@
 	    		android:id="@+id/imageButtonPlayerRed" 
 	    		android:layout_height="wrap_content" 
 	    		android:layout_width="wrap_content"
-	    		android:layout_marginLeft="3pt" 
-	    		android:layout_marginRight="3pt"
+	    		android:layout_marginLeft="3dip" 
+	    		android:layout_marginRight="3dip"
 	    		android:background="@null" 
 	    		android:src="@drawable/player_red_local"
 	    		android:clickable="false">
@@ -149,8 +146,8 @@
 	    		android:src="@drawable/player_green_unchecked"
 	    		android:layout_height="wrap_content" 
 	    		android:layout_width="wrap_content"
-	    		android:layout_marginLeft="3pt" 
-	    		android:layout_marginRight="3pt"
+	    		android:layout_marginLeft="3dip" 
+	    		android:layout_marginRight="3dip"
 	    		android:background="@null"
 	    		>
 	    	</ImageButton>
@@ -159,8 +156,8 @@
 	    		android:src="@drawable/player_yellow_unchecked"
 	    		android:layout_height="wrap_content" 
 	    		android:layout_width="wrap_content"
-	    		android:layout_marginLeft="3pt" 
-	    		android:layout_marginRight="3pt"
+	    		android:layout_marginLeft="3dip" 
+	    		android:layout_marginRight="3dip"
 	    		android:background="@null"
 	    		>
 	    	</ImageButton>
@@ -169,8 +166,8 @@
 	    		android:src="@drawable/player_blue_unchecked"
 	    		android:layout_height="wrap_content" 
 	    		android:layout_width="wrap_content"
-	    		android:layout_marginLeft="3pt" 
-	    		android:layout_marginRight="3pt"
+	    		android:layout_marginLeft="3dip" 
+	    		android:layout_marginRight="3dip"
 	    		android:background="@null"
 	    		>
 	    	</ImageButton>
@@ -188,8 +185,8 @@
 				android:layout_width="wrap_content" 
 				android:src="@drawable/local32" 
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="3pt" 
-	    		android:layout_marginRight="3pt"
+				android:layout_marginLeft="3dip" 
+	    		android:layout_marginRight="3dip"
 				android:layout_gravity="center_vertical"
 				>
 			</ImageView>
@@ -206,8 +203,8 @@
 				android:layout_width="wrap_content" 
 				android:src="@drawable/remote32" 
 				android:layout_height="wrap_content"
-	    		android:layout_marginLeft="3pt" 
-	    		android:layout_marginRight="3pt"		
+	    		android:layout_marginLeft="3dip" 
+	    		android:layout_marginRight="3dip"		
 	    		android:layout_gravity="center_vertical"		
 				>
 			</ImageView>
@@ -232,8 +229,8 @@
 				android:id="@+id/textViewPlayerInfo" 
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="3pt" 
-				android:textSize="5pt">
+				android:layout_marginLeft="3dip" 
+				android:textSize="10dip">
 			</TextView>			
 		</LinearLayout>
     	<ImageView 
@@ -242,8 +239,8 @@
     		android:layout_width="fill_parent" 
     		android:id="@+id/imageViewSplitter3" 
     		android:scaleType="fitXY" 
-    		android:layout_marginBottom="4pt" 
-    		android:layout_marginTop="4pt"
+    		android:layout_marginBottom="4dip" 
+    		android:layout_marginTop="4dip"
     		>
 		</ImageView>    	
 	</LinearLayout>

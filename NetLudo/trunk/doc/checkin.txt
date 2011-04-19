@@ -1,7 +1,10 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
-
+20110419: RØ
+		Endelig fått dreis på knappene.
+		Har også gjort litt småsnacks i LudoSurface og LudoActivity, som å hindre at man kan flytte brikke uten å kaste på nytt.
+		Sett litt på registrering av lokale spillere, men kom ikke så langt med det.
 20110419: RØ
 		Nye knapper i LudoActivity. Har ikke fått plassert de akkurat der jeg vil ennå.
 20110418: KEM

@@ -101,6 +101,9 @@ public class LudoActivity extends Activity {
 		
 		initDie();
 		
+		//Dette må vi kun gjøre for current player
+		resetDie();
+		
 		//TEST
 		// Test av mod
 //		int start = 0;
@@ -292,16 +295,35 @@ public class LudoActivity extends Activity {
 
 	public void resetDie()
 	{
+		surface.setPickingPiece(false);
 		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
-		imgButtonDie.setBackgroundResource(R.drawable.die);
+		//imgButtonDie.setBackgroundResource(R.drawable.die);
 		imgButtonDie.setEnabled(true);
+		imgButtonDie.clearAnimation();
+		imgButtonDie.setBackgroundResource(R.drawable.die_roll_anim);
+    	final AnimationDrawable frameAnimation = (AnimationDrawable) imgButtonDie.getBackground();
+    	imgButtonDie.post(new Runnable()
+        {
+			public void run()
+			{
+				frameAnimation.start();
+			}  		        
+        });
+		
+	}
+	
+	public void setDie(int eyes)
+	{
+		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
+		int id = getResources().getIdentifier("die" + eyes, "drawable", "com.ronny.ludo");
+		imgButtonDie.setBackgroundResource(id);
 	}
 	
 	public void setCurrentPlayer(PlayerColor color)
 	{
 		//Kanskje vise location også?
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
-		int id = getResources().getIdentifier("player_" + color.getColorAsString(), "drawable", "com.ronny.ludo");
+		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");
 		imageCurrentPlayer.setBackgroundResource(id);
 	}
 	
@@ -336,6 +358,7 @@ public class LudoActivity extends Activity {
 	    		        mp.start();
 	    				frameAnimation.start();
 	    				surface.setThrow(eyes);
+	    				surface.setPickingPiece(true);
 	    			}  		        
 	            });
 			}

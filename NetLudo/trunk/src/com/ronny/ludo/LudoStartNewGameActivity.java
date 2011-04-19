@@ -33,21 +33,21 @@ import com.ronny.ludo.model.TurnManager.PlayerLocation;
  */
 public class LudoStartNewGameActivity extends Activity {
 	
-	private class Players
+	private class HelperPlayers
 	{
-		private Vector<Player> players = new Vector<Player>();
+		private Vector<HelperPlayer> players = new Vector<HelperPlayer>();
 		
-		public Players()
+		public HelperPlayers()
 		{}
 		
-		public void addPlayer(Player player)
+		public void addPlayer(HelperPlayer player)
 		{
 			players.add(player);
 		}
 		
-		public Player getPlayer(PlayerColor playerColor)
+		public HelperPlayer getPlayer(PlayerColor playerColor)
 		{
-			for (Player p:players) 
+			for (HelperPlayer p:players) 
 			{
 				if(p.getPlayerColor()==playerColor)
 				{
@@ -57,9 +57,9 @@ public class LudoStartNewGameActivity extends Activity {
 			return null;
 		}
 		
-		public Player getPlayer(ImageButton playerButton)
+		public HelperPlayer getPlayer(ImageButton playerButton)
 		{
-			for (Player p:players) 
+			for (HelperPlayer p:players) 
 			{
 				if(p.getPlayerButton().getId()==playerButton.getId())
 				{
@@ -69,7 +69,7 @@ public class LudoStartNewGameActivity extends Activity {
 			return null;
 		}
 		
-		public Vector<Player> getPlayers()
+		public Vector<HelperPlayer> getPlayers()
 		{
 			return players;
 		}
@@ -77,11 +77,11 @@ public class LudoStartNewGameActivity extends Activity {
 	/**
 	 * 
 	 */
-	private class Player {
+	private class HelperPlayer {
 		private ImageButton playerButton;
 		private PlayerColor playerColor;
 
-		public Player(PlayerColor playerColor, ImageButton playerButton) {
+		public HelperPlayer(PlayerColor playerColor, ImageButton playerButton) {
 			this.playerColor = playerColor;
 			this.playerButton = playerButton;
 			GameHolder.getInstance().getTurnManager().addPlayer(playerColor);
@@ -129,7 +129,7 @@ public class LudoStartNewGameActivity extends Activity {
 	private EditText editTextIP = null;
 	private Button buttonPlayGame = null;
 	private Button buttonInvite = null;
-	private Players players = new Players();
+	private HelperPlayers players = new HelperPlayers();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -178,10 +178,10 @@ public class LudoStartNewGameActivity extends Activity {
 		buttonInvite = (Button) findViewById(R.id.buttonIP);
 		buttonPlayGame = (Button) findViewById(R.id.buttonPlayGame);
 		
-		players.addPlayer(new Player(PlayerColor.RED, (ImageButton) findViewById(R.id.imageButtonPlayerRed)));
-		players.addPlayer(new Player(PlayerColor.GREEN, (ImageButton) findViewById(R.id.imageButtonPlayerGreen)));
-		players.addPlayer(new Player(PlayerColor.YELLOW, (ImageButton) findViewById(R.id.imageButtonPlayerYellow)));
-		players.addPlayer(new Player(PlayerColor.BLUE, (ImageButton) findViewById(R.id.imageButtonPlayerBlue)));
+		players.addPlayer(new HelperPlayer(PlayerColor.RED, (ImageButton) findViewById(R.id.imageButtonPlayerRed)));
+		players.addPlayer(new HelperPlayer(PlayerColor.GREEN, (ImageButton) findViewById(R.id.imageButtonPlayerGreen)));
+		players.addPlayer(new HelperPlayer(PlayerColor.YELLOW, (ImageButton) findViewById(R.id.imageButtonPlayerYellow)));
+		players.addPlayer(new HelperPlayer(PlayerColor.BLUE, (ImageButton) findViewById(R.id.imageButtonPlayerBlue)));
 		players.getPlayer(PlayerColor.RED).setLocation(PlayerLocation.LOCAL);
 		
 		ipAddressCurrent = new IPAddressHelper().getLocalIpAddress();
@@ -250,7 +250,7 @@ public class LudoStartNewGameActivity extends Activity {
 		{
 			public void onClick(View v) {
 
-				Player player = players.getPlayer((ImageButton)v);
+				HelperPlayer player = players.getPlayer((ImageButton)v);
 				
 				// Check remote - if not local/free, then forget.
 				if (GameHolder.getInstance().getTurnManager().isRemote(player.getPlayerColor())){
@@ -280,7 +280,7 @@ public class LudoStartNewGameActivity extends Activity {
 				}
 			}
 		};
-		for(Player p:players.getPlayers())
+		for(HelperPlayer p:players.getPlayers())
 		{
 			p.getPlayerButton().setOnClickListener(listener);
 		}
@@ -330,57 +330,70 @@ public class LudoStartNewGameActivity extends Activity {
 
 				// Test p� turn-manager om den holder vann...
 				// PlayerColor p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","Player: "
+				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
 				// + p.toString());
 				// p =
 				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
 				// TEST END
 
+				
+				for(HelperPlayer p:players.getPlayers())
+				{
+					if(p.getLocation()==PlayerLocation.LOCAL)
+					{
+						//TODO Her må vi registrere de lokale spillerne
+						//Lurer på hvordan vi gjør det?
+						GameHolder.getInstance().getMessageBroker().sendPlayerConnected(p.getPlayerColor());	
+					}
+						
+				}
+				
+				
 				// Closeregistation
 				GameHolder.getInstance().getMessageManager().closeRegistration();
 				
