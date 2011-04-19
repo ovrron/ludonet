@@ -3,6 +3,9 @@ package com.ronny.ludo.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
+
+
 import android.util.Log;
 
 
@@ -170,9 +173,6 @@ public class Game  {
 	 * 
 	 * @param color
 	 */
-	public void setLocalPlayerColor(PlayerColor color) {
-		localPlayer = getLudoBoard().getPlayer(color);
-	}
 
 	// Listener sink for event.
 	public void ludoActionEvent(IGameEvent event) {
@@ -318,17 +318,29 @@ public class Game  {
 	public IPiece getPieceNearPos(int xPos, int yPos, double delta) {
 		IPiece retP = null;
 		int brikkeNo = 0;
-		IPlayer player = getLudoBoard().getPlayer(getcurrentTurnColor());
+		delta = delta * 2; // Større testflate for treff.
+		PlayerColor currentColor =  GameHolder.getInstance().getTurnManager().getCurrentPlayerColor();
+		IPlayer player = getLudoBoard().getPlayer(currentColor);
+		double retAvst = 9000.0; 
+		double thisAvst = 0.0; 
 		for (IPiece brikke : player.getBrikker()) {
 		    if (brikke.isEnabled()) {
 		        Coordinate c = brikke.getCurrentPosition();
 		        Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + ": " + c.x + "," + c.y);
+
+		        // Punkt er innenfor yttergrensene til brikke
 		        if (((c.x - delta) < xPos) && ((c.x + delta) > xPos) && ((c.y - delta) < yPos)
 		                && ((c.y + delta) > yPos)) {
-		            retP = brikke; 
-		            Log.d("getPieceNearPos(LB)", "handleMove: farge: " + getcurrentTurnColor());
-		            Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + " skal flyttes.");
-		            return retP;
+
+		            // Avstand fra punkt til senter av koordinat er nærmere enn andre brikker
+		            thisAvst = Math.sqrt(((xPos-c.x) * (xPos-c.x)) + ((yPos-c.y)*(yPos-c.y)));
+		            if (thisAvst<retAvst){
+		                retP = brikke;
+		                retAvst=thisAvst;
+		            }
+		            Log.d("getPieceNearPos(LB)", "handleMove: farge: " + currentColor);
+		            Log.d("getPieceNearPos(LB)", "handleMove: thisAvst: " + thisAvst);
+		            Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + " KAN  flyttes.");
 		            }
 		    }
             brikkeNo++;
