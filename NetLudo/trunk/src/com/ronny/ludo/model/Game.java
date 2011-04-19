@@ -235,13 +235,16 @@ public class Game  {
 	public void playerMove(PlayerColor theColor, int theBrikke, int theMove) {
 	    ArrayList<IPiece> pieces = new ArrayList<IPiece>();
 	    List<PieceAction> actionList = new ArrayList<PieceAction>();
+	    
 	    //Flytter current brikke
 	    IPiece brikkeFlyttet = getLudoBoard().playerMove( theColor,  theBrikke,  theMove);
+	    
 	    // Finner alle andre brikker på target posisjon
 		pieces = this.findOtherPicesAtCoordinate(brikkeFlyttet);
-		//  Tatt ut: rules.handleMove(brikkeFlyttet, pices);
+		
 		// Henter action for hver brikke på target posisjon
 		actionList = GameHolder.getInstance().getRules().getPieceActionList(brikkeFlyttet, pieces); 
+		
 		// Utfører actions for hver brikke på target posisjon
 		this.handlePieceActionList(brikkeFlyttet, pieces, actionList);
 		//setnextTurnColorTest();
