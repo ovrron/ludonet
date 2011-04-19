@@ -241,9 +241,6 @@ public class Game  {
 	    ArrayList<IPiece> pieces = new ArrayList<IPiece>();
 	    List<PieceAction> actionList = new ArrayList<PieceAction>();
 	    //Flytter current brikke
-	    if (theBrikke == -1) {
-	        theMove = LudoConstants.MOVE_FROM_HOUSE;
-	    }
 	    IPiece brikkeFlyttet = getLudoBoard().playerMove( theColor,  theBrikke,  theMove);
 	    // Finner alle andre brikker på target posisjon
 		pieces = this.findOtherPicesAtCoordinate(brikkeFlyttet);
