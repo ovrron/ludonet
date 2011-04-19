@@ -165,7 +165,7 @@ public class LudoSurfaceView extends SurfaceView implements
         		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
         		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
-        		parentActivity.resetDie();
+        		parentActivity.resetDie(); //
         		//kode for å sette curentplayer: parentActivity.setCurrentPlayer(PlayerColor color)
         	}
         }

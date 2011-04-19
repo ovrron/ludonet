@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.ronny.ludo.helper.LudoConstants;
+import com.ronny.ludo.rules.IRules;
 import com.ronny.ludo.rules.StandardRules;
 
 import android.util.Log;
@@ -43,7 +44,7 @@ public class Game  {
 	private Random randomNumbers = new Random(); // random number generator
 	private ILudoBoard ludoBoard = new LudoBoard();
 	private String gameImageName = null;
-	private StandardRules rules = new StandardRules();
+	private IRules rules = new StandardRules();
 	
 	// PLACEHOLDER for TurnManager
 	//private TurnManager turnManager = new TurnManager();
@@ -61,13 +62,17 @@ public class Game  {
 
 	public Game() {
 		// Set up game
+		rules.setTakeOffNumbers(2,4,6);
 	}
 	
 	public void startGame() {
 		
 	}
 
-	
+	public IRules getRules()
+	{
+		return rules;
+	}
 	
 	/**
 	 *  Returnere en spiller basert på farge

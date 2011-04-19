@@ -294,6 +294,7 @@ public class LudoActivity extends Activity {
 	{
 		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
 		imgButtonDie.setBackgroundResource(R.drawable.die);
+		imgButtonDie.setEnabled(true);
 	}
 	
 	public void setCurrentPlayer(PlayerColor color)
@@ -312,6 +313,7 @@ public class LudoActivity extends Activity {
 		{
 			public void onClick(View v)
 			{
+				imgButtonDie.setEnabled(false);
 				imgButtonDie.setImageBitmap(null);
 				final int eyes = die.roll();
 				int animationId = getResources().getIdentifier("die"+eyes+"anim", "drawable", "com.ronny.ludo");

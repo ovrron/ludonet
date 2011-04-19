@@ -23,7 +23,7 @@ public class Piece implements IPiece{
 	
 	//TODO denne må beregnes etter hvert flytt
 	private boolean isOnWayToGoal = false; // true hvis brikke er på tur i mål
-	private StandardRules rules = new StandardRules();
+	//private StandardRules rules = new StandardRules();
 	
 //	@SuppressWarnings("unused")
 //	private boolean isOnWayHome = false; // true hvis brikke er i mål
@@ -199,7 +199,7 @@ public class Piece implements IPiece{
 
 	public boolean canPieceMove(int numPos) {
 	    Boolean ret=false;
-	    ret = rules.isLegalMove(this, numPos);
+	    ret = GameHolder.getInstance().getGame().getRules().isLegalMove(this, numPos);
 	    return ret; 
 //		if ( (boardPosition + numPos) > (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
 //			return false;
