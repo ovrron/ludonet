@@ -1,6 +1,9 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+
+20110419: RØ
+		Nye knapper i LudoActivity. Har ikke fått plassert de akkurat der jeg vil ennå.
 20110418: KEM
 		StandardRules: ny metode getPieceActionList der regler returnerer mulig actions på brikker
 		Game: ny metode handlePieceActionList utfører actions på brikker.
