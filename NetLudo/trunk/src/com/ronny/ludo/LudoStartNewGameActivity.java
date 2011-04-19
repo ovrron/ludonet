@@ -1,5 +1,7 @@
 package com.ronny.ludo;
 
+import java.util.Vector;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -17,6 +19,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.ronny.ludo.helper.IPAddressHelper;
 import com.ronny.ludo.model.GameHolder;
@@ -29,33 +32,96 @@ import com.ronny.ludo.model.TurnManager.PlayerLocation;
  * 
  */
 public class LudoStartNewGameActivity extends Activity {
+	
+	private class Players
+	{
+		private Vector<Player> players = new Vector<Player>();
+		
+		public Players()
+		{}
+		
+		public void addPlayer(Player player)
+		{
+			players.add(player);
+		}
+		
+		public Player getPlayer(PlayerColor playerColor)
+		{
+			for (Player p:players) 
+			{
+				if(p.getPlayerColor()==playerColor)
+				{
+					return p;
+				}
+			}
+			return null;
+		}
+		
+		public Player getPlayer(ImageButton playerButton)
+		{
+			for (Player p:players) 
+			{
+				if(p.getPlayerButton().getId()==playerButton.getId())
+				{
+					return p;
+				}
+			}
+			return null;
+		}
+		
+		public Vector<Player> getPlayers()
+		{
+			return players;
+		}
+	}
 	/**
-	 * 
-	 * @author ovrron Hjelpeklasse for å teste ut valgene på spillerne Må vel
-	 *         ta i bruk en framtidig turnmanager isteden kanskje
 	 * 
 	 */
 	private class Player {
-		private ImageButton button;
-		PlayerColor color;
+		private ImageButton playerButton;
+		private PlayerColor playerColor;
 
-		public Player(PlayerColor col, ImageButton button) {
-			this.color = col;
-			this.button = button;
+		public Player(PlayerColor playerColor, ImageButton playerButton) {
+			this.playerColor = playerColor;
+			this.playerButton = playerButton;
+			GameHolder.getInstance().getTurnManager().addPlayer(playerColor);
 		}
 
 		// Lokal er alltid connected. Dersom ekstern spiller er tilkoplet må
 		// også denne kalles
 		public void setConnected(boolean connected) {
 			if (connected) {
-				startPlayerFrameAnimation(button);
+				startPlayerFrameAnimation(playerButton);
 			} else {
-				stopPlayerFrameAnimation(button);
+				stopPlayerFrameAnimation(playerButton);
 			}
 		}
-
+		public void setLocation(PlayerLocation playerLocation)
+		{
+			GameHolder.getInstance().getTurnManager().setLoaction(playerColor, playerLocation);
+			setPlayerState(playerLocation, playerButton);
+			if(playerLocation==PlayerLocation.LOCAL)
+			{
+				setConnected(true);
+			}
+			else if(playerLocation==PlayerLocation.FREE)
+			{
+				setConnected(false);
+			}
+		}
+		
 		public PlayerLocation getLocation() {
-			return GameHolder.getInstance().getTurnManager().getLocation(color);
+			return GameHolder.getInstance().getTurnManager().getLocation(playerColor);
+		}
+		
+		public PlayerColor getPlayerColor()
+		{
+			return playerColor;
+		}
+		
+		public ImageButton getPlayerButton()
+		{
+			return playerButton;
 		}
 	}
 
@@ -63,14 +129,7 @@ public class LudoStartNewGameActivity extends Activity {
 	private EditText editTextIP = null;
 	private Button buttonPlayGame = null;
 	private Button buttonInvite = null;
-	private ImageButton imageButtonPlayerRed = null;
-	private ImageButton imageButtonPlayerGreen = null;
-	private ImageButton imageButtonPlayerYellow = null;
-	private ImageButton imageButtonPlayerBlue = null;
-	private Player playerRed = null;
-	private Player playerGreen = null;
-	private Player playerYellow = null;
-	private Player playerBlue = null;
+	private Players players = new Players();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -118,36 +177,30 @@ public class LudoStartNewGameActivity extends Activity {
 		editTextIP = (EditText) findViewById(R.id.editTextIP);
 		buttonInvite = (Button) findViewById(R.id.buttonIP);
 		buttonPlayGame = (Button) findViewById(R.id.buttonPlayGame);
-
-		imageButtonPlayerRed = (ImageButton) findViewById(R.id.imageButtonPlayerRed);
-		imageButtonPlayerGreen = (ImageButton) findViewById(R.id.imageButtonPlayerGreen);
-		imageButtonPlayerYellow = (ImageButton) findViewById(R.id.imageButtonPlayerYellow);
-		imageButtonPlayerBlue = (ImageButton) findViewById(R.id.imageButtonPlayerBlue);
-
-		playerRed = new Player(PlayerColor.RED, imageButtonPlayerRed);
-		playerGreen = new Player(PlayerColor.GREEN, imageButtonPlayerGreen);
-		playerYellow = new Player(PlayerColor.YELLOW, imageButtonPlayerYellow);
-		playerBlue = new Player(PlayerColor.BLUE, imageButtonPlayerBlue);
-
+		
+		players.addPlayer(new Player(PlayerColor.RED, (ImageButton) findViewById(R.id.imageButtonPlayerRed)));
+		players.addPlayer(new Player(PlayerColor.GREEN, (ImageButton) findViewById(R.id.imageButtonPlayerGreen)));
+		players.addPlayer(new Player(PlayerColor.YELLOW, (ImageButton) findViewById(R.id.imageButtonPlayerYellow)));
+		players.addPlayer(new Player(PlayerColor.BLUE, (ImageButton) findViewById(R.id.imageButtonPlayerBlue)));
+		players.getPlayer(PlayerColor.RED).setLocation(PlayerLocation.LOCAL);
+		
 		ipAddressCurrent = new IPAddressHelper().getLocalIpAddress();
 		if (ipAddressCurrent == null) {
 			editTextIP.setText(getResources().getString(
 					R.string.start_edittext_no_network));
 			buttonInvite.setEnabled(false);
 			buttonPlayGame.setEnabled(false);
-			// playerRed.setConnected(false);
 		} else {
 			editTextIP.setText(ipAddressCurrent);
 			buttonInvite.setEnabled(true);
 			buttonPlayGame.setEnabled(true);
-			// playerRed.setConnected(true);
 		}
 		
 		// Init TurnManager 
-		PlayerColor pc = GameHolder.getInstance().getTurnManager()
-				.getFreeColor(PlayerLocation.LOCAL, PlayerColor.RED, false);
+//		PlayerColor pc = GameHolder.getInstance().getTurnManager()
+//				.getFreeColor(PlayerLocation.LOCAL, PlayerColor.RED, false);
 
-		setIconForColor(pc, PlayerLocation.LOCAL);
+		//setIconForColor(pc, PlayerLocation.LOCAL);
 
 		editTextIP.setEnabled(false);
 		initImageButtonListeners();
@@ -163,174 +216,109 @@ public class LudoStartNewGameActivity extends Activity {
 	 * @param pc
 	 * @param loc
 	 */
-	private void setIconForColor(PlayerColor pc, PlayerLocation loc) {
-		switch (pc) {
-		case RED:
-			playerRed.setConnected(true);
-			break;
-		case GREEN:
-			playerGreen.setConnected(true);
-			break;
-		case YELLOW:
-			playerYellow.setConnected(true);
-			break;
-		case BLUE:
-			playerBlue.setConnected(true);
-			break;
-		}
-		if (loc == PlayerLocation.FREE) {
-			GameHolder.getInstance().getTurnManager().freeColor(pc);
-		}
-
-		// Free and allocated resources - distribute message to clients...
-		if (loc == PlayerLocation.FREE) {
-			GameHolder.getInstance().getMessageBroker()
-					.distributeMessage("A,CI," + pc.toString());
-		} else {
-			GameHolder.getInstance().getMessageBroker()
-					.distributeMessage("A,CO," + pc.toString());
-		}
-	}
+//	private void setIconForColor(PlayerColor pc, PlayerLocation loc) {
+//		switch (pc) {
+//		case RED:
+//			playerRed.setConnected(true);
+//			break;
+//		case GREEN:
+//			playerGreen.setConnected(true);
+//			break;
+//		case YELLOW:
+//			playerYellow.setConnected(true);
+//			break;
+//		case BLUE:
+//			playerBlue.setConnected(true);
+//			break;
+//		}
+//		if (loc == PlayerLocation.FREE) {
+//			GameHolder.getInstance().getTurnManager().freeColor(pc);
+//		}
+//
+//		// Free and allocated resources - distribute message to clients...
+//		if (loc == PlayerLocation.FREE) {
+//			GameHolder.getInstance().getMessageBroker()
+//					.distributeMessage("A,CI," + pc.toString());
+//		} else {
+//			GameHolder.getInstance().getMessageBroker()
+//					.distributeMessage("A,CO," + pc.toString());
+//		}
+//	}
 
 	private void initImageButtonListeners() {
-		// ,imageButtonPlayerRed.setOnClickListener(imageButtonListener);
-
-		imageButtonPlayerRed.setOnClickListener(new OnClickListener() {
+		OnClickListener listener = new OnClickListener() 
+		{
 			public void onClick(View v) {
 
+				Player player = players.getPlayer((ImageButton)v);
+				
 				// Check remote - if not local/free, then forget.
-				if (GameHolder.getInstance().getTurnManager().isRemote(PlayerColor.RED)) {
+				if (GameHolder.getInstance().getTurnManager().isRemote(player.getPlayerColor())){
+					Toast.makeText(v.getContext(), R.string.start_toast_remote_player, Toast.LENGTH_LONG);
 					return;
 				}
 
 				// No remote issues here - check local
-
 				// Check locally on/off
 				if (GameHolder.getInstance().getTurnManager()
-						.isFree(PlayerColor.RED)) {
+						.isFree(player.getPlayerColor())) {
 					// If free - then allocate the color and set local image.
 					PlayerColor pc = GameHolder
 							.getInstance()
 							.getTurnManager()
 							.getFreeColor(PlayerLocation.LOCAL,
-									PlayerColor.RED, false);
+									player.getPlayerColor(), false);
 					// I could could allocate -
 					if (pc != PlayerColor.NONE) {
 						// Place the house on, and start anim
-						playerRed.setConnected(true);
+						player.setLocation(PlayerLocation.LOCAL);
 					}
 				} else {
 					// Already allocated => free the color, remove the house and
 					// stop anim
-					playerRed.setConnected(false);
-					GameHolder.getInstance().getTurnManager()
-							.freeColor(PlayerColor.RED);
+					player.setLocation(PlayerLocation.FREE);
 				}
 			}
-		});
-
-		imageButtonPlayerGreen.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-
-				// Check remote - if not local/free, then forget.
-				if (GameHolder.getInstance().getTurnManager()
-						.isRemote(PlayerColor.GREEN)) {
-					return;
-				}
-
-				// No remote issues here - check local
-
-				// Check locally on/off
-				if (GameHolder.getInstance().getTurnManager()
-						.isFree(PlayerColor.GREEN)) {
-					// If free - then allocate the color and set local image.
-					PlayerColor pc = GameHolder
-							.getInstance()
-							.getTurnManager()
-							.getFreeColor(PlayerLocation.LOCAL,
-									PlayerColor.GREEN, false);
-					// I could could allocate -
-					if (pc != PlayerColor.NONE) {
-						// Place the house on, and start anim
-						playerGreen.setConnected(true);
-					}
-				} else {
-					// Already allocated => free the color, remove the house and
-					// stop anim
-					playerGreen.setConnected(false);
-					GameHolder.getInstance().getTurnManager()
-							.freeColor(PlayerColor.GREEN);
-				}
-			}
-		});
-		imageButtonPlayerYellow.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-
-				// Check remote - if not local/free, then forget.
-				if (GameHolder.getInstance().getTurnManager()
-						.isRemote(PlayerColor.YELLOW)) {
-					return;
-				}
-
-				// No remote issues here - check local
-
-				// Check locally on/off
-				if (GameHolder.getInstance().getTurnManager()
-						.isFree(PlayerColor.YELLOW)) {
-					// If free - then allocate the color and set local image.
-					PlayerColor pc = GameHolder
-							.getInstance()
-							.getTurnManager()
-							.getFreeColor(PlayerLocation.LOCAL,
-									PlayerColor.YELLOW, false);
-					// I could could allocate -
-					if (pc != PlayerColor.NONE) {
-						// Place the house on, and start anim
-						playerYellow.setConnected(true);
-					}
-				} else {
-					// Already allocated => free the color, remove the house and
-					// stop anim
-					playerYellow.setConnected(false);
-					GameHolder.getInstance().getTurnManager()
-							.freeColor(PlayerColor.YELLOW);
-				}
-			}
-		});
-		imageButtonPlayerBlue.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-
-				// Check remote - if not local/free, then forget.
-				if (GameHolder.getInstance().getTurnManager()
-						.isRemote(PlayerColor.BLUE)) {
-					return;
-				}
-
-				// No remote issues here - check local
-
-				// Check locally on/off
-				if (GameHolder.getInstance().getTurnManager()
-						.isFree(PlayerColor.BLUE)) {
-					// If free - then allocate the color and set local image.
-					PlayerColor pc = GameHolder
-							.getInstance()
-							.getTurnManager()
-							.getFreeColor(PlayerLocation.LOCAL,
-									PlayerColor.BLUE, false);
-					// I could could allocate -
-					if (pc != PlayerColor.NONE) {
-						// Place the house on, and start anim
-						playerBlue.setConnected(true);
-					}
-				} else {
-					// Already allocated => free the color, remove the house and
-					// stop anim
-					playerBlue.setConnected(false);
-					GameHolder.getInstance().getTurnManager()
-							.freeColor(PlayerColor.BLUE);
-				}
-			}
-		});
+		};
+		for(Player p:players.getPlayers())
+		{
+			p.getPlayerButton().setOnClickListener(listener);
+		}
+//		imageButtonPlayerRed.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//
+//				// Check remote - if not local/free, then forget.
+//				if (GameHolder.getInstance().getTurnManager().isRemote(PlayerColor.RED)) {
+//					return;
+//				}
+//
+//				// No remote issues here - check local
+//
+//				// Check locally on/off
+//				if (GameHolder.getInstance().getTurnManager()
+//						.isFree(PlayerColor.RED)) {
+//					// If free - then allocate the color and set local image.
+//					PlayerColor pc = GameHolder
+//							.getInstance()
+//							.getTurnManager()
+//							.getFreeColor(PlayerLocation.LOCAL,
+//									PlayerColor.RED, false);
+//					// I could could allocate -
+//					if (pc != PlayerColor.NONE) {
+//						// Place the house on, and start anim
+//						//playerRed.setConnected(true);
+//						startPlayerFrameAnimation((ImageButton)v);
+//					}
+//				} else {
+//					// Already allocated => free the color, remove the house and
+//					// stop anim
+//					//playerRed.setConnected(false);
+//					stopPlayerFrameAnimation((ImageButton)v);
+//					GameHolder.getInstance().getTurnManager()
+//							.freeColor(PlayerColor.RED);
+//				}
+//			}
+//		});
 	}
 
 	/**

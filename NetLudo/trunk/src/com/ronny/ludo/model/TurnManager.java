@@ -61,10 +61,23 @@ public class TurnManager {
 
 	// Default constructor
 	public TurnManager() {
-		players.add(new APlayer(PlayerColor.RED));
-		players.add(new APlayer(PlayerColor.GREEN));
-		players.add(new APlayer(PlayerColor.YELLOW));
-		players.add(new APlayer(PlayerColor.BLUE));
+//		players.add(new APlayer(PlayerColor.RED));
+//		players.add(new APlayer(PlayerColor.GREEN));
+//		players.add(new APlayer(PlayerColor.YELLOW));
+//		players.add(new APlayer(PlayerColor.BLUE));
+	}
+	
+	
+	/**
+	 * Legger til en spillerfarge
+	 * @param playerColor
+	 */
+	public void addPlayer(PlayerColor playerColor)
+	{
+		if(!players.contains(playerColor))
+		{
+			players.add(new APlayer(playerColor));
+		}
 	}
 	
 	/**
@@ -253,4 +266,14 @@ public class TurnManager {
 		}
 		return null;
 	}
+	
+	public void setLoaction(PlayerColor color, PlayerLocation location)
+	{
+		for (APlayer pl : players) {
+			if (pl.getColor() == color) {
+				pl.setLocation(location);
+			}
+		}
+	}
+
 }
