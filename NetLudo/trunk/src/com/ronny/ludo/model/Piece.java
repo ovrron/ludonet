@@ -199,7 +199,7 @@ public class Piece implements IPiece{
 
 	public boolean canPieceMove(int numPos) {
 	    Boolean ret=false;
-	    ret = GameHolder.getInstance().getGame().getRules().isLegalMove(this, numPos);
+	    ret = GameHolder.getInstance().getRules().isLegalMove(this, numPos);
 	    return ret; 
 //		if ( (boardPosition + numPos) > (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
 //			return false;
