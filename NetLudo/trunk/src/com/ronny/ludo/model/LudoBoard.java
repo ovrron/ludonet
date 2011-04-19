@@ -39,6 +39,9 @@ public class LudoBoard implements ILudoBoard {
 	public IPiece playerMove(PlayerColor theColor, int theBrikke, int theMove) {
 		IPlayer p = getPlayer(theColor);
 		IPiece b = p.getBrikker()[theBrikke];
+	    if (b.isHome()) {
+	        theMove = LudoConstants.MOVE_FROM_HOUSE;
+	    }
 		if (theMove > 6) {
 			// Command move
 			switch(theMove) {
