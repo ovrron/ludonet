@@ -59,7 +59,7 @@ public class LudoActivity extends Activity {
 		
 		
 		// HER SKAL VI HA VALGT ET GAME - SOM ER OPPRETTET TIDLIGERE....
-		// VI LEGGER DET INN HER FOR Å FÅ TING TIL Å SNURRE
+		// VI LEGGER DET INN HER FOR ï¿½ Fï¿½ TING TIL ï¿½ SNURRE
 		GameHolder.getInstance().setGame(new Game());
 		
 		
