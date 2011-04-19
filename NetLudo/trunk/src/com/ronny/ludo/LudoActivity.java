@@ -301,7 +301,7 @@ public class LudoActivity extends Activity {
 	{
 		//Kanskje vise location også?
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
-		int id = getResources().getIdentifier("player_" + color.getColorAsString() + "_unchecked", "drawable", "com.ronny.ludo");
+		int id = getResources().getIdentifier("player_" + color.getColorAsString(), "drawable", "com.ronny.ludo");
 		imageCurrentPlayer.setBackgroundResource(id);
 	}
 	

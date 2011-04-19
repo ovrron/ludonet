@@ -39,25 +39,21 @@
 			android:layout_alignParentLeft="true"
 			android:orientation="horizontal"
 			android:background="@drawable/borderdie" 
-	       	android:layout_marginBottom="20px" 
-			android:layout_marginLeft="20px"
-			android:padding="5px"
 		    >
 		    <ImageView 
 	    		android:id="@+id/imagePlayerCurrent" 
-		        android:layout_width="50px"
-	    	    android:layout_height="50px"
-	        	android:layout_marginLeft="5px"
-	        	android:background="@drawable/player_red_unchecked" 
+		        android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	        	android:background="@drawable/player_red_new" 
 	    		>
 	    	</ImageView>
 		    <ImageButton 
 				android:id="@+id/imageButtonDie"
-		        android:layout_width="50px"
-	    	    android:layout_height="50px"
-	    	    android:background="@drawable/die"
-	        	android:layout_marginLeft="10px"
-	        	android:layout_marginRight="15px"
+		        android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_marginRight="5dip"
+	    	    android:layout_marginLeft="10dip"
+	    	    android:background="@drawable/die_new"
 				>
 			</ImageButton>
 	    </LinearLayout>
