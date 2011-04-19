@@ -38,13 +38,15 @@
 			android:layout_alignParentBottom="true" 
 			android:layout_alignParentLeft="true"
 			android:orientation="horizontal"
+			android:layout_marginLeft="8dip"
+			android:layout_marginBottom="8dip"
 			android:background="@drawable/borderdie" 
 		    >
 		    <ImageView 
 	    		android:id="@+id/imagePlayerCurrent" 
 		        android:layout_width="wrap_content"
 	    	    android:layout_height="wrap_content"
-	        	android:background="@drawable/player_red_new" 
+	        	android:background="@drawable/player_red" 
 	    		>
 	    	</ImageView>
 		    <ImageButton 
@@ -53,7 +55,7 @@
 	    	    android:layout_height="wrap_content"
 	    	    android:layout_marginRight="5dip"
 	    	    android:layout_marginLeft="10dip"
-	    	    android:background="@drawable/die_new"
+	    	    android:background="@drawable/die"
 				>
 			</ImageButton>
 	    </LinearLayout>
