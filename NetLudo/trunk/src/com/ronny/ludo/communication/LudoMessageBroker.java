@@ -22,10 +22,10 @@ import com.ronny.ludo.model.TurnManager;
  */
 public class LudoMessageBroker {
 
+	// In V1.0, we use a static message manager to communicate to 'the world'
 	private ITeamMessageManager currentServer = null;
-	// private ILudoMessageReceiver messageReceiver = null;
-	// private Vector<Handler> messageReceivers = new
-	// Vector<ILudoMessageReceiver>();
+
+	// messageReceivers are clients to the broker - that would be on the corrent phone.
 	private Vector<Handler> messageReceivers = new Vector<Handler>();
 
 	public LudoMessageBroker(ITeamMessageManager msgServer) {
@@ -169,6 +169,8 @@ public class LudoMessageBroker {
 		 * 		A,CI,<color> 
 		 * CO - Client is checking out (disconnect) - with color
 		 * 		A,CO,<color>
+		 * COS - Server is disconnecting/closing down
+		 * 		A,COS
 		 * C  - Client is asking for color (C)
 		 * 		A,C,<color>
 		 * CA - Color allocated
@@ -194,7 +196,7 @@ public class LudoMessageBroker {
 		if (messageParts[0].equals("G")) { // Game messages
 			if (messageParts[1].equals("T")) {
 				// Terning kastet - melding til alle
-
+				sendMessageToBrokerListeners(message.toString());
 			}
 			if (messageParts[1].equals("M")) {
 				// Flytt en brikke
@@ -204,6 +206,8 @@ public class LudoMessageBroker {
 				int theMove = Integer.parseInt(messageParts[4]);
 				// isDistributing = false;
 				GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
+				// TODO  Skal denne innover ?
+				//sendMessageToBrokerListeners(message.toString());
 			}
 		}
 		// **************************
@@ -225,34 +229,49 @@ public class LudoMessageBroker {
 				pc = GameHolder.getInstance().getTurnManager().getFreeColor(TurnManager.PlayerLocation.REMOTE,plc,true);
 				// Send answer to client klient
 				currentServer.sendMessageToClient("A,CA," + pc.toString(), clientId);
+				// Send info to local listeners - color taken
+				sendMessageToBrokerListeners("A,CT,"+pc.toString());
 			}
 
 			// Client is checking in with a color
 			if (messageParts[1].equals("CI")) {
 				Log.d("Ludo(C):", clientId + " Checking in with color "
 						+ messageParts[2]);
+				sendMessageToBrokerListeners(message.toString());
 			}
 
 			// TODO
 			if (messageParts[1].equals("CO")) {
 				// Klient sjekker ut
-				Log.d("Ludo(C):", clientId + " Checking out");
+				Log.d("Ludo(C):", clientId + " Checking out with color "
+						+ messageParts[2]);
+				GameHolder.getInstance().getTurnManager().freeColor(PlayerColor.getColorFromString(messageParts[2]));
+				sendMessageToBrokerListeners(message.toString());
 			}
 
 			// Color is taken (CT)
 			if (messageParts[1].equals("CA")) {
 				// Server har svart med farge
 				Log.d("Ludo(C):", clientId + " Got color " + messageParts[2]);
+				sendMessageToBrokerListeners(message.toString());
 			}
 			
 			// Color allocated (CA)
 			if (messageParts[1].equals("CA")) {
 				// Server har svart med farge
 				Log.d("Ludo(C):", clientId + " Got color " + messageParts[2]);
+				sendMessageToBrokerListeners(message.toString());
 			}
 		}
 
-		// Her skal meldingen ogs� distribueres videre til lyttere av BROKER
+		
+	}
+
+	/**
+	 * Send a message to all local clients (listeneres to messagebroker)
+	 * @param message
+	 */
+	public void sendMessageToBrokerListeners(String message) {
 
 		Log.d("BROKER", "Distribute message: " + message);
 
@@ -271,7 +290,6 @@ public class LudoMessageBroker {
 			}
 		}
 	}
-
 	/**
 	 * Send message to all participants.
 	 * 
@@ -303,9 +321,8 @@ public class LudoMessageBroker {
 	 * @param numMoves
 	 *            number of moves
 	 */
-	public void sendPieceMove(PlayerColor color, int pieceIndex, int numMoves) {
-		distributeMessage("G,M," + color.toString() + "," + pieceIndex + ","
-				+ numMoves);
+	public void playerMove(PlayerColor color, int pieceIndex, int numMoves) {
+		distributeMessage("G,M," + color.toString() + "," + pieceIndex + ","+ numMoves);
 	}
 
 	/**
@@ -333,6 +350,20 @@ public class LudoMessageBroker {
 	 */
 	public void sendGimmeAColor() {
 		distributeMessage("A,C");
+	}
+
+	/**
+	 * Quitting game
+	 */
+	public void quitGame() {
+		// Send message to server or clients that I'm leaving.
+		if(GameHolder.getInstance().getMessageManager().isServer()) {
+			GameHolder.getInstance().getMessageManager().sendMessageToClients("A,COS,NONE"); // Send Admin, CheckOutServer
+		} else {
+			GameHolder.getInstance().getMessageManager().sendMessageToClients("A,CO," + GameHolder.getInstance().getLocalClientColor().toString()); // Check out client color
+		}
+
+		GameHolder.getInstance().getMessageManager().disconnect();
 	}
 
 }

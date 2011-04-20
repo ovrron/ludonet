@@ -116,7 +116,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 						int y = Integer.parseInt(defs.getAttributeValue(null,
 								"y"));
 						GameHolder.getInstance().getGame().getLudoBoard().addCommon(pos, x, y);
-						Log.d("Xml load", "Board pos " + x + ", " + y);
+//						Log.d("Xml load", "Board pos " + x + ", " + y);
 					}
 				} else if (defs.getEventType() == XmlResourceParser.END_TAG) {
 					if (defs.getName().equals("commonfields")) {

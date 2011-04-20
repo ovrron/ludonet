@@ -251,7 +251,7 @@ public class LudoActivity extends Activity {
 						int y = Integer.parseInt(defs.getAttributeValue(null,
 								"y"));
 						Game.getInstance().getLudoBoard().addCommon(pos, x, y);
-						Log.d("Xml load", "Board pos " + x + ", " + y);
+//						Log.d("Xml load", "Board pos " + x + ", " + y);
 					}
 				} else if (defs.getEventType() == XmlResourceParser.END_TAG) {
 					if (defs.getName().equals("commonfields")) {
@@ -373,6 +373,7 @@ public class LudoActivity extends Activity {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 	        //Log.d(this.getClass().getName(), "back button pressed");
 			//TODO Disconnect other players
+			GameHolder.getInstance().getMessageBroker().quitGame();
 			this.finish();
 	    }
 	    return super.onKeyDown(keyCode, event);

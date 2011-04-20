@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ronny.ludo.communication.LudoMessageBroker;
 import com.ronny.ludo.communication.TeamMessageMgr;
@@ -111,8 +113,30 @@ public class LudoJoinGameActivity extends Activity {
 				if (rc == 0) {
 					// Allocate color
 					GameHolder.getInstance().getMessageBroker().sendGimmeAColor();
+				} else {
+					Toast.makeText(LudoJoinGameActivity.this,
+							"Feil med connection: "+rc,
+							Toast.LENGTH_LONG).show();
+
 				}
 			}
 		});
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	        Log.d(this.getClass().getName(), "back button pressed");
+			//TODO Disconnect other players
+			GameHolder.getInstance().getMessageBroker().quitGame();
+			this.finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
+
+	}
+
 }

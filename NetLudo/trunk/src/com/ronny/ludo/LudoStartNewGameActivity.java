@@ -33,7 +33,7 @@ import com.ronny.ludo.model.TurnManager.PlayerLocation;
  */
 public class LudoStartNewGameActivity extends Activity {
 	
-	private class HelperPlayers
+	private class HelperPlayers // Må ikke forveksles med Hjelpepleiere :-)
 	{
 		private Vector<HelperPlayer> players = new Vector<HelperPlayer>();
 		
@@ -73,6 +73,15 @@ public class LudoStartNewGameActivity extends Activity {
 		{
 			return players;
 		}
+		
+		public HelperPlayer getByColor(PlayerColor color) {
+			for(HelperPlayer pl : players) {
+				if(pl.getPlayerColor()==color) {
+					return pl;
+				}
+			}
+			return null;
+		}
 	}
 	/**
 	 * 
@@ -96,6 +105,7 @@ public class LudoStartNewGameActivity extends Activity {
 				stopPlayerFrameAnimation(playerButton);
 			}
 		}
+		
 		public void setLocation(PlayerLocation playerLocation)
 		{
 			GameHolder.getInstance().getTurnManager().setLoaction(playerColor, playerLocation);
@@ -159,13 +169,29 @@ public class LudoStartNewGameActivity extends Activity {
 			 */
 			@Override
 			public void handleMessage(Message msg) {
-				String message = msg.toString();
-				Log.d("LSNGA", "In msg: " + message);
+				String message = (String) msg.obj;
 				final String[] messageParts = message.split("\\,");
+				Log.d("LStartNewGame", "In msg: " + message);
 				if (messageParts[0].equals("A")) { // Administrative messages
-					if (messageParts[1].equals("CA")) { // Color Allocated
+					if (messageParts[1].equals("CT")) { // Color Allocated
 						PlayerColor plc = PlayerColor
 								.getColorFromString(messageParts[2]);
+						// Here, we should update the button for the color taken remotely
+						HelperPlayer thePlayer = players.getByColor(plc);
+						if(thePlayer != null) {
+							thePlayer.setConnected(true);
+							thePlayer.setLocation(PlayerLocation.REMOTE);
+						}
+					}
+					if (messageParts[1].equals("CO")) { // Client checking out
+						PlayerColor plc = PlayerColor
+								.getColorFromString(messageParts[2]);
+						// Here, we should update the button for the color taken remotely
+						HelperPlayer thePlayer = players.getByColor(plc);
+						if(thePlayer != null) {
+							thePlayer.setConnected(false);
+							thePlayer.setLocation(PlayerLocation.FREE);
+						}
 					}
 				}
 			}
@@ -569,8 +595,10 @@ public class LudoStartNewGameActivity extends Activity {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 	        //Log.d(this.getClass().getName(), "back button pressed");
 			//TODO Disconnect other players
+			GameHolder.getInstance().getMessageBroker().quitGame();
 			this.finish();
 	    }
 		return super.onKeyDown(keyCode, event);
 	}
+
 }

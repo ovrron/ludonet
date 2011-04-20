@@ -166,8 +166,11 @@ public class LudoSurfaceView extends SurfaceView implements
             boolean bo = pp.canPieceMove(currentThrow);
         	if(bo) {
         		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
-        		GameHolder.getInstance().getMessageBroker().distributeMessage("G,M,"+ GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() + "," + currentThrow);
-        		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
+        		
+        		GameHolder.getInstance().getMessageBroker().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
+        		
+//        		GameHolder.getInstance().getMessageBroker().distributeMessage("G,M,"+ GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() + "," + currentThrow);
+//        		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
         		parentActivity.resetDie(); //
         		//kode for å sette curentplayer: parentActivity.setCurrentPlayer(PlayerColor color)

@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
+
+import com.ronny.ludo.model.GameHolder;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,18 +38,35 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	public static String BUNDLE_OPERATION = "op";
 
 	public static final int ADMIN_OPERATION_NOTHING = 1000;
-	public static final int ADMIN_OPERATION_CLIENT_CONNECT = 1001; // Client connects
-	public static final int ADMIN_OPERATION_CLIENT_DISCONNECT = 1002; // Client disconnects
-	public static final int ADMIN_OPERATION_REG_OPEN = 1003; // Registration opened
-	public static final int ADMIN_OPERATION_REG_CLOSED = 1004; // Registration closed
-	public static final int ADMIN_OPERATION_CLIENT_SOCKET_NOT_CONNECTED = 1005; // Client thread is loosining the connection
-	public static final int ADMIN_OPERATION_SERVER_SOCKET_OPENED = 1006; // Server socket is opened
-	public static final int ADMIN_OPERATION_SERVER_SOCKET_CLOSED = 1007; // Server socket is closed
-	public static final int ADMIN_OPERATION_DISCONNECT = 1008; // Disconnect clients
+	public static final int ADMIN_OPERATION_CLIENT_CONNECT = 1001; // Client
+																	// connects
+	public static final int ADMIN_OPERATION_CLIENT_DISCONNECT = 1002; // Client
+																		// disconnects
+	public static final int ADMIN_OPERATION_REG_OPEN = 1003; // Registration
+																// opened
+	public static final int ADMIN_OPERATION_REG_CLOSED = 1004; // Registration
+																// closed
+	public static final int ADMIN_OPERATION_CLIENT_SOCKET_NOT_CONNECTED = 1005; // Client
+																				// thread
+																				// is
+																				// loosining
+																				// the
+																				// connection
+	public static final int ADMIN_OPERATION_SERVER_SOCKET_OPENED = 1006; // Server
+																			// socket
+																			// is
+																			// opened
+	public static final int ADMIN_OPERATION_SERVER_SOCKET_CLOSED = 1007; // Server
+																			// socket
+																			// is
+																			// closed
+	public static final int ADMIN_OPERATION_DISCONNECT = 1008; // Disconnect
+																// clients
 
 	public static final int ADMIN_OPERATION_EXCEPTION = 1010; // Some exception
 
-	public static Integer ADMIN_MESSAGE_ID = new Integer(-1); // Admin message identifier
+	public static Integer ADMIN_MESSAGE_ID = new Integer(-1); // Admin message
+																// identifier
 
 	private final static int PORTIN = 11700; // Clients connect to this
 	private String currentRole = "<none>";
@@ -70,7 +88,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	private TeamServerRegistrationListener theListener = null;
 
 	// Which role do I play ? client or server ?
-	boolean isServer = true; // Default server.
+	private boolean isServer = true; // Default server.
 
 	public TeamMessageMgr() {
 		this.setName("TeamMessageMgr");
@@ -95,16 +113,16 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	public void openRegistration() {
 		currentRole = "Server";
 		if (isInRegistratingMode) {
-			sendAdmMsg(ADMIN_MESSAGE_ID,"Registration is already running.",ADMIN_OPERATION_NOTHING);
+			sendAdmMsg(ADMIN_MESSAGE_ID, "Registration is already running.", ADMIN_OPERATION_NOTHING);
 		} else {
-			sendAdmMsg(ADMIN_MESSAGE_ID,"Registration is opened.",ADMIN_OPERATION_REG_OPEN);
+			sendAdmMsg(ADMIN_MESSAGE_ID, "Registration is opened.", ADMIN_OPERATION_REG_OPEN);
 			// Start registration thread
 			startRegistrationThread();
 		}
 	}
 
 	public void closeRegistration() {
-		sendAdmMsg(ADMIN_MESSAGE_ID,"Registration is closed.",ADMIN_OPERATION_REG_CLOSED);
+		sendAdmMsg(ADMIN_MESSAGE_ID, "Registration is closed.", ADMIN_OPERATION_REG_CLOSED);
 
 		// End registration thread
 		stopRegistrationThread();
@@ -116,8 +134,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		} else {
 			isInRegistratingMode = true;
 			if (theListener != null) {
-				Log.d("TeamMsgMgr(" + currentRole + ")",
-						"Interrupt sleeping thread...");
+				Log.d("TeamMsgMgr(" + currentRole + ")", "Interrupt sleeping thread...");
 				theListener.interrupt();
 			} else {
 				theListener = new TeamServerRegistrationListener();
@@ -129,8 +146,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	private void stopRegistrationThread() {
 		if (isInRegistratingMode) {
 			isInRegistratingMode = false;
-			Log.d("TeamMsgMgr(" + currentRole + ")",
-					"Set registration mode false");
+			Log.d("TeamMsgMgr(" + currentRole + ")", "Set registration mode false");
 			// serverSocket.close();
 		}
 	}
@@ -155,31 +171,27 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 			this.socket = socket;
 			this.myNetId = givenServerId;
 
-			Log.d("ClientHandlerThread(" + currentRole + ")",
-					"Socket isConnected check ");
+			Log.d("ClientHandlerThread(" + currentRole + ")", "Socket isConnected check ");
 			isSocketConnected = socket.isConnected();
-			Log.d("ClientHandlerThread(" + currentRole + ")",
-					"Socket isConnected : " + isSocketConnected);
+			Log.d("ClientHandlerThread(" + currentRole + ")", "Socket isConnected : " + isSocketConnected);
 
 			if (isSocketConnected) {
 				try {
-					stillRunning = true; // Optimistisk på denne
+					stillRunning = true; // Optimistisk pï¿½ denne
 					socket.setSoTimeout(3000); // Timeout for read - mulighet
 												// for interrupt av prosess
 
 					// Create pipelines
 					out = new PrintWriter(this.socket.getOutputStream(), true);
-					in = new BufferedReader(new InputStreamReader(
-							this.socket.getInputStream()));
+					in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				} catch (IOException e) {
 					stillRunning = false;
-					Log.d("ClientHandlerThread(" + currentRole + ")",
-							"Exception constructor:" + e.getMessage());
+					Log.d("ClientHandlerThread(" + currentRole + ")", "Exception constructor:" + e.getMessage());
 					e.printStackTrace();
-					sendAdmMsg(ADMIN_MESSAGE_ID,"Cli:Fx:" + e.getMessage(),ADMIN_OPERATION_NOTHING);
+					sendAdmMsg(ADMIN_MESSAGE_ID, "Cli:Fx:" + e.getMessage(), ADMIN_OPERATION_NOTHING);
 				}
 			} else {
-				sendAdmMsg(ADMIN_MESSAGE_ID,"Socket not connected",ADMIN_OPERATION_CLIENT_SOCKET_NOT_CONNECTED);
+				sendAdmMsg(ADMIN_MESSAGE_ID, "Socket not connected", ADMIN_OPERATION_CLIENT_SOCKET_NOT_CONNECTED);
 			}
 
 		}
@@ -202,8 +214,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 					try {
 						receivedString = in.readLine();
 
-						Log.d("ClientHandlerThread(" + currentRole + ")",
-								"Receieve : " + receivedString);
+						Log.d("ClientHandlerThread(" + currentRole + ")", "Receieve : " + receivedString);
 
 						if (receivedString == null) {
 							stillRunning = false;
@@ -211,30 +222,26 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 							distributeMessage(receivedString, this);
 						}
 					} catch (SocketTimeoutException ste) {
-//						Log.d("ClientHandlerThread(" + currentRole + ")",
-//								"--SocketTimeout");
+						// Log.d("ClientHandlerThread(" + currentRole + ")",
+						// "--SocketTimeout");
 					}
 				} catch (IOException e) {
-					Log.d("ClientHandlerThread(" + currentRole + ")",
-							"receive loop IOException : " + e.getMessage());
+					Log.d("ClientHandlerThread(" + currentRole + ")", "receive loop IOException : " + e.getMessage());
 					e.printStackTrace();
 					// Disconnect client on failure
 					terminateRelationship();
 				} catch (Exception other) {
-					Log.d("ClientHandlerThread(" + currentRole + ")",
-							"receive loop Exception : " + other.getMessage());
+					Log.d("ClientHandlerThread(" + currentRole + ")", "receive loop Exception : " + other.getMessage());
 					other.printStackTrace();
 					terminateRelationship();
 				}
 			}
-			Log.d("ClientHandlerThread(" + currentRole + ")",
-					"********* Finished thread reading **************");
+			Log.d("ClientHandlerThread(" + currentRole + ")", "********* Finished thread reading **************");
 		}
 
 		private void terminateRelationship() {
 			Log.d("ClientHandlerThread(" + currentRole + ")",
-					"Removing self from client list. #of clients before remove:"
-							+ clients.size());
+					"Removing self from client list. #of clients before remove:" + clients.size());
 			try {
 				in.close();
 				out.close();
@@ -244,7 +251,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				sendAdmMsg(this.myNetId,"Sockex:" + e.getMessage());
+				sendAdmMsg(this.myNetId, "Sockex:" + e.getMessage());
 			}
 
 			stillRunning = false;
@@ -260,20 +267,16 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		public void disconnect() {
 
 			try {
-				sendAdmMsg(ADMIN_MESSAGE_ID,"Close client socket",ADMIN_OPERATION_CLIENT_DISCONNECT);
-				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
-						"*** Closing interrupt");
+				sendAdmMsg(ADMIN_MESSAGE_ID, "Close client socket", ADMIN_OPERATION_CLIENT_DISCONNECT);
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")", "*** Closing interrupt");
 				this.interrupt();
 
-				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
-						"*** Closing socket");
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")", "*** Closing socket");
 
 				socket.close();
-				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
-						"*** Closing file in OK");
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")", "*** Closing file in OK");
 			} catch (IOException e) {
-				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")",
-						"*** Excp " + e.getMessage());
+				Log.d("ClientHandlerThread-disconnect(" + currentRole + ")", "*** Excp " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -312,53 +315,49 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 
 			try {
 				Log.i(TAG, "start server....");
-				sendAdmMsg(ADMIN_MESSAGE_ID,"ST: start server....");
+				sendAdmMsg(ADMIN_MESSAGE_ID, "ST: start server....");
 				serverSocket = new ServerSocket(PORTIN);
 				serverSocket.setSoTimeout(5000);
 				Log.i(TAG, "serversocket created, wait for client....");
-				sendAdmMsg(ADMIN_MESSAGE_ID,"ST: serversocket created, wait for client....");
+				sendAdmMsg(ADMIN_MESSAGE_ID, "ST: serversocket created, wait for client....");
 
 				while (true) {
-//					if (isInterrupted()) {
-//						sendAdmMsg("IS INTERRUPTED");
-//					}
-//					Log.d("TeamServerRegistrationListener(" + currentRole + ")",
-//							" Accept : " + ihc(serverSocket));
+					// if (isInterrupted()) {
+					// sendAdmMsg("IS INTERRUPTED");
+					// }
+					// Log.d("TeamServerRegistrationListener(" + currentRole +
+					// ")",
+					// " Accept : " + ihc(serverSocket));
 
 					if (isInRegistratingMode) {
 						try {
 							s = serverSocket.accept();
 
-							Log.d("TeamServerRegistrationListener("
-									+ currentRole + ")", " new socket : "
-									+ ihc(s));
+							Log.d("TeamServerRegistrationListener(" + currentRole + ")", " new socket : " + ihc(s));
 							Log.v(TAG, "client connected...");
-							sendAdmMsg(ADMIN_MESSAGE_ID,"ST: client connected...");
+							sendAdmMsg(ADMIN_MESSAGE_ID, "ST: client connected...");
 							addClientThread(s);
 						} catch (SocketTimeoutException ioio) {
-//							Log.d("TeamServerRegistrationListener("
-//									+ currentRole + ")", "OK Interrupt");
+							// Log.d("TeamServerRegistrationListener("
+							// + currentRole + ")", "OK Interrupt");
 						}
 					} else {
 						try {
-							Log.d("TeamServerRegistrationListener("
-									+ currentRole + ")", "Going to sleep");
+							Log.d("TeamServerRegistrationListener(" + currentRole + ")", "Going to sleep");
 							synchronized (this) {
 								this.wait();
 							}
 						} catch (InterruptedException e) {
-							Log.d("TeamServerRegistrationListener("
-									+ currentRole + ")",
-									"Interrupted from sleep");
+							Log.d("TeamServerRegistrationListener(" + currentRole + ")", "Interrupted from sleep");
 						}
 					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				sendAdmMsg(ADMIN_MESSAGE_ID,"ST: IOException " + e.toString(),ADMIN_OPERATION_EXCEPTION);
+				sendAdmMsg(ADMIN_MESSAGE_ID, "ST: IOException " + e.toString(), ADMIN_OPERATION_EXCEPTION);
 			} finally {// close sockets!!
 				try {
-					sendAdmMsg(ADMIN_MESSAGE_ID,"ST: Finally");
+					sendAdmMsg(ADMIN_MESSAGE_ID, "ST: Finally");
 				} catch (Exception e) {
 				}
 			}
@@ -395,10 +394,9 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	 * 
 	 * @param theMessage
 	 */
-	private void distributeMessage(Serializable theMessage,
-			ClientHandlerThread caller) {
+	private void distributeMessage(Serializable theMessage, ClientHandlerThread caller) {
 		Log.d("TEAM*MANAGER", "Distribute message: " + theMessage);
-		
+
 		for (Handler l : listeners) {
 			try {
 				Message toClient = l.obtainMessage();
@@ -408,18 +406,15 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 				b.putInt(BUNDLE_CLIENTID, caller.getServerId());
 				// The message
 				b.putSerializable(BUNDLE_MESSAGE, theMessage);
-				
+
 				// Send the message
 				l.sendMessage(toClient);
 			} catch (Exception e) {
-				sendAdmMsg(ADMIN_MESSAGE_ID,"Exception : " + e.toString(),ADMIN_OPERATION_EXCEPTION);
+				sendAdmMsg(ADMIN_MESSAGE_ID, "Exception : " + e.toString(), ADMIN_OPERATION_EXCEPTION);
 
-				Log.d("TEAM*MANAGER(" + currentRole + ")",
-						"Exception : ****************************************");
-				Log.d("TEAM*MANAGER(" + currentRole + ")",
-						"Exception : " + e.toString());
-				Log.d("TEAM*MANAGER(" + currentRole + ")",
-						"Exception : ****************************************");
+				Log.d("TEAM*MANAGER(" + currentRole + ")", "Exception : ****************************************");
+				Log.d("TEAM*MANAGER(" + currentRole + ")", "Exception : " + e.toString());
+				Log.d("TEAM*MANAGER(" + currentRole + ")", "Exception : ****************************************");
 			}
 		}
 	}
@@ -468,29 +463,29 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		}
 	}
 
-	
 	/**
-	 * Administration:
-	 * Determine if the registration is open or not
+	 * Administration: Determine if the registration is open or not
 	 */
 	public boolean isRegistrationOpen() {
 		return isInRegistratingMode;
 	}
 
-	
-	private void sendAdmMsg(Integer clientId, String msg ) {
-		sendAdmMsg(clientId,msg,ADMIN_OPERATION_NOTHING);
+	private void sendAdmMsg(Integer clientId, String msg) {
+		sendAdmMsg(clientId, msg, ADMIN_OPERATION_NOTHING);
 	}
 
 	/**
 	 * Send an admin-message to local listeners (Gui or control program)
 	 * 
-	 * @param clientId the client-id or -1 if N/A
-	 * @param msg message in a visualized form
-	 * @param operation a constant describing admin operations
+	 * @param clientId
+	 *            the client-id or -1 if N/A
+	 * @param msg
+	 *            message in a visualized form
+	 * @param operation
+	 *            a constant describing admin operations
 	 */
-	private void sendAdmMsg(Integer clientId, String msg, int operation ) {
-//		Message toMain = null;
+	private void sendAdmMsg(Integer clientId, String msg, int operation) {
+		// Message toMain = null;
 		for (Handler adms : adminListeners) {
 			Message toClient = adms.obtainMessage();
 			Bundle b = toClient.getData();
@@ -498,22 +493,22 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 			b.putInt(BUNDLE_OPERATION, operation);
 			b.putSerializable(BUNDLE_MESSAGE, msg);
 			adms.sendMessage(toClient);
-//			
-//			toMain = adms.obtainMessage();
-//			toMain.obj = msg;
-//			adms.sendMessage(toMain);
+			//
+			// toMain = adms.obtainMessage();
+			// toMain.obj = msg;
+			// adms.sendMessage(toMain);
 		}
 	}
 
-
 	/**
 	 * Check state - ig this is a server instance or client instance.
+	 * 
 	 * @return true if this manager is acting as a server.
 	 */
 	public boolean isServer() {
 		return isServer;
 	}
-	
+
 	/**
 	 * Call to initiate a client connection to an ip-address
 	 * 
@@ -526,21 +521,25 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 		Socket s = null;
 		int ret = 0;
 		try {
-			Log.d("TeamMessageMgr(" + currentRole + ")",
-					"C: Connecting to server " + ipadr + ":" + PORTIN);
-			sendAdmMsg(ADMIN_MESSAGE_ID,"Create soc : "+ipadr+":"+PORTIN);
-			s = new Socket(ipadr, PORTIN);
-			Log.d("TeamMessageMgr(" + currentRole + ")",
-					"C: Connected to server" + s.toString() + " Socket:"
-							+ ihc(s));
+			Log.d("TeamMessageMgr(" + currentRole + ")", "C: Connecting to server " + ipadr + ":" + PORTIN);
+			sendAdmMsg(ADMIN_MESSAGE_ID, "Create soc : " + ipadr + ":" + PORTIN);
+
+			// TEST
+			InetSocketAddress p1 = new InetSocketAddress(ipadr, PORTIN);
+			Log.d("TAG", "isUnresolved: " + p1.isUnresolved());
+			s = new Socket();
+			s.connect(p1, 10000);
+			// TEST END
+
+			// s = new Socket(ipadr, PORTIN);
+			Log.d("TeamMessageMgr(" + currentRole + ")", "C: Connected to server" + s.toString() + " Socket:" + ihc(s));
 			ret = addClientThread(s);
 			if (ret == 0) {
-				sendAdmMsg(ADMIN_MESSAGE_ID,"Client connected ok",ADMIN_OPERATION_CLIENT_CONNECT);
+				sendAdmMsg(ADMIN_MESSAGE_ID, "Client connected ok", ADMIN_OPERATION_CLIENT_CONNECT);
 			}
 		} catch (IOException e) {
-			sendAdmMsg(ADMIN_MESSAGE_ID,"Conn:"+e.getMessage(),ADMIN_OPERATION_EXCEPTION);
-			Log.d("TeamMessageMgr(" + currentRole + ")",
-					"C: Exception " + e.getMessage());
+			sendAdmMsg(ADMIN_MESSAGE_ID, "Conn:" + e.getMessage(), ADMIN_OPERATION_EXCEPTION);
+			Log.d("TeamMessageMgr(" + currentRole + ")", "C: Exception " + e.getMessage());
 			e.printStackTrace();
 			ret = 2;
 		}
@@ -565,7 +564,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 				// clients.add(cht);
 				clients.put(clientCounter, cht);
 			}
-			sendAdmMsg(clientCounter,"Client connected.",ADMIN_OPERATION_CLIENT_CONNECT);
+			sendAdmMsg(clientCounter, "Client connected.", ADMIN_OPERATION_CLIENT_CONNECT);
 			cht.start();
 			ret = 0;
 		} else {
@@ -608,12 +607,11 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	}
 
 	public void disconnect() {
-		sendAdmMsg(ADMIN_MESSAGE_ID,"Close server socket",ADMIN_OPERATION_DISCONNECT);
+		sendAdmMsg(ADMIN_MESSAGE_ID, "Close server socket", ADMIN_OPERATION_DISCONNECT);
 		try {
 			finalize();
 		} catch (Throwable e) {
-			sendAdmMsg(ADMIN_MESSAGE_ID,"FX:" + e.getMessage(),ADMIN_OPERATION_EXCEPTION);
+			sendAdmMsg(ADMIN_MESSAGE_ID, "FX:" + e.getMessage(), ADMIN_OPERATION_EXCEPTION);
 		}
 	}
-
 }

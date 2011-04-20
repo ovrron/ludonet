@@ -1,6 +1,13 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110420: RHA:
+		Ordnet litt i kommunikasjon. Ved tilkobling til spill vil farge også 'tas' på server - og vises. Klient går så til brett,
+		men her skal vi ha inn en ventefunksjon til spillet starter - egen melding for det...
+		Klient kan avbryte underveis - melding kommer til server.
+		Gjenstår: Server/klient avbryter (melding definert i broker, men ikke implementert i klient)
+		(se LudoMessageBroker.quitGame()) Litt mer testing trengs av meg her grunnet litt refaktorering...
+		Ellers litt småplukk for å få flyten til å gå der den skal.
 20110419: RØ
 		Endelig fått dreis på knappene.
 		Har også gjort litt småsnacks i LudoSurface og LudoActivity, som å hindre at man kan flytte brikke uten å kaste på nytt.

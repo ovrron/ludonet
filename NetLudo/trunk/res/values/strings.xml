@@ -18,7 +18,8 @@
     <string name="start_button_ip_server">Send invitasjon</string>
     <string name="start_button_ip_client">Kople til</string>
     <string name="start_button_start_game">Spill LUDO</string>
-    <string name="start_edittext_ip">xxx.xxx.xxx.xxx</string>
+    <string name="start_edittext_ip">10.0.2.2</string>
+    <!--string name="start_edittext_ip">192.168.1.35</string-->
     <string name="start_edittext_no_network">No network available</string>
     <string name="start_invite_text">inviterer deg til et spennende slag ludo.</string>
     
