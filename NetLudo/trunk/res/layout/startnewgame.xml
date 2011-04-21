@@ -55,7 +55,7 @@
     	>
 		<TextView 
     		android:id="@+id/textIp" 
-			android:text="@string/start_tekst_ip_server" 
+			android:text="@string/start_text_ip_server" 
     		android:layout_width="wrap_content" 
     		android:layout_height="wrap_content" 
     		android:textStyle="bold"
@@ -191,7 +191,7 @@
 				>
 			</ImageView>
 			<TextView 
-				android:text="@string/start_tekst_local" 
+				android:text="@string/start_text_local" 
 				android:id="@+id/textViewLocal" 
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
 				>
 			</ImageView>
 			<TextView 
-				android:text="@string/start_tekst_remote" 
+				android:text="@string/start_text_remote" 
 				android:id="@+id/textViewRemote" 
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
 	    	android:layout_height="wrap_content"
 	    	>			
 			<TextView 
-				android:text="@string/start_tekst_player_info" 
+				android:text="@string/start_text_player_info" 
 				android:id="@+id/textViewPlayerInfo" 
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"

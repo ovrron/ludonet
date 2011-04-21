@@ -2,13 +2,22 @@
 <resources>
     <string name="hello">Hello World, LudoActivity!</string>
     <string name="app_name">LudoNet (C)</string>
+    
+    <string name="sharedpreferences_name">NetLudo_Settings</string>
+    <string name="sharedpreferences_ludoboardfile">ludoBoardFile</string>
+    <string name="sharedpreferences_ludoboardname">ludoBoardName</string>
+    <string name="sharedpreferences_takeoff">ludoTakeOff</string>
+    <string name="sharedpreferences_noofattemts">ludoNoOfAttemts</string>
+    <string name="sharedpreferences_reroll">ludoReRoll</string>
+    
     <string name="choosegame_button_host_game">Start ett nytt spill</string>
     <string name="choosegame_button_join_game">Kople til et eksisterende spill</string>
     
-    <string name="settings_tekst_take_off">Brikke settes i spill med:</string>
-    <string name="settings_tekst_no_of_attemts">Antall forsøk på sette brikke i spill:</string>
-    <string name="settings_tekst_reroll">Ekstrakast for:</string>
-    <string name="settings_tekst_gameboard">Velg brett:</string>
+    <string name="settings_text_take_off">Brikke settes i spill med:</string>
+    <string name="settings_text_no_of_attemts">Antall forsøk på sette brikke i spill:</string>
+    <string name="settings_text_reroll">Ekstrakast for:</string>
+    <string name="settings_text_gameboard">Velg brett:</string>
+    <string name="settings_text_noboard">Ingen brett valgt</string>
     <string name="settings_radio_take_off_0">6</string>
     <string name="settings_radio_take_off_1">2,4,6</string>
     <string name="settings_radio_take_off_2">5,6</string>
@@ -19,15 +28,16 @@
     <string name="settings_radio_reroll_1">2,4,6</string>
     <string name="settings_radio_reroll_2">5,6</string>
 	<string name="settings_button_next">OK</string>
+	<string name="settings_toast_missingboard">Du må først velge et ludobrett</string>
     
     <string name="start_radio_host_game">Start ett nytt spill</string>
     <string name="start_radio_join_game">Kople til et eksisterende spill</string>
-    <string name="start_tekst_ip_server">Din IP-adresse:</string>
-    <string name="start_tekst_ip_client">Angi IP-adresse:</string>
+    <string name="start_text_ip_server">Din IP-adresse:</string>
+    <string name="start_text_ip_client">Angi IP-adresse:</string>
     <string name="start_text_players">Spillere:</string>
-    <string name="start_tekst_local">= lokal spiller</string>
-    <string name="start_tekst_remote">= ekstern spiller</string>
-    <string name="start_tekst_player_info">Klikk på fargeknappene for dine valg.
+    <string name="start_text_local">= lokal spiller</string>
+    <string name="start_text_remote">= ekstern spiller</string>
+    <string name="start_text_player_info">Klikk på fargeknappene for dine valg.
     \nRød farge er alltid deg.
     \nSpillere som ikke er lokal eller ekstern er ikke aktive.</string>
     <string name="start_toast_remote_player">Denne fargen er opptatt</string>

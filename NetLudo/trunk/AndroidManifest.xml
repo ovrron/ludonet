@@ -22,9 +22,15 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity> 
+        </activity>
         <activity 
         	android:name="LudoChooseGameActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            >
+        </activity>           	
+        <activity 
+        	android:name="LudoSettingsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             >

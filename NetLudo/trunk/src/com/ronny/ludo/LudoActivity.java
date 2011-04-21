@@ -3,6 +3,7 @@ package com.ronny.ludo;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class LudoActivity extends Activity {
 	private ImageButton zoomFitButton;
 	private ImageButton zoomOutButton;
 	private LudoSurfaceView surface;
+	SharedPreferences settings = null;
 
 	// RHA
 	// RelativeLayout rl2;
@@ -45,13 +47,33 @@ public class LudoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		
+		// HER SKAL VI HA VALGT ET GAME - SOM ER OPPRETTET TIDLIGERE....
+		// VI LEGGER DET INN HER FOR � F� TING TIL � SNURRE
+		GameHolder.getInstance().setGame(new Game());
+
 
 		// Load board definisjoner - lastes før inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 		
-		// TODO på lasting av board
-		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
-		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
+		//Henter valgt bord fra settings
+		//TODO håndter feil
+		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
+    	if (settings.contains((String) getResources().getText(R.string.sharedpreferences_ludoboardfile)) == true)
+    	{ 
+    		String boardFile = settings.getString((String) getResources().getText(R.string.sharedpreferences_ludoboardfile), null);
+    		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
+    		//parseXmlDefs();
+    		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
+    			//TODO Håndter feil ved lasting av brettdefinisjon
+    			//Vis feilmelding og ev. avslutt
+    		}
+
+    	}
+//		// TODO på lasting av board
+//		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
+//		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
 		
 //		GameHolder.getInstance().getGame().DumpGame();
 		
@@ -60,9 +82,6 @@ public class LudoActivity extends Activity {
 		
 		
 		
-		// HER SKAL VI HA VALGT ET GAME - SOM ER OPPRETTET TIDLIGERE....
-		// VI LEGGER DET INN HER FOR � F� TING TIL � SNURRE
-		GameHolder.getInstance().setGame(new Game());
 		
 		
 		
@@ -75,11 +94,6 @@ public class LudoActivity extends Activity {
 		
 		
 		
-		//parseXmlDefs();
-		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
-			//TODO Håndter feil ved lasting av brettdefinisjon
-			//Vis feilmelding og ev. avslutt
-		}
 	
 // DENNE ER FLYTTET SIDEN VI TRENGER Størrelsen på bildet før vi tar en recalc.		
 //		Game.getInstance().getLudoBoard().recalcPositions();

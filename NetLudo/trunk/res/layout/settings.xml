@@ -62,7 +62,7 @@
 	<!-- TAKEOFF -->
 	<TextView 
    		android:id="@+id/textTakeOff" 
-		android:text="@string/settings_tekst_take_off" 
+		android:text="@string/settings_text_take_off" 
    		android:layout_width="wrap_content" 
    		android:layout_height="wrap_content" 
    		android:textStyle="bold"
@@ -78,7 +78,7 @@
 		>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio0" 
+			android:id="@+id/radioTakeOff0" 
 			android:layout_width="100dip" 
 			android:text="@string/settings_radio_take_off_0"
 			android:checked="true"
@@ -86,14 +86,14 @@
 		</RadioButton>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio1" 
+			android:id="@+id/radioTakeOff1" 
 			android:layout_width="100dip"
 			android:text="@string/settings_radio_take_off_1"
 			>
 		</RadioButton>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio2" 
+			android:id="@+id/radioTakeOff2" 
 			android:layout_width="100dip"
 			android:text="@string/settings_radio_take_off_2"
 			>
@@ -114,7 +114,7 @@
 	<!-- ANTALL FORSØK -->
 	<TextView 
    		android:id="@+id/textNoOfAttemts" 
-		android:text="@string/settings_tekst_no_of_attemts" 
+		android:text="@string/settings_text_no_of_attemts" 
    		android:layout_width="wrap_content" 
    		android:layout_height="wrap_content" 
    		android:textStyle="bold"
@@ -130,22 +130,22 @@
 		>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio0" 
+			android:id="@+id/radioNoOfAttemts0" 
 			android:layout_width="100dip"
 			android:text="@string/settings_radio_no_of_attemts_0"
+			>
+		</RadioButton>
+		<RadioButton 
+			android:layout_height="wrap_content" 
+			android:id="@+id/radioNoOfAttemts1" 
+			android:layout_width="100dip"
+			android:text="@string/settings_radio_no_of_attemts_1"
 			android:checked="true"
 			>
 		</RadioButton>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio1" 
-			android:layout_width="100dip"
-			android:text="@string/settings_radio_no_of_attemts_1"
-			>
-		</RadioButton>
-		<RadioButton 
-			android:layout_height="wrap_content" 
-			android:id="@+id/radio2" 
+			android:id="@+id/radioNoOfAttemts2" 
 			android:layout_width="100dip"
 			android:text="@string/settings_radio_no_of_attemts_2"
 			>
@@ -167,7 +167,7 @@
 	<!-- REROLL -->
 	<TextView 
    		android:id="@+id/textReRoll" 
-		android:text="@string/settings_tekst_reroll" 
+		android:text="@string/settings_text_reroll" 
    		android:layout_width="wrap_content" 
    		android:layout_height="wrap_content" 
    		android:textStyle="bold"
@@ -183,7 +183,7 @@
 		>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio0" 
+			android:id="@+id/radioReRoll0" 
 			android:layout_width="100dip"
 			android:text="@string/settings_radio_reroll_0"
 			android:checked="true"
@@ -191,14 +191,14 @@
 		</RadioButton>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio1" 
+			android:id="@+id/radioReRoll1" 
 			android:layout_width="100dip"
 			android:text="@string/settings_radio_reroll_1"
 			>
 		</RadioButton>
 		<RadioButton 
 			android:layout_height="wrap_content" 
-			android:id="@+id/radio2" 
+			android:id="@+id/radioReRoll2" 
 			android:layout_width="100dip"
 			android:text="@string/settings_radio_reroll_2"
 			>
@@ -221,7 +221,7 @@
 	<!-- VELG BRETT -->
 	<TextView 
    		android:id="@+id/textTakeOff" 
-		android:text="@string/settings_tekst_gameboard" 
+		android:text="@string/settings_text_gameboard" 
    		android:layout_width="wrap_content" 
    		android:layout_height="wrap_content" 
    		android:textStyle="bold"

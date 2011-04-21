@@ -16,6 +16,7 @@ import com.ronny.ludo.model.IPlayer;
 public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 
 	private static final String TAG = "-ParseBoardDefinitionHelper-:";
+	public static final String SEPARATOR = "#####";
 	
 	
 	/**
@@ -35,7 +36,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 				if (eventType == XmlResourceParser.START_TAG) {
 					String strName = defs.getName();
 					if (strName.equals("name")) {
-						v.add(new String(defs.getAttributeValue(null,"file")));
+						v.add(new String(defs.getAttributeValue(null,"id")) + SEPARATOR + new String(defs.getAttributeValue(null,"file")));
 					}
 				}
 				eventType = defs.next();

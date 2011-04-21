@@ -47,7 +47,7 @@ public class LudoChooseGameActivity extends Activity {
 			
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(v.getContext(), LudoStartNewGameActivity.class);
+				Intent intent = new Intent(v.getContext(), LudoSettingsActivity.class);
 				
 				startActivity(intent);
 				//startActivity(new Intent(LudoStartActivity.this, LudoActivity.class));
