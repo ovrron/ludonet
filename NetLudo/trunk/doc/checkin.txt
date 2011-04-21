@@ -1,6 +1,8 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110421: RØ
+		Settings på plass.
 20110420: RHA:
 		Ordnet litt i kommunikasjon. Ved tilkobling til spill vil farge også 'tas' på server - og vises. Klient går så til brett,
 		men her skal vi ha inn en ventefunksjon til spillet starter - egen melding for det...
