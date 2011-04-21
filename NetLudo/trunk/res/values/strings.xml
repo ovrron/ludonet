@@ -4,6 +4,22 @@
     <string name="app_name">LudoNet (C)</string>
     <string name="choosegame_button_host_game">Start ett nytt spill</string>
     <string name="choosegame_button_join_game">Kople til et eksisterende spill</string>
+    
+    <string name="settings_tekst_take_off">Brikke settes i spill med:</string>
+    <string name="settings_tekst_no_of_attemts">Antall forsøk på sette brikke i spill:</string>
+    <string name="settings_tekst_reroll">Ekstrakast for:</string>
+    <string name="settings_tekst_gameboard">Velg brett:</string>
+    <string name="settings_radio_take_off_0">6</string>
+    <string name="settings_radio_take_off_1">2,4,6</string>
+    <string name="settings_radio_take_off_2">5,6</string>
+    <string name="settings_radio_no_of_attemts_0">1</string>
+    <string name="settings_radio_no_of_attemts_1">3</string>
+    <string name="settings_radio_no_of_attemts_2">6</string>
+    <string name="settings_radio_reroll_0">6</string>
+    <string name="settings_radio_reroll_1">2,4,6</string>
+    <string name="settings_radio_reroll_2">5,6</string>
+	<string name="settings_button_next">OK</string>
+    
     <string name="start_radio_host_game">Start ett nytt spill</string>
     <string name="start_radio_join_game">Kople til et eksisterende spill</string>
     <string name="start_tekst_ip_server">Din IP-adresse:</string>

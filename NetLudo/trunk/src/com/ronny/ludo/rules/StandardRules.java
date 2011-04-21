@@ -15,6 +15,7 @@ public class StandardRules implements IRules
 	
 	private List<Integer> takeOffNumbers;
 	private List<Integer> reRollNumbers;
+	private List<Integer> noOfAttemts;
 
 	public StandardRules()
 	{
@@ -40,6 +41,14 @@ public class StandardRules implements IRules
 		for(int i:reRollNumbers)
 		{
 			this.reRollNumbers.add(i);
+		}
+	}
+
+	public void setNoOfAttemts(int... noOfAttemts) {
+		this.noOfAttemts = new ArrayList<Integer>();
+		for(int i:noOfAttemts)
+		{
+			this.noOfAttemts.add(i);
 		}
 	}
 
@@ -185,4 +194,5 @@ public class StandardRules implements IRules
 			return GameHolder.getInstance().getGame().getLudoBoard().getNextPlayerColor(currentPlayerColor);
 		}
 	}
+
 }

@@ -13,5 +13,6 @@ public interface IRules
 	public PlayerColor getNextPlayerColor(PlayerColor currentPlayerColor, int eyes);
 	public void setTakeOffNumbers(int... takeOffNumbers);
 	public void setReRollNumbers(int... reRollNumbers);
+	public void setNoOfAttemts(int... noOfAttemts);
 }
 
