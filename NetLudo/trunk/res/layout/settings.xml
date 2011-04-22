@@ -193,8 +193,7 @@
 			android:layout_height="wrap_content" 
 			android:id="@+id/radioReRoll1" 
 			android:layout_width="100dip"
-			android:text="@string/settings_radio_reroll_1"
-			>
+			android:text="@string/settings_radio_reroll_1" android:textColor="#FFFFFF">
 		</RadioButton>
 		<RadioButton 
 			android:layout_height="wrap_content" 
@@ -243,16 +242,19 @@
 	   		android:layout_width="wrap_content" 
 	   		android:layout_height="wrap_content" 
 	   		android:layout_alignParentLeft="true"
-	   		android:layout_centerVertical="true" android:textSize="30dip">
+	   		android:layout_centerVertical="true" 
+	   		android:textSize="20dip"
+	   		>
 	   	</TextView>
 		<ImageButton 
 			android:layout_width="wrap_content" 
 			android:id="@+id/imageButtonChooseBoard" 
-			android:src="@drawable/ic_btn_round_more_normal"
-			android:background="@null" 
+			android:src="@drawable/btn_board"
+			android:background="@null"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_centerVertical="true"
+			android:layout_alignParentLeft="true"
+			android:layout_centerVertical="true" 
+			android:layout_marginLeft="200dip"
 			>
 		</ImageButton>
    	</RelativeLayout>		

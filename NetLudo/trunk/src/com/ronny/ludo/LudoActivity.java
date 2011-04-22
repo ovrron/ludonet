@@ -109,6 +109,15 @@ public class LudoActivity extends Activity {
 		surface = (LudoSurfaceView) findViewById(R.id.image);
 		surface.setParentActivity(this);
 
+		Vector<PlayerColor> activePlayers = GameHolder.getInstance().getTurnManager().getPlayers();
+		for(PlayerColor pc:activePlayers)
+		{
+			if(GameHolder.getInstance().getTurnManager().isLocal(pc))
+			{
+				surface.addPlayer(pc);
+			}
+		}
+		
 		zoomInButton.setOnClickListener(zoomInListener);
 		zoomFitButton.setOnClickListener(zoomFitListener);
 		zoomOutButton.setOnClickListener(zoomOutListener);

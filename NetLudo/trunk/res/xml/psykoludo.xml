@@ -2,7 +2,7 @@
 <boarddef>
 <basedonresolution x="900" y="900"/>
 <name id="Psukoludo"/>
-<image name="ludoboard2"/>
+<image name="ludoboardz"/>
 <commonfields>
 <common pos="0" x="637" y="264"/>
 <common pos="1" x="685" y="247"/>

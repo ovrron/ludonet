@@ -35,7 +35,7 @@ public class GameHolder  {
 
 	// Instantiation prevention
 	private GameHolder() {
-	    rules.setTakeOffNumbers(2,4,6);
+	    // Gjøres nå fra settings, rules.setTakeOffNumbers(2,4,6);
 	}
 
 	/**

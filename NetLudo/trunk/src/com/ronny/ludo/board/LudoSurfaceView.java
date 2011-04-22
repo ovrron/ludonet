@@ -59,6 +59,16 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	private LudoActivity parentActivity = null;
 	
+	private Vector<PlayerColor> thisPlayerColors = null;
+	
+	public void addPlayer(PlayerColor playerColor)
+	{
+		if(thisPlayerColors==null)
+		{
+			thisPlayerColors = new Vector<PlayerColor>();
+		}
+		thisPlayerColors.add(playerColor);
+	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

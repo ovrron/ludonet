@@ -81,6 +81,24 @@ public class TurnManager {
 	}
 	
 	/**
+	 * Henter spillfargen til alle spillerne som er med
+	 * @return vector med PlayerColor
+	 */
+	public Vector<PlayerColor> getPlayers()
+	{
+		Vector<PlayerColor> playerColors = null;
+		for(APlayer ap:players)
+		{
+			if(playerColors==null)
+			{
+				playerColors = new Vector<PlayerColor>();
+			}
+			playerColors.add(ap.getColor());
+		}
+		return playerColors;
+	}
+	
+	/**
 	 * Release a previously allocated color.
 	 * This is my silent tribute to 'Free Willie'.
 	 * 

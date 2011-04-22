@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <boards>
-<name id="Standard Ludo" file="ludoboard1"/>
+<name id="Standard Ludo1" file="ludoboard1"/>
+<name id="Standard Ludo2" file="ludoboard2"/>
 <name id="Psyko ludo" file="psykoludo"/>
 </boards>
