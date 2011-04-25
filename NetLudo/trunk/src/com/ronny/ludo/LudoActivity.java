@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,9 +13,11 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
+import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Die;
 import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.GameHolder;
@@ -28,6 +31,7 @@ public class LudoActivity extends Activity {
 	private ImageButton zoomOutButton;
 	private LudoSurfaceView surface;
 	SharedPreferences settings = null;
+	private SoundPlayer soundPlayer = null;
 
 	// RHA
 	// RelativeLayout rl2;
@@ -55,7 +59,7 @@ public class LudoActivity extends Activity {
 		// Load board definisjoner - lastes før inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 		
-		//Henter valgt bord fra settings dersom server
+		//Henter valgt bord fra settings
 		//TODO håndter feil
 		String boardFile = GameHolder.getInstance().getRules().getLudoBoardFile();
 		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
@@ -96,7 +100,7 @@ public class LudoActivity extends Activity {
 		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
 		
 		initDie();
-		
+		initSoundButton();
 		surface = (LudoSurfaceView) findViewById(R.id.image);
 		surface.setParentActivity(this);
 
@@ -187,6 +191,42 @@ public class LudoActivity extends Activity {
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
 		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");
 		imageCurrentPlayer.setBackgroundResource(id);
+		Toast.makeText(getBaseContext(), color.toNorwegian() + " " + getResources().getText(R.string.game_toast_spillersintur), Toast.LENGTH_SHORT).show();
+	}
+	
+	private void initSoundButton()
+	{
+		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
+		GameHolder.getInstance().setSoundOn(settings.getBoolean((String) getResources().getText(R.string.sharedpreferences_sound), true)); 
+		final ImageButton imgButtonSound = (ImageButton) findViewById(R.id.imageButtonSound);
+		if(GameHolder.getInstance().isSoundOn())
+		{
+			imgButtonSound.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
+		}
+		else
+		{
+			imgButtonSound.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
+		}
+		imgButtonSound.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				GameHolder.getInstance().setSoundOn(!GameHolder.getInstance().isSoundOn());
+				if(GameHolder.getInstance().isSoundOn())
+				{
+					imgButtonSound.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
+				}
+				else
+				{
+					imgButtonSound.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
+				}
+				SharedPreferences.Editor prefEditor = settings.edit();
+				prefEditor.putBoolean((String) getResources().getText(R.string.sharedpreferences_sound), GameHolder.getInstance().isSoundOn());
+				prefEditor.commit();
+			}
+		});
 	}
 	
 	private void initDie()
@@ -205,23 +245,62 @@ public class LudoActivity extends Activity {
 				imgButtonDie.clearAnimation();
 				imgButtonDie.setBackgroundResource(animationId);
 	        	final AnimationDrawable frameAnimation = (AnimationDrawable) imgButtonDie.getBackground();
+
+	        	final Handler handler = new Handler();
+	        	final Runnable runnable = new Runnable() {
+
+	        	    public void run() {
+	        	        handler.removeCallbacks(this);
+	    				if (surface.setThrow(eyes))
+	    				{
+		    				surface.setPickingPiece(true);
+	    				}
+	    				else
+	    				{
+		    				if(soundPlayer==null)
+		    				{
+		    					soundPlayer = new SoundPlayer(getBaseContext());
+		    				}
+		    				soundPlayer.PlaySound(SoundPlayer.NO_LEGAL_MOVE);
+	    			        Toast.makeText(getBaseContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT).show();
+	    				}
+	        	    }
+	        	};
+	        	
 	        	imgButtonDie.post(new Runnable()
 	            {
 	    			public void run()
 	    			{
-	    				MediaPlayer mp;
+	    				int soundDuration = 0;
+	    				if(soundPlayer==null)
+	    				{
+	    					soundPlayer = new SoundPlayer(getBaseContext());
+	    				}
 	    				if(eyes==6)
 	    				{
-	    					 mp = MediaPlayer.create(getBaseContext(),R.raw.shake_and_roll_6);
+	    					soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL6);
 	    				}
 	    				else
 	    				{
-	    					 mp = MediaPlayer.create(getBaseContext(),R.raw.shake_and_roll);
+	    					soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL);
 	    				}
-	    		        mp.start();
+	    				if(soundDuration==0)
+	    				{
+	    					soundDuration = soundPlayer.getDuration(SoundPlayer.ROLL);
+	    				}
+	    		        int duration = 0;
+	    		        for(int i=0;i<frameAnimation.getNumberOfFrames();i++)
+	    		        {
+	    		        	duration =+ frameAnimation.getDuration(i);
+	    		        }
+	    		        if(duration < soundDuration)
+	    		        {
+		    		        duration = soundDuration;
+	    		        }
 	    				frameAnimation.start();
-	    				surface.setThrow(eyes);
-	    				surface.setPickingPiece(true);
+	    	        	handler.postDelayed(runnable, duration); //Put this where you start your animation
+//	    				surface.setThrow(eyes);
+//	    				surface.setPickingPiece(true);
 	    			}  		        
 	            });
 			}

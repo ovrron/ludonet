@@ -118,7 +118,7 @@ public class LudoSettingsActivity extends Activity
 				}
 				else
 				{
-					Toast.makeText(v.getContext(), R.string.settings_toast_missingboard, Toast.LENGTH_LONG);
+					Toast.makeText(v.getContext(), R.string.settings_toast_missingboard, Toast.LENGTH_LONG).show();
 				}
 
 			}

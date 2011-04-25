@@ -282,7 +282,7 @@ public class LudoStartNewGameActivity extends Activity {
 				
 				// Check remote - if not local/free, then forget.
 				if (GameHolder.getInstance().getTurnManager().isRemote(player.getPlayerColor())){
-					Toast.makeText(v.getContext(), R.string.start_toast_remote_player, Toast.LENGTH_LONG);
+					Toast.makeText(v.getContext(), R.string.start_toast_remote_player, Toast.LENGTH_LONG).show();
 					return;
 				}
 

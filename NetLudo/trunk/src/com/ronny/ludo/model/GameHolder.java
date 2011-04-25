@@ -26,6 +26,7 @@ public class GameHolder  {
 	private IRules rules = new StandardRules();
 	private LudoSurfaceView surfaceView = null;
 	private Vector<PlayerColor> localClientColors = null;
+	private boolean soundOn = true;
 	
 	// Singleton type class
 	private static GameHolder INSTANCE = null; 
@@ -141,6 +142,22 @@ public class GameHolder  {
 		{
 			localClientColors.add(localClientColor);	
 		}
+	}
+
+	/**
+	 * @return the soundOn
+	 */
+	public boolean isSoundOn()
+	{
+		return soundOn;
+	}
+
+	/**
+	 * @param soundOn the soundOn to set
+	 */
+	public void setSoundOn(boolean soundOn)
+	{
+		this.soundOn = soundOn;
 	}
 	
 //	// TurnManager slot holder

@@ -10,6 +10,7 @@
     <string name="sharedpreferences_noofattemts">ludoNoOfAttemts</string>
     <string name="sharedpreferences_reroll">ludoReRoll</string>
     <string name="sharedpreferences_connectip">connectIp</string>
+    <string name="sharedpreferences_sound">soundOn</string>
     
     <string name="choosegame_button_host_game">Start ett nytt spill</string>
     <string name="choosegame_button_join_game">Kople til et eksisterende spill</string>
@@ -51,5 +52,6 @@
     <string name="start_invite_text">inviterer deg til et spennende slag ludo.</string>
     
     <string name="game_toast_nolegalmoves">Ingen gyldig flytt</string>
+    <string name="game_toast_spillersintur">sin tur til å trille</string>
     
 </resources>

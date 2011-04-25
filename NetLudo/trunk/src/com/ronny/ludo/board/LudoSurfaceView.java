@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.ronny.ludo.LudoActivity;
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
+import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPiece;
@@ -756,7 +757,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	}
 
-	public void setThrow(int eyes)
+	public boolean setThrow(int eyes)
 	{
 		currentThrow = eyes;
 		noOfThrows++;
@@ -764,40 +765,15 @@ public class LudoSurfaceView extends SurfaceView implements
 		//GameHolder.getInstance().getMessageBroker().distributeMessage("G,T,"+ currentPlayer + "," + currentThrow);
 		if(!canMoove())
 		{
-			MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.crowd_groan);
-	        mp.start();
-	        Toast.makeText(getContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_LONG);
 	        whatNow();
-	        
-//	        //Sjekk om vi skal gå til neste spiller eller fortsette med denne spilleren.
-//	        if(GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow))
-//	        {
-//	        	parentActivity.resetDie();
-//	        }
-//	        else if(!GameHolder.getInstance().getGame().getPlayerInfo(currentPlayer).hasPiecesInPlay())
-//	        {
-//	        	if(GameHolder.getInstance().getRules().hasPlayerMoreAttemts(noOfThrows))
-//	        	{
-//	        		parentActivity.resetDie();
-//	        	}
-//	        	else
-//	        	{
-//		        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
-//		        	initTurn();
-//	        	}
-//	        }
-//	        else
-//	        {
-//	        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
-//	        	initTurn();
-//	        }
-//	        //hasPiecesInPlay
+	        return false;
 		}
 		else
 		{
 			Canvas c = holder.lockCanvas(null);
 			onDraw(c);
 			holder.unlockCanvasAndPost(c);
+			return true;
 		}
 	}
 	

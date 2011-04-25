@@ -14,4 +14,23 @@ public enum PlayerColor {
 		}
 		return NONE;
 	}
+	
+	public String toNorwegian()
+	{
+		switch (this)
+		{
+		case BLUE:
+			return "Blå";
+		case GREEN:
+			return "Grønn";
+		case YELLOW:
+			return "Gul";
+		case RED:
+			return "Rød";
+		case NONE:
+			return "Ingen farge";
+		default:
+			return "Ingen farge";
+		}
+	}
 }
