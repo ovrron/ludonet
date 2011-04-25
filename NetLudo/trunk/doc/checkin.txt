@@ -4,6 +4,7 @@ Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det 
 20110425: RØ:
 		Rettet bugs, samt laget en lydklasse og gitt mulighet for å slå av lyden.
 		Har også lagt inn noen toastssssssssssssssssssssssssssssssssssssssssssss.
+		Det kanskje viktigste som gjenstår er å håndtere alle mulige feilsituasjoner.
 20110425: RØ:
 		Rettet flere feil og noen bugs. Nå er det faktisk mulig å spille over nett mellom telefon og emulator 
 		og kast og flytt og tur osv oppdatere seg på begge steder :-)
