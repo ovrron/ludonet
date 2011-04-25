@@ -189,11 +189,17 @@ public class LudoActivity extends Activity {
 	
 	public void setCurrentPlayer(PlayerColor color)
 	{
-		//Kanskje vise location også?
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
 		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");
 		imageCurrentPlayer.setBackgroundResource(id);
-		Toast.makeText(getBaseContext(), color.toNorwegian() + " " + getResources().getText(R.string.game_toast_spillersintur), Toast.LENGTH_SHORT).show();
+	
+		//TODO Kanskje her en idé å skille på om den er din tur eller en annen sin tur
+		//Din tur, skrive at det er din tur
+		//En annen sin tur, skrive at vi venter på  xxx
+		if(GameHolder.getInstance().getTurnManager().getNumPlayers()>1)
+		{
+			Toast.makeText(getBaseContext(), color.toNorwegian() + " " + getResources().getText(R.string.game_toast_spillersintur), Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	private void initSoundButton()
