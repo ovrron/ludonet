@@ -2,6 +2,8 @@ Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
 20110425: RØ:
+		Endret i LudoActivity slik at vi ikke skriver ut hvem sin tur det er dersom det kun er en spiller
+20110425: RØ:
 		Rettet bug:
 			Grønn og Blå (sikkert også gul) startet på feil sted når de kommer ut fra huset
 			Fant at i borddefinisjonen(xml filen) var det to posisjonser som var kommentert ut.
@@ -13,7 +15,7 @@ Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det 
 			Aurora og jeg har testet spillet vårt (jeg i emulator og Aurora på telefonen).
 			Fungerer jo overraskende bra, men er fremdeles en del bugs og mangler:
 			- Navigerer fram og tilbake mellom aktivitetene resulterer av og til i krasj og ofte i at vi ikke klarer å konnekte klient til server
-			- Håndtere når en spiller har fått alle brikker i mål
+			- Håndtere når en spiller har fått alle brikker i mål (isAtGoal i Piece er IKKE implementert så jeg)
 			- Av og til når en spiller ikke har noen lovlige kast går man ikke automatisk til neste spiller (muligens rettet, må testes)
 			- Av og til blir både grønne og røde brikker highlightet (muligens rettet, må testes)
 			RETTET: - En spiller kan kaste for en annen
