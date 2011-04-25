@@ -292,7 +292,7 @@ public class TurnManager {
 		return retVal;
 	}
 	
-	private int getNumPlayers()
+	public int getNumPlayers()
 	{
 		int retVal = 0;
 		for (int i = 0; i < players.size(); i++) {
