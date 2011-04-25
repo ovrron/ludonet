@@ -183,6 +183,8 @@ public class LudoActivity extends Activity {
 		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
 		int id = getResources().getIdentifier("die" + eyes, "drawable", "com.ronny.ludo");
 		imgButtonDie.setBackgroundResource(id);
+		imgButtonDie.setEnabled(false);
+		surface.setPickingPiece(false);
 	}
 	
 	public void setCurrentPlayer(PlayerColor color)

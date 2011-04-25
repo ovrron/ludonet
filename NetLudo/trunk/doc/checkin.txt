@@ -2,6 +2,10 @@ Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
 20110425: RØ:
+		Rettet bugs:
+			ingen spillere kan kaste for andre
+			ingen spillere kan flytte for andre
+20110425: RØ:
 		Rettet bugs, samt laget en lydklasse og gitt mulighet for å slå av lyden.
 		Har også lagt inn noen toastssssssssssssssssssssssssssssssssssssssssssss.
 		Det kanskje viktigste som gjenstår er å håndtere alle mulige feilsituasjoner.
