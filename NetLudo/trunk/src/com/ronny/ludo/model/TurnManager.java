@@ -148,11 +148,13 @@ public class TurnManager {
 			JSONObject jSonObject = new JSONObject(players);
 			JSONArray array = jSonObject.getJSONArray("players");
 			this.players = new Vector<APlayer>();
+			numPlayers = 0;
 			for(int i=0;i<array.length();i++)
 			{
 				APlayer player = new APlayer(PlayerColor.getColorFromString(array.getString(i)));
 				player.setLocation(PlayerLocation.getLocationFromString(array.getString(++i)));
 				this.players.add(player);
+				numPlayers++;
 			}
 		} 
 		catch (JSONException e)
@@ -281,11 +283,12 @@ public class TurnManager {
 					currentTurnColor = p.getColor();
 					//return currentTurnColor;
 					retVal = currentTurnColor;
+					break;
 				}
 			}
 			
 		}
-		GameHolder.getInstance().getMessageBroker().sendCurrentPlayer(retVal);
+		//GameHolder.getInstance().getMessageBroker().sendCurrentPlayer(retVal);
 		return retVal;
 	}
 

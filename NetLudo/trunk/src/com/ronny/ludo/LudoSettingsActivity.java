@@ -68,12 +68,15 @@ public class LudoSettingsActivity extends Activity
 	 */
 	private void init()
 	{
-		/** SharedPreferences */
-		importSettings();
+		textViewBoard = (TextView)findViewById(R.id.textChosenBoard);
 		
 		/** Henter info om tilgjengelige brett */
 		final ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 		availableBoards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
+		
+		/** SharedPreferences */
+		importSettings();
+		
 		/** Initierer brettdialogen*/
       	boardDialog = new BoardDialog(this, availableBoards, ParseBoardDefinitionHelper.SEPARATOR,  textViewBoard.getText().toString());
       	/** Initierer knapp for å velge brett*/
@@ -129,13 +132,36 @@ public class LudoSettingsActivity extends Activity
 	{
 		/** initierer settings */
 		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
-		/** henter forrige valgt brett (filnavn)*/
+		/** henter forrige valgt brett */
 		chosenBoardFile = settings.getString((String) getResources().getText(R.string.sharedpreferences_ludoboardfile), null);
-
-		/** henter forrige valgt brett (navn) og viser i gui */
-		textViewBoard = (TextView)findViewById(R.id.textChosenBoard);
-		textViewBoard.setText(settings.getString((String) getResources().getText(R.string.sharedpreferences_ludoboardname), (String) getResources().getText(R.string.settings_text_noboard)));
-
+		String chosenBoardName = settings.getString((String) getResources().getText(R.string.sharedpreferences_ludoboardname), null);
+		/** Hvis ingen tidligere valgt */
+		if(chosenBoardFile==null || chosenBoardName==null)
+		{
+			
+			String board = null;
+			if(availableBoards.size()>0)
+			{
+				if(availableBoards.size()>1)
+				{
+					board = availableBoards.get(1);
+				}
+				else
+				{
+					board = availableBoards.get(0);
+				}
+				String[] boardDef = board.split(ParseBoardDefinitionHelper.SEPARATOR);
+				chosenBoardName = boardDef[0];
+				chosenBoardFile = boardDef[1];
+			}
+			else
+			{
+				chosenBoardName = (String) getResources().getText(R.string.settings_text_noboard);
+				chosenBoardFile=null;
+			}
+		}
+		textViewBoard.setText(chosenBoardName);
+		
 		/** henter forrige valgt settings for takeoff og viser i gui */
 		String fromPrefTakeOff = settings.getString((String) getResources().getText(R.string.sharedpreferences_takeoff), null);
 		radioGroupTakeOff = (RadioGroup)findViewById(R.id.radioTakeOff);

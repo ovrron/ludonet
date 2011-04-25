@@ -98,6 +98,13 @@ public class LudoSurfaceView extends SurfaceView implements
 		// setOnTouchListener(metroListener);
 	}
 	
+	public void reDraw()
+	{
+		Canvas c = holder.lockCanvas(null);
+		onDraw(c);
+		holder.unlockCanvasAndPost(c);
+	}
+	
 	public void setParentActivity(Activity parentActivity)
 	{
 		this.parentActivity = (LudoActivity)parentActivity;
@@ -124,15 +131,19 @@ public class LudoSurfaceView extends SurfaceView implements
         	//Ingen flere forsøk
         	else
         	{
-	        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
-	        	initNewPlayer(GameHolder.getInstance().getTurnManager().getCurrentPlayerColor()); //vet ikke om vi skal kalle denne direkte
+        		GameHolder.getInstance().getMessageBroker().sendGimmeNextPlayer();
+        		//PlayerColor nextPlayer = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
+	        	//parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
+	        	//initNewPlayer(nextPlayer); //vet ikke om vi skal kalle denne direkte
         	}
         }
         //Har brikker i spill
         else
         {
-        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
-        	initNewPlayer(GameHolder.getInstance().getTurnManager().getCurrentPlayerColor()); //vet ikke om vi skal kalle denne direkte
+        	GameHolder.getInstance().getMessageBroker().sendGimmeNextPlayer();
+        	//PlayerColor nextPlayer = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
+        	//parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
+        	//initNewPlayer(nextPlayer); //vet ikke om vi skal kalle denne direkte
         }
 	}
 	
@@ -147,6 +158,10 @@ public class LudoSurfaceView extends SurfaceView implements
 		this.parentActivity.setCurrentPlayer(currentPlayer);
 	}
 	
+	public void setDie(int eyes)
+	{
+		parentActivity.setDie(eyes);
+	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -242,7 +257,7 @@ public class LudoSurfaceView extends SurfaceView implements
         delta = brikSize*currentScale;
         Log.d("TouchEvent getBrikke", "currentXBoard " + currentXBoard + ", currentYBoard " + currentYBoard + ", delta " + delta);
         
-        IPiece pp = GameHolder.getInstance().getGame().getPieceNearPos((int) currentXBoard, (int) currentYBoard, delta);
+        IPiece pp = GameHolder.getInstance().getGame().getPieceNearPos(currentPlayer, (int) currentXBoard, (int) currentYBoard, delta);
         
         
         //TEST FLYTT
@@ -526,7 +541,8 @@ public class LudoSurfaceView extends SurfaceView implements
 	 */
 	private void placePlayerButtons(Canvas canvas) {
 		// Way home
-		for (PlayerColor pc : PlayerColor.values()) {
+		//for (PlayerColor pc : PlayerColor.values()) {
+		for (PlayerColor pc : GameHolder.getInstance().getTurnManager().getPlayers()) {
 			if(pc !=PlayerColor.NONE) {
 				//TODO KUN legg ut brikker for spillere som er med i spillet
 				IPlayer p = GameHolder.getInstance().getGame().getLudoBoard().getPlayer(pc);
@@ -744,7 +760,8 @@ public class LudoSurfaceView extends SurfaceView implements
 	{
 		currentThrow = eyes;
 		noOfThrows++;
-		GameHolder.getInstance().getMessageBroker().distributeMessage("G,T,"+ currentPlayer + "," + currentThrow);
+		GameHolder.getInstance().getMessageBroker().dieThrowed(currentPlayer, currentThrow);
+		//GameHolder.getInstance().getMessageBroker().distributeMessage("G,T,"+ currentPlayer + "," + currentThrow);
 		if(!canMoove())
 		{
 			MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.crowd_groan);

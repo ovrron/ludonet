@@ -144,6 +144,13 @@ public class LudoMessageBroker {
 	 */
 	public void handleTeamMessage(Serializable message, Integer clientId) {
 		Log.d("Ludo(C)IN:", clientId + "/" + message.toString());
+		String tmp = null;
+		if(currentServer.isServer()){
+			tmp = "===== SERVER =====";
+		}else{
+			tmp = "===== KLIENT =====";
+		}
+		Log.d("Ludo(C)IN:", "JEG ER " + tmp);
 
 		// Safety check
 		if (message.toString() == null) {
@@ -189,14 +196,17 @@ public class LudoMessageBroker {
 		 * 		A,PS,<players>
 		 * CT - Color is taken (notification to clients)
 		 *   	A,CT,<color>
-		 * CP - Current Player :
-		 *  	A,CP,<color>
+		 * NP - Request Next Player :
+		 *  	A,NP		 
+		 *    
 		 * Game verdier (G) 
 		 *  T - terning er kastet T,farge, �yne
 		 *  	G,T,<color>,<value> 
 		 *  M - Flytt en brikke
 		 *  	G,M,<color>,<piece id>,<moves>
 		 *  	G,M,RED,0,3
+		 * CP - Current Player :
+		 *  	G,CP,<color>
 		 *  
 		 * </code>
 		 */
@@ -206,20 +216,33 @@ public class LudoMessageBroker {
 		// **************************
 		if (messageParts[0].equals("G")) { // Game messages
 			if (messageParts[1].equals("T")) {
+				Log.d("Ludo(C):", "Terning kastet, melding til alle: " + message.toString());
 				// Terning kastet - melding til alle
-				sendMessageToBrokerListeners(message.toString());
-				
+				//sendMessageToBrokerListeners(message.toString());
+//				currentServer.sendMessageToClients(message.toString());
+				int eyes = Integer.parseInt(messageParts[3]);
+				GameHolder.getInstance().getSurfaceView().setDie(eyes);
+				GameHolder.getInstance().getSurfaceView().reDraw();
 			}
 			if (messageParts[1].equals("M")) {
 				// Flytt en brikke
-				PlayerColor plc = PlayerColor
-						.getColorFromString(messageParts[2]);
+				Log.d("Ludo(C):", "Brikke flyttet, melding til alle: " + message.toString());
+				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 				int theBrikke = Integer.parseInt(messageParts[3]);
 				int theMove = Integer.parseInt(messageParts[4]);
 				// isDistributing = false;
 				GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
+				GameHolder.getInstance().getSurfaceView().reDraw();
 				// TODO  Skal denne innover ?
 				//sendMessageToBrokerListeners(message.toString());
+			}
+			if (messageParts[1].equals("CP")) {
+				// Send current player til alle
+				Log.d("Ludo(C):", "Current player er nå : " + messageParts[2]);
+				//sendMessageToBrokerListeners(message.toString());
+				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+				GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
+				GameHolder.getInstance().getSurfaceView().reDraw();
 			}
 		}
 		// **************************
@@ -228,10 +251,17 @@ public class LudoMessageBroker {
 		
 		if (messageParts[0].equals("A")) { // Administrative messages
 
-			if (messageParts[1].equals("CP")) {
-				// Send current player til alle
-				Log.d("Ludo(C):", "Current player: " + messageParts[2]);
-				sendMessageToBrokerListeners(message.toString());
+			if (messageParts[1].equals("NP")) {
+				// Spør server om neste spiller
+				if(currentServer.isServer())
+				{
+					Log.d("Ludo(C):", "Spør server om neste spiller: " + message.toString());
+					PlayerColor plc = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
+					//sendMessageToBrokerListeners("G"+SPLITTER+"CP"+SPLITTER+plc);
+					currentServer.sendMessageToClients("G"+SPLITTER+"CP"+SPLITTER+plc);
+					GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
+					//currentServer.sendMessageToClient("G"+SPLITTER+"CP"+SPLITTER+plc, clientId);
+				}
 			}
 			
 			if (messageParts[1].equals("C")) {
@@ -381,6 +411,10 @@ public class LudoMessageBroker {
 		distributeMessage("G" + SPLITTER + "M" + SPLITTER + color.toString() + SPLITTER + pieceIndex + SPLITTER + numMoves);
 	}
 
+	public void dieThrowed(PlayerColor color, int eyes) {
+		distributeMessage("G" + SPLITTER + "T" + SPLITTER + color.toString() + SPLITTER + eyes);
+	}
+	
 	/**
 	 * Send a message that a player color is connected to the server
 	 * 
@@ -424,15 +458,26 @@ public class LudoMessageBroker {
 	 * Send a message to the server, requesting players.
 	 */
 	public void sendGimmePlayers() {
-		Log.d("Ludo(C):", "Asking server for players");
+		Log.d("Ludo(C):", "Asking server for active players");
 		//distributeMessage("A,P");
 		distributeMessage("A"+SPLITTER+"P");
 	}
 	
-	public void sendCurrentPlayer(PlayerColor currentPlayer)
+	public void sendGimmeNextPlayer()
 	{
-		Log.d("Ludo(C):", "Distribute currentPlayer");
-		distributeMessage("A"+SPLITTER+"CP"+SPLITTER+currentPlayer);
+		Log.d("Ludo(C):", "Asking server for next player");
+		if(currentServer.isServer())
+		{
+			PlayerColor plc = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
+			currentServer.sendMessageToClients("G"+SPLITTER+"CP"+SPLITTER+plc);
+			GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
+			GameHolder.getInstance().getSurfaceView().reDraw();
+		}
+		else
+		{
+			distributeMessage("A"+SPLITTER+"NP");	
+		}
+		
 	}
 	
 	/**

@@ -315,12 +315,12 @@ public class Game  {
 	 * @param delta 
 	 * @return IPiece hvis den finnes
 	 */
-	public IPiece getPieceNearPos(int xPos, int yPos, double delta) {
+	public IPiece getPieceNearPos(PlayerColor playerColor, int xPos, int yPos, double delta) {
 		IPiece retP = null;
 		int brikkeNo = 0;
 		delta = delta * 2; // Større testflate for treff.
-		PlayerColor currentColor =  GameHolder.getInstance().getTurnManager().getCurrentPlayerColor();
-		IPlayer player = getLudoBoard().getPlayer(currentColor);
+		//PlayerColor currentColor =  GameHolder.getInstance().getTurnManager().getCurrentPlayerColor();
+		IPlayer player = getLudoBoard().getPlayer(playerColor);
 		double retAvst = 9000.0; 
 		double thisAvst = 0.0; 
 		for (IPiece brikke : player.getBrikker()) {
@@ -338,7 +338,7 @@ public class Game  {
 		                retP = brikke;
 		                retAvst=thisAvst;
 		            }
-		            Log.d("getPieceNearPos(LB)", "handleMove: farge: " + currentColor);
+		            Log.d("getPieceNearPos(LB)", "handleMove: farge: " + playerColor);
 		            Log.d("getPieceNearPos(LB)", "handleMove: thisAvst: " + thisAvst);
 		            Log.d("getPieceNearPos(LB)", "handleMove: brikke " + brikkeNo + " KAN  flyttes.");
 		            }
