@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.ronny.ludo.communication.LudoMessageBroker;
 import com.ronny.ludo.helper.IPAddressHelper;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.PlayerColor;
@@ -170,7 +171,8 @@ public class LudoStartNewGameActivity extends Activity {
 			@Override
 			public void handleMessage(Message msg) {
 				String message = (String) msg.obj;
-				final String[] messageParts = message.split("\\,");
+				//final String[] messageParts = message.split("\\,");
+				final String[] messageParts = message.split(LudoMessageBroker.SPLITTER);
 				Log.d("LStartNewGame", "In msg: " + message);
 				if (messageParts[0].equals("A")) { // Administrative messages
 					if (messageParts[1].equals("CT")) { // Color Allocated
@@ -208,7 +210,7 @@ public class LudoStartNewGameActivity extends Activity {
 		players.addPlayer(new HelperPlayer(PlayerColor.GREEN, (ImageButton) findViewById(R.id.imageButtonPlayerGreen)));
 		players.addPlayer(new HelperPlayer(PlayerColor.YELLOW, (ImageButton) findViewById(R.id.imageButtonPlayerYellow)));
 		players.addPlayer(new HelperPlayer(PlayerColor.BLUE, (ImageButton) findViewById(R.id.imageButtonPlayerBlue)));
-		players.getPlayer(PlayerColor.RED).setLocation(PlayerLocation.LOCAL);
+		players.getPlayer(GameHolder.getInstance().getTurnManager().getFreeColor(PlayerLocation.LOCAL, PlayerColor.RED, false)).setLocation(PlayerLocation.LOCAL);
 		
 		ipAddressCurrent = new IPAddressHelper().getLocalIpAddress();
 		if (ipAddressCurrent == null) {
@@ -286,8 +288,7 @@ public class LudoStartNewGameActivity extends Activity {
 
 				// No remote issues here - check local
 				// Check locally on/off
-				if (GameHolder.getInstance().getTurnManager()
-						.isFree(player.getPlayerColor())) {
+				if (GameHolder.getInstance().getTurnManager().isFree(player.getPlayerColor())) {
 					// If free - then allocate the color and set local image.
 					PlayerColor pc = GameHolder
 							.getInstance()
@@ -412,11 +413,8 @@ public class LudoStartNewGameActivity extends Activity {
 				{
 					if(p.getLocation()==PlayerLocation.LOCAL)
 					{
-						//TODO Her må vi registrere de lokale spillerne
-						//Lurer på hvordan vi gjør det?
-						GameHolder.getInstance().getMessageBroker().sendPlayerConnected(p.getPlayerColor());	
+						GameHolder.getInstance().addLocalClientColor(p.getPlayerColor());
 					}
-						
 				}
 				
 				

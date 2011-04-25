@@ -48,4 +48,6 @@ public interface IPiece{
 	public void clearInTowerWith();
 	public void placePieceInHouse();
 	public String toString();
+	public boolean highLight();
+	public void highLight(boolean highlight);
 }

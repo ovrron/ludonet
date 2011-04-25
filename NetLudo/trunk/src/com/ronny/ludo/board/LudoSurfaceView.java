@@ -8,8 +8,6 @@ package com.ronny.ludo.board;
  * 
  * http://www.youtube.com/watch?v=N6YdwzAvwOA&feature=player_embedded
  */
-import java.util.Vector;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,12 +17,14 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.ronny.ludo.LudoActivity;
 import com.ronny.ludo.R;
@@ -42,11 +42,11 @@ public class LudoSurfaceView extends SurfaceView implements
 	private float lastTwoXMoves[] = new float[2];
 	private float lastTwoYMoves[] = new float[2];
 	private int moveHistorySize = 0;
-	private int current_X = 0; // Dette er offset i X-retning for bildet i forhold til det vi ser p� skjerm
-	private int current_Y = 0; // Dette er offset i Y-retning for bildet i forhold til det vi ser p� skjerm
+	private int current_X = 0; // Dette er offset i X-retning for bildet i forhold til det vi ser på skjerm
+	private int current_Y = 0; // Dette er offset i Y-retning for bildet i forhold til det vi ser på skjerm
 	private int minX, maxX;
 	private int minY, maxY;
-	private int boardImageX, boardImageY; // bredde, h�yde p� bildet
+	private int boardImageX, boardImageY; // bredde, høyde på bildet
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
 	private float currentScale = 1.0f;
@@ -56,19 +56,97 @@ public class LudoSurfaceView extends SurfaceView implements
 	
 	private static String TAG = "SurfView";
 	private int currentThrow = 0;
-
+	private int noOfThrows = 0;
+	
 	private LudoActivity parentActivity = null;
 	
-	private Vector<PlayerColor> thisPlayerColors = null;
-	
-	public void addPlayer(PlayerColor playerColor)
-	{
-		if(thisPlayerColors==null)
-		{
-			thisPlayerColors = new Vector<PlayerColor>();
-		}
-		thisPlayerColors.add(playerColor);
+	private PlayerColor currentPlayer = PlayerColor.NONE;
+
+	private int screenWidth;
+	private int screenHeight;
+
+	private DrawingThread mThread = null;
+
+	@SuppressWarnings("unused")
+	private ImageButton zoomInButton;
+	@SuppressWarnings("unused")
+	private ImageButton zoomOutButton;
+
+	public LudoSurfaceView(Context context) {
+		super(context);
+
 	}
+
+	public LudoSurfaceView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		Log.d(TAG, "SurfView");
+
+		// Load board image - image name is placed in Game class
+		loadImage();
+
+		holder = getHolder();
+		holder.addCallback(this);
+		mThread = new DrawingThread(holder, this);
+
+		zoomInButton = (ImageButton) findViewById(R.id.zoomIn);
+		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
+
+		GameHolder.getInstance().setSurfaceView(this);
+
+		
+		// setFocusable(true); // make sure we get key events
+		// setOnTouchListener(metroListener);
+	}
+	
+	public void setParentActivity(Activity parentActivity)
+	{
+		this.parentActivity = (LudoActivity)parentActivity;
+		//Her må vi vite hvilken farge som starter. Må tenke litt på den
+		initNewPlayer(GameHolder.getInstance().getTurnManager().getCurrentPlayerColor());
+	}
+	
+	private void whatNow()
+	{
+        //Sjekk om vi skal gå til neste spiller eller fortsette med denne spilleren.
+		//Reroll?
+        if(GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow))
+        {
+        	parentActivity.resetDie();
+        }
+        //Spiller har ingen brikker i spill
+        else if(!GameHolder.getInstance().getGame().getPlayerInfo(currentPlayer).hasPiecesInPlay())
+        {
+        	//Har spiller brukt opp sine forsøk
+        	if(GameHolder.getInstance().getRules().hasPlayerMoreAttemts(noOfThrows))
+        	{
+        		parentActivity.resetDie();
+        	}
+        	//Ingen flere forsøk
+        	else
+        	{
+	        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
+	        	initNewPlayer(GameHolder.getInstance().getTurnManager().getCurrentPlayerColor()); //vet ikke om vi skal kalle denne direkte
+        	}
+        }
+        //Har brikker i spill
+        else
+        {
+        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
+        	initNewPlayer(GameHolder.getInstance().getTurnManager().getCurrentPlayerColor()); //vet ikke om vi skal kalle denne direkte
+        }
+	}
+	
+	public void initNewPlayer(PlayerColor currentPlayer)
+	{
+		this.currentPlayer = currentPlayer;
+		if(GameHolder.getInstance().getLocalClientColor().contains(currentPlayer))
+		{
+			noOfThrows = 0;
+			this.parentActivity.resetDie();
+		}
+		this.parentActivity.setCurrentPlayer(currentPlayer);
+	}
+	
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -129,10 +207,7 @@ public class LudoSurfaceView extends SurfaceView implements
 		return true;
 	}
 	
-	public void setParentActivity(Activity parentActivity)
-	{
-		this.parentActivity = (LudoActivity)parentActivity;
-	}
+
 	
 	// Utility for debugging - redraw brett
 	private void debugRedrawBoard() {
@@ -179,18 +254,28 @@ public class LudoSurfaceView extends SurfaceView implements
         		
         		GameHolder.getInstance().getMessageBroker().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		
-//        		GameHolder.getInstance().getMessageBroker().distributeMessage("G,M,"+ GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() + "," + currentThrow);
-//        		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
+//        		GameHolder.getInstance().getMessageBroker().distributeMessage("G,M,"+ currentPlayer + "," + currentThrow);
+
+        		//Dette skal vel egentlig håndteres i messageBroker?
+        		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
-        		parentActivity.resetDie(); //
-        		//kode for å sette curentplayer: parentActivity.setCurrentPlayer(PlayerColor color)
+//        		parentActivity.resetDie(); //
+        		
+        		//Fjern highlighting
+        		IPlayer currentPlayer = GameHolder.getInstance().getGame().getPlayerInfo(pp.getColor());
+				for(IPiece piece:currentPlayer.getBrikker())
+				{
+					piece.highLight(false);
+				}
+ //       		parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
+				whatNow();
         	}
         }
 
         
         
         // ******************************************DEBUG
-        // Plot p� skjerm
+        // Plot på skjerm
         currentXBoard = currentX / currentScale;
         currentYBoard = currentY / currentScale;
      
@@ -254,39 +339,6 @@ public class LudoSurfaceView extends SurfaceView implements
 		Log.d("TouchEvent", sb.toString());
 	}
 
-	private int screenWidth;
-	private int screenHeight;
-
-	private DrawingThread mThread = null;
-
-	@SuppressWarnings("unused")
-	private ImageButton zoomInButton;
-	@SuppressWarnings("unused")
-	private ImageButton zoomOutButton;
-
-	public LudoSurfaceView(Context context) {
-		super(context);
-
-	}
-
-	public LudoSurfaceView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		Log.d(TAG, "SurfView");
-
-		// Load board image - image name is placed in Game class
-		loadImage();
-
-		holder = getHolder();
-		holder.addCallback(this);
-		mThread = new DrawingThread(holder, this);
-
-		zoomInButton = (ImageButton) findViewById(R.id.zoomIn);
-		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
-
-		// setFocusable(true); // make sure we get key events
-		// setOnTouchListener(metroListener);
-	}
-
 	// private void loadAndScaleImage() {
 	// // se
 	// //
@@ -337,8 +389,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
 		// Hent navnet
 		String boardName = GameHolder.getInstance().getGame().getGameImageName();
-		int boardId = getResources().getIdentifier(boardName, "drawable",
-				"com.ronny.ludo");
+		int boardId = getResources().getIdentifier(boardName, "drawable","com.ronny.ludo");
 
 		backgroundImage = BitmapFactory.decodeResource(getResources(), boardId);
 		// backgroundImage = Bitmap.createBitmap(backgroundImage, 0, 0,
@@ -483,12 +534,15 @@ public class LudoSurfaceView extends SurfaceView implements
 				// for(Coordinate co : p.getHomePositions()) {
 				// plotPoint(canvas, co.x, co.y);
 				// }
-	
-				for (IPiece brikke : p.getBrikker()) {
-				    if (brikke.isEnabled()){
-				        plotBrikke(canvas, brikke);
-	
-	                }
+				//Tegner kun brikker for spillere som er med
+				if(!GameHolder.getInstance().getTurnManager().isFree(p.getColor()))
+				{
+					for (IPiece brikke : p.getBrikker()) {
+					    if (brikke.isEnabled()){
+					        plotBrikke(canvas, brikke);
+		
+		                }
+					}
 				}
 			}
 		}
@@ -509,8 +563,31 @@ public class LudoSurfaceView extends SurfaceView implements
 		// Rect bnds = dr.getBounds();
 		dr.setBounds(current_X + x - w, current_Y + y - w, current_X + x + w,
 				current_Y + y + w);
-		dr.draw(c);
+		
+		//TEST
+		if(b.highLight())
+		{
+			//TESTBILDE
+//			Drawable highlightDrawable = getResources().getDrawable(R.drawable.playeranim);
+//			highlightDrawable.setBounds(current_X + x - w*2, current_Y + y - w*2, current_X + x + w*2, current_Y + y + w*2);
+//			final AnimationDrawable frameAnimation = (AnimationDrawable) highlightDrawable;
+//			highlightDrawable.draw(c);
+//			frameAnimation.start();
+			
+//			AnimationDrawable highlightAnimationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.playeranim);
+//			highlightAnimationDrawable.setBounds(current_X + x - w*2, current_Y + y - w*2, current_X + x + w*2, current_Y + y + w*2);
+//			highlightAnimationDrawable.draw(c);
+			
+			
+			Bitmap highlightBitMap = BitmapFactory.decodeResource(getResources(), R.drawable.highlightpiece);
+			int with = highlightBitMap.getWidth();// / 2;
+			Drawable highlightDrawable = getResources().getDrawable(R.drawable.highlightpiece);
+			highlightDrawable.setBounds(current_X + x - with, current_Y + y - with, current_X + x + with, current_Y + y + with);
+			highlightDrawable.draw(c);
+		}
+		//SLUTT TEST
 
+		dr.draw(c);
 		// Paint foodPaint = new Paint();
 		// foodPaint.setColor(Color.CYAN);
 		// c.drawCircle(current_X + x, current_Y + y, 15, foodPaint);
@@ -666,7 +743,66 @@ public class LudoSurfaceView extends SurfaceView implements
 	public void setThrow(int eyes)
 	{
 		currentThrow = eyes;
-		GameHolder.getInstance().getMessageBroker().distributeMessage("G,T,"+ GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() + "," + currentThrow);
+		noOfThrows++;
+		GameHolder.getInstance().getMessageBroker().distributeMessage("G,T,"+ currentPlayer + "," + currentThrow);
+		if(!canMoove())
+		{
+			MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.crowd_groan);
+	        mp.start();
+	        Toast.makeText(getContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_LONG);
+	        whatNow();
+	        
+//	        //Sjekk om vi skal gå til neste spiller eller fortsette med denne spilleren.
+//	        if(GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow))
+//	        {
+//	        	parentActivity.resetDie();
+//	        }
+//	        else if(!GameHolder.getInstance().getGame().getPlayerInfo(currentPlayer).hasPiecesInPlay())
+//	        {
+//	        	if(GameHolder.getInstance().getRules().hasPlayerMoreAttemts(noOfThrows))
+//	        	{
+//	        		parentActivity.resetDie();
+//	        	}
+//	        	else
+//	        	{
+//		        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
+//		        	initTurn();
+//	        	}
+//	        }
+//	        else
+//	        {
+//	        	parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
+//	        	initTurn();
+//	        }
+//	        //hasPiecesInPlay
+		}
+		else
+		{
+			Canvas c = holder.lockCanvas(null);
+			onDraw(c);
+			holder.unlockCanvasAndPost(c);
+		}
+	}
+	
+	private boolean canMoove()
+	{
+		boolean retVal = false;
+		for(PlayerColor pc:GameHolder.getInstance().getLocalClientColor())
+		{
+			if(pc==currentPlayer)
+			{
+				IPlayer currentPlayer = GameHolder.getInstance().getGame().getPlayerInfo(pc);
+				for(IPiece piece:currentPlayer.getBrikker())
+				{
+					if(GameHolder.getInstance().getRules().isLegalMove(piece, currentThrow))
+					{
+						piece.highLight(true);
+						retVal = true;
+					}
+				}
+			}
+		}
+		return retVal;
 	}
 	
 	@SuppressWarnings("unused")

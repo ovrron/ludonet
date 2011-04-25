@@ -1,6 +1,11 @@
 package com.ronny.ludo.model;
 
+import java.util.ArrayList;
 import java.util.Vector;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.ronny.ludo.model.TurnManager.PlayerLocation;
 
@@ -13,6 +18,18 @@ public class TurnManager {
 	 */
 	public static enum PlayerLocation {
 		FREE, LOCAL, REMOTE;
+		
+		public static PlayerLocation getLocationFromString(String theLocation) {
+			if(theLocation  == null) {
+				return FREE;
+			}
+			for(PlayerLocation pll : PlayerLocation.values()) {
+				if(pll.toString().compareTo(theLocation)==0) {
+					return pll;
+				}
+			}
+			return FREE;
+		}
 	};
 
 	private PlayerColor currentTurnColor;
@@ -87,15 +104,62 @@ public class TurnManager {
 	public Vector<PlayerColor> getPlayers()
 	{
 		Vector<PlayerColor> playerColors = null;
-		for(APlayer ap:players)
+		if(players!=null)
 		{
-			if(playerColors==null)
+			for(APlayer ap:players)
 			{
-				playerColors = new Vector<PlayerColor>();
+				if(playerColors==null)
+				{
+					playerColors = new Vector<PlayerColor>();
+				}
+				playerColors.add(ap.getColor());
 			}
-			playerColors.add(ap.getColor());
 		}
 		return playerColors;
+	}
+	
+	public String getPlayersJSON()
+	{
+		JSONObject retVal = new JSONObject();
+		JSONArray array = new JSONArray();
+		for(APlayer ap:players)
+		{
+			if(ap.getLocation()!=PlayerLocation.FREE)
+			{
+				array.put(ap.getColor().toString());
+				array.put(ap.getLocation().toString());
+			}
+		}
+		try
+		{
+			retVal.put("players", array);
+		} catch (JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retVal.toString();
+	}
+	
+	public void setPlayersJSON(String players)
+	{
+		try
+		{
+			JSONObject jSonObject = new JSONObject(players);
+			JSONArray array = jSonObject.getJSONArray("players");
+			this.players = new Vector<APlayer>();
+			for(int i=0;i<array.length();i++)
+			{
+				APlayer player = new APlayer(PlayerColor.getColorFromString(array.getString(i)));
+				player.setLocation(PlayerLocation.getLocationFromString(array.getString(++i)));
+				this.players.add(player);
+			}
+		} 
+		catch (JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -192,28 +256,37 @@ public class TurnManager {
 	public PlayerColor advanceToNextPlayer() {
 //		Log.d("TurnMGR", "Current color : " + currentTurnColor.toString());
 		// If first time called - init to the first player.
-		if (currentTurnPos < 0) {
-			return getFirstPlayerColor();
-		}
 		
-		if (numPlayers == 0) {
-			return PlayerColor.NONE;
+		PlayerColor retVal = PlayerColor.NONE;
+		
+		if (currentTurnPos < 0) {
+			//return getFirstPlayerColor();
+			retVal = getFirstPlayerColor();
 		}
-		if (numPlayers == 1) {
-			return currentTurnColor;
+		else if (numPlayers == 0) {
+			//return PlayerColor.NONE;
+			retVal = PlayerColor.NONE;
 		}
-		for (int i = 1; i < players.size(); i++) {
-			Log.d("TurnMGR", "Advance index : "
-					+ ((i + currentTurnPos) % players.size()));
-			APlayer p = players.get(((i + currentTurnPos) % players.size()));
-			if (p.getLocation() != PlayerLocation.FREE) {
-				currentTurnPos = ((i + currentTurnPos) % players.size());
-				currentTurnColor = p.getColor();
-				return currentTurnColor;
+		else if (numPlayers == 1) {
+			//return currentTurnColor;
+			retVal = currentTurnColor;
+		}
+		else {
+			for (int i = 1; i < players.size(); i++) {
+				Log.d("TurnMGR", "Advance index : "
+						+ ((i + currentTurnPos) % players.size()));
+				APlayer p = players.get(((i + currentTurnPos) % players.size()));
+				if (p.getLocation() != PlayerLocation.FREE) {
+					currentTurnPos = ((i + currentTurnPos) % players.size());
+					currentTurnColor = p.getColor();
+					//return currentTurnColor;
+					retVal = currentTurnColor;
+				}
 			}
+			
 		}
-
-		return PlayerColor.NONE;
+		GameHolder.getInstance().getMessageBroker().sendCurrentPlayer(retVal);
+		return retVal;
 	}
 
 	/**

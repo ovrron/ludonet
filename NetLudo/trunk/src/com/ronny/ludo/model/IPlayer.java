@@ -25,8 +25,7 @@ public interface IPlayer
 	public Vector<Coordinate> getWayHomePositions();
 	public Coordinate getBoardPosition(int numberOfMovesFromhome);
 	public void moveBrikke(int theBrikke, int theMove);
-	
 	public String toString();
 	public void DumpGame();
-
+	public boolean hasPiecesInPlay();
 }

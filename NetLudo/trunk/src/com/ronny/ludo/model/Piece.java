@@ -21,6 +21,8 @@ public class Piece implements IPiece{
 	private boolean enabled = true; //brikken er med i spillet (ikke som en del av et tårn)
 	private List<IPiece> inTowerWith = null;
 	
+	private boolean highlight = false;
+	
 	//TODO denne må beregnes etter hvert flytt
 	private boolean isOnWayToGoal = false; // true hvis brikke er på tur i mål
 	//private StandardRules rules = new StandardRules();
@@ -209,6 +211,19 @@ public class Piece implements IPiece{
 	
 	public String toString() {
 		return owner.getBoardPosition(boardPosition).toString();
+	}
+
+	@Override
+	public boolean highLight()
+	{
+		return highlight;
+	}
+
+	@Override
+	public void highLight(boolean highlight)
+	{
+		this.highlight = highlight;
+		
 	}
 
 }

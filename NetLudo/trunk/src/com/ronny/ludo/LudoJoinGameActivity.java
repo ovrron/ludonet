@@ -2,6 +2,7 @@ package com.ronny.ludo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +28,14 @@ import com.ronny.ludo.model.TurnManager;
  */
 public class LudoJoinGameActivity extends Activity {
 
+	boolean gotColor = false;
+	boolean gotSettings = false;
+	boolean gotPlayers = false;
+	String ip = null;
+	EditText editTextIP = null;
+	/** SharedPreferences */
+	SharedPreferences settings = null;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +43,16 @@ public class LudoJoinGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.joingame);
 
+		/** initierer settings */
+		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
+		/** henter forrige valgt brett (filnavn)*/
+		ip = settings.getString((String) getResources().getText(R.string.sharedpreferences_connectip), null);
+		editTextIP = (EditText) findViewById(R.id.editTextIP);
+		if(ip!=null)
+		{
+			editTextIP.setText(ip);
+		}
+		
 		// Create server object - always done
 		GameHolder.getInstance().setMessageManager(new TeamMessageMgr());
 		// Create message broker - always done
@@ -54,25 +73,48 @@ public class LudoJoinGameActivity extends Activity {
 				// Start game when color arrives...
 				Log.d("Client got color msg", "MSG:" + theMessage);
 				// Split message
-				final String[] messageParts = theMessage.split("\\,");
+				//final String[] messageParts = theMessage.split("\\,");
+				final String[] messageParts = theMessage.split(LudoMessageBroker.SPLITTER);
 				if (messageParts[1].equals("CA")) {
 					if (messageParts.length == 3) {
 						if (messageParts[2] != null) {
+							gotColor = true;
+							SharedPreferences.Editor prefEditor = settings.edit();
+							prefEditor.putString((String) getResources().getText(R.string.sharedpreferences_connectip), editTextIP.getText().toString());
+							prefEditor.commit();
 							PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 							// Save color for client
-							GameHolder.getInstance().setLocalClientColor(plc);
-							// Remove myself as listener
-							GameHolder.getInstance().getMessageManager().removeListener(this);
-							// Start game
-							Intent ludoIntent = new Intent(LudoJoinGameActivity.this.getApplicationContext(), LudoActivity.class);
-							startActivity(ludoIntent);
-
-							// End me
-							LudoJoinGameActivity.this.finish();
+							GameHolder.getInstance().addLocalClientColor(plc);
+							GameHolder.getInstance().getMessageBroker().sendGimmeSettings();
+							GameHolder.getInstance().getMessageBroker().sendGimmePlayers();
+							//gotPlayers = true;
 						}
 					}
 				}
+				if(messageParts[1].equals("SS")){
+					if (messageParts[2] != null) {
+						gotSettings = true;
+						GameHolder.getInstance().getRules().setSettings(messageParts[2]);
+					}
+					
+				}
+				if(messageParts[1].equals("SP")){
+					if (messageParts[2] != null) {
+						gotPlayers = true;
+						GameHolder.getInstance().getTurnManager().setPlayersJSON(messageParts[2]);
+					}
+				}
+				
+				if(gotColor && gotSettings && gotPlayers){
+					// Remove myself as listener
+					GameHolder.getInstance().getMessageManager().removeListener(this);
+					// Start game
+					Intent ludoIntent = new Intent(LudoJoinGameActivity.this.getApplicationContext(), LudoActivity.class);
+					startActivity(ludoIntent);
 
+					// End me
+					LudoJoinGameActivity.this.finish();
+				}
 			}
 
 		};
@@ -106,7 +148,6 @@ public class LudoJoinGameActivity extends Activity {
 
 		buttonJoin.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				EditText editTextIP = (EditText) findViewById(R.id.editTextIP);
 				int rc = GameHolder.getInstance().getMessageManager()
 						.initClientConnection(editTextIP.getText().toString());
 				Log.d("CONNECT", "RC=" + rc);

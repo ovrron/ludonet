@@ -1,7 +1,5 @@
 package com.ronny.ludo;
 
-import java.util.Vector;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
@@ -50,51 +48,41 @@ public class LudoActivity extends Activity {
 		
 		
 		// HER SKAL VI HA VALGT ET GAME - SOM ER OPPRETTET TIDLIGERE....
-		// VI LEGGER DET INN HER FOR � F� TING TIL � SNURRE
+		// VI LEGGER DET INN HER FOR Å FÅ TING TIL Å SNURRE
 		GameHolder.getInstance().setGame(new Game());
 
 
 		// Load board definisjoner - lastes før inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 		
-		//Henter valgt bord fra settings
+		//Henter valgt bord fra settings dersom server
 		//TODO håndter feil
-		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
-    	if (settings.contains((String) getResources().getText(R.string.sharedpreferences_ludoboardfile)) == true)
-    	{ 
-    		String boardFile = settings.getString((String) getResources().getText(R.string.sharedpreferences_ludoboardfile), null);
-    		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
-    		//parseXmlDefs();
-    		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
-    			//TODO Håndter feil ved lasting av brettdefinisjon
-    			//Vis feilmelding og ev. avslutt
-    		}
-
-    	}
+		String boardFile = GameHolder.getInstance().getRules().getLudoBoardFile();
+		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
+		//parseXmlDefs();
+		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
+			//TODO Håndter feil ved lasting av brettdefinisjon
+			//Vis feilmelding og ev. avslutt
+		}
+		
+//		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
+//    	if (settings.contains((String) getResources().getText(R.string.sharedpreferences_ludoboardfile)) == true)
+//    	{ 
+//    		String boardFile = settings.getString((String) getResources().getText(R.string.sharedpreferences_ludoboardfile), null);
+//    		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
+//    		//parseXmlDefs();
+//    		if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
+//    			//TODO Håndter feil ved lasting av brettdefinisjon
+//    			//Vis feilmelding og ev. avslutt
+//    		}
+//
+//    	}
 //		// TODO på lasting av board
 //		Vector<String> boards = ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
 //		int iidd = getResources().getIdentifier(boards.get(0), "xml", "com.ronny.ludo");
 		
 //		GameHolder.getInstance().getGame().DumpGame();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
+			
 // DENNE ER FLYTTET SIDEN VI TRENGER Størrelsen på bildet før vi tar en recalc.		
 //		Game.getInstance().getLudoBoard().recalcPositions();
 		// End load board.
@@ -106,26 +94,28 @@ public class LudoActivity extends Activity {
 		zoomInButton = (ImageButton) findViewById(R.id.zoomIn);
 		zoomFitButton = (ImageButton) findViewById(R.id.zoomFit);
 		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
+		
+		initDie();
+		
 		surface = (LudoSurfaceView) findViewById(R.id.image);
 		surface.setParentActivity(this);
 
-		Vector<PlayerColor> activePlayers = GameHolder.getInstance().getTurnManager().getPlayers();
-		for(PlayerColor pc:activePlayers)
-		{
-			if(GameHolder.getInstance().getTurnManager().isLocal(pc))
-			{
-				surface.addPlayer(pc);
-			}
-		}
+//		Vector<PlayerColor> activePlayers = GameHolder.getInstance().getTurnManager().getPlayers();
+//		for(PlayerColor pc:activePlayers)
+//		{
+//			if(GameHolder.getInstance().getTurnManager().isLocal(pc))
+//			{
+//				surface.addPlayer(pc);
+//			}
+//		}
 		
 		zoomInButton.setOnClickListener(zoomInListener);
 		zoomFitButton.setOnClickListener(zoomFitListener);
 		zoomOutButton.setOnClickListener(zoomOutListener);
 		
-		initDie();
 		
 		//Dette må vi kun gjøre for current player
-		resetDie();
+		//resetDie();
 		
 		//TEST
 		// Test av mod
@@ -141,158 +131,8 @@ public class LudoActivity extends Activity {
 //			System.out.println("J: "+j+" - "+(start+j)%maxVal);
 //		}
 		//TEST END 
-		
-		
-	}
-
-	/*
-	 * ovrron 2011.03.22
-	 * Laget egen helperklasse som tar seg av dette
-	 * 
-	private void parseXmlDefs() {
-		// Xml parse
-		XmlResourceParser defs = getResources().getXml(R.xml.boarddefinition);
-		int eventType = -1;
-		// Find Score records from XML
-		try {
-			while (eventType != XmlResourceParser.END_DOCUMENT) {
-				if (eventType == XmlResourceParser.START_TAG) {
-					// Get the name of the tag (eg scores or score)
-					String strName = defs.getName();
-					if (strName.equals("commonfields")) {
-						behandleCommons(defs);
-					}
-					if (strName.equals("itemdef")) {
-						behandleSpillerData(defs);
-					}
-					if (strName.equals("basedonresolution")) {
-						int x = Integer.parseInt(defs.getAttributeValue(null,
-								"x"));
-						int y = Integer.parseInt(defs.getAttributeValue(null,
-								"y"));
-						Game.getInstance().getLudoBoard().setDefinitionResolution(x,y);
-					}
-
-				}
-				eventType = defs.next();
-			}
-		} catch (Exception e) {
-			Log.e("ERROR", "Failed to load defs", e);
-		}
 
 	}
-
-	private void behandleSpillerData(XmlResourceParser defs) {
-		boolean ferdig = false;
-		// String theText = new String();
-		int eventType = -1;
-		String strName = null;
-		String col = "unknown"; // IPlayer color
-		int whatToParse = 0; // 1 is base, 2=way home
-		Vector<Coordinate> wayHome = new Vector<Coordinate>();
-		Vector<Coordinate> baseHome = new Vector<Coordinate>();
-
-		// Alle felles felter
-		try {
-			eventType = defs.getEventType();
-			while (!ferdig) {
-				strName = defs.getName();
-				if (eventType == XmlResourceParser.START_TAG) {
-					if (strName.equals("itemdef")) {
-						col = defs.getAttributeValue(null, "col");
-						int pos = Integer.parseInt(defs.getAttributeValue(null,
-								"firstmove"));
-						Game.getInstance().getLudoBoard()
-								.addPlayerInfo(col, pos);
-					}
-					if (strName.equals("path")) {
-						int pos = Integer.parseInt(defs.getAttributeValue(null,
-								"pos"));
-						int x = Integer.parseInt(defs.getAttributeValue(null,
-								"x"));
-						int y = Integer.parseInt(defs.getAttributeValue(null,
-								"y"));
-						Coordinate co = new Coordinate();
-						co.pos = pos;
-						co.x = x;
-						co.y = y;
-
-						switch (whatToParse) {
-						case 1:
-							wayHome.add(co); // Last track home
-							break;
-						case 2:
-							baseHome.add(co); // Home base
-							break;
-						}
-					}
-					if (strName.equals("base")) {
-						whatToParse = 2;
-					}
-					if (strName.equals("wayhome")) {
-						whatToParse = 1;
-						int pos = Integer.parseInt(defs.getAttributeValue(null,
-								"start"));
-						Game.getInstance().getLudoBoard()
-								.setWayHomePosition(col, pos);
-					}
-				} else if (defs.getEventType() == XmlResourceParser.END_TAG) {
-					if (defs.getName().equals("itemdef")) {
-						ferdig = true;
-					}
-				}
-				if (!ferdig) {
-					eventType = defs.next();
-				}
-			}
-			Game.getInstance().getLudoBoard().addBaseHomeDefs(col, baseHome);
-			Game.getInstance().getLudoBoard().addWayHomeDefs(col, wayHome);
-
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void behandleCommons(XmlResourceParser defs) {
-		boolean ferdig = false;
-		// String theText = new String();
-		int eventType = -1;
-		String strName = null;
-
-		// Alle felles felter
-		try {
-			while (!ferdig) {
-				strName = defs.getName();
-				if (eventType == XmlResourceParser.START_TAG) {
-					if (strName.equals("common")) {
-						int pos = Integer.parseInt(defs.getAttributeValue(null,
-								"pos"));
-						int x = Integer.parseInt(defs.getAttributeValue(null,
-								"x"));
-						int y = Integer.parseInt(defs.getAttributeValue(null,
-								"y"));
-						Game.getInstance().getLudoBoard().addCommon(pos, x, y);
-//						Log.d("Xml load", "Board pos " + x + ", " + y);
-					}
-				} else if (defs.getEventType() == XmlResourceParser.END_TAG) {
-					if (defs.getName().equals("commonfields")) {
-						ferdig = true;
-					}
-				}
-				if (!ferdig) {
-					eventType = defs.next();
-				}
-			}
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-*/
 	
 	
 	private OnClickListener zoomInListener = new OnClickListener() {
@@ -332,7 +172,6 @@ public class LudoActivity extends Activity {
 				frameAnimation.start();
 			}  		        
         });
-		
 	}
 	
 	public void setDie(int eyes)
@@ -354,6 +193,7 @@ public class LudoActivity extends Activity {
 	{
 		final Die die = new Die();
 		final ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
+		imgButtonDie.setEnabled(false);
 		imgButtonDie.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)

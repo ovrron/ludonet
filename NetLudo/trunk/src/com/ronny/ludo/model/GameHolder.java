@@ -1,5 +1,8 @@
 package com.ronny.ludo.model;
 
+import java.util.Vector;
+
+import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.communication.LudoMessageBroker;
 import com.ronny.ludo.communication.TeamMessageMgr;
 import com.ronny.ludo.rules.IRules;
@@ -21,7 +24,8 @@ public class GameHolder  {
 	private TeamMessageMgr messageManager = null;  // MessageManager is always needed
 	private TurnManager turnManager = null;
 	private IRules rules = new StandardRules();
-	private PlayerColor localClientColor = PlayerColor.NONE;
+	private LudoSurfaceView surfaceView = null;
+	private Vector<PlayerColor> localClientColors = null;
 	
 	// Singleton type class
 	private static GameHolder INSTANCE = null; 
@@ -35,9 +39,24 @@ public class GameHolder  {
 
 	// Instantiation prevention
 	private GameHolder() {
-	    // Gjøres nå fra settings, rules.setTakeOffNumbers(2,4,6);
+		localClientColors = new Vector<PlayerColor>();
+		localClientColors.add(PlayerColor.NONE);
 	}
 
+	/**
+	 * @return the LudoSurfaceView
+	 */
+	public LudoSurfaceView getSurfaceView() {
+		return surfaceView;
+	}
+
+	/**
+	 * @param LudoSurfaceView the surfaceView to set
+	 */
+	public void setSurfaceView(LudoSurfaceView surfaceView) {
+		this.surfaceView = surfaceView;
+	}
+	
 	/**
 	 * @return the game
 	 */
@@ -105,15 +124,23 @@ public class GameHolder  {
 	/**
 	 * @return the localClientColor
 	 */
-	public PlayerColor getLocalClientColor() {
-		return localClientColor;
+	public Vector<PlayerColor> getLocalClientColor() {
+		return localClientColors;
 	}
 
 	/**
 	 * @param localClientColor the localClientColor to set
 	 */
-	public void setLocalClientColor(PlayerColor localClientColor) {
-		this.localClientColor = localClientColor;
+	public void addLocalClientColor(PlayerColor localClientColor) {
+		
+		if(localClientColors.contains(PlayerColor.NONE))
+		{
+			localClientColors.remove(PlayerColor.NONE);
+		}
+		if(!localClientColors.contains(localClientColor))
+		{
+			localClientColors.add(localClientColor);	
+		}
 	}
 	
 //	// TurnManager slot holder

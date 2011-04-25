@@ -202,6 +202,7 @@ public class LudoSettingsActivity extends Activity
 		/** Board */
 		prefEditor.putString((String) getResources().getText(R.string.sharedpreferences_ludoboardfile), chosenBoardFile); 
 		prefEditor.putString((String) getResources().getText(R.string.sharedpreferences_ludoboardname), textViewBoard.getText().toString());
+		GameHolder.getInstance().getRules().setLudoBoard(textViewBoard.getText().toString(), chosenBoardFile);
 		
 		/** TakeOff */
 		RadioButton radioButtonTakeOff = (RadioButton)findViewById(radioGroupTakeOff.getCheckedRadioButtonId());
@@ -212,7 +213,7 @@ public class LudoSettingsActivity extends Activity
 		/** Antall forsøk */
 		RadioButton radioButtonNoOfAttemts = (RadioButton)findViewById(radioGroupNoOfAttemts.getCheckedRadioButtonId());
 		numbers = parseRadioButtonText(radioButtonNoOfAttemts.getText());
-		GameHolder.getInstance().getRules().setNoOfAttemts(numbers);
+		GameHolder.getInstance().getRules().setNoOfAttemts(numbers[0]);
 		prefEditor.putString((String) getResources().getText(R.string.sharedpreferences_noofattemts), radioButtonNoOfAttemts.getText().toString());
 		
 		/** Reroll */
@@ -222,6 +223,13 @@ public class LudoSettingsActivity extends Activity
 		prefEditor.putString((String) getResources().getText(R.string.sharedpreferences_reroll), radioButtonReRoll.getText().toString());		
 
 		prefEditor.commit();
+		
+		
+		
+		//TEST AV JSON
+		//String jSonString = GameHolder.getInstance().getRules().getSettings();
+		//GameHolder.getInstance().getRules().setSettings(jSonString);
+		
 		return true;
 	}
 

@@ -20,21 +20,21 @@ public class Player implements IPlayer{
 	private Vector<Coordinate> wayHomePositions = new Vector<Coordinate>();
 
 	// Brikkene tilhører egentlig Game, men er fordelt på spiller
-	private IPiece brikker[] = new Piece[4];
+	private IPiece pieces[] = new Piece[4];
 
 	public Player(PlayerColor color,ILudoBoard owner) {
 		this.owner = owner;
 		this.setColor(color);
 		for (int i = 0; i < 4; i++) {
-			brikker[i] = new Piece(this);
-			brikker[i].setHousePosition(i);
+			pieces[i] = new Piece(this);
+			pieces[i].setHousePosition(i);
 		}
 		// default prefix er farge hvis ingen ting er gitt...
 		iconPrefix = ""+color.toString().toLowerCase().charAt(0);
 	}
 
 	public IPiece[] getBrikker() {
-		return brikker; 
+		return pieces; 
 	}
 	
 
@@ -123,7 +123,7 @@ public class Player implements IPlayer{
 	}
 
 	public void moveBrikke(int theBrikke, int theMove) {
-		IPiece b = brikker[theBrikke];
+		IPiece b = pieces[theBrikke];
 //		int brikkeMoves = b.getBoardPosition();
 		b.moveForward(theMove);
 		
@@ -163,13 +163,28 @@ public class Player implements IPlayer{
 			Log.d("DUMP","    Homes : "+c);
 		}
 		Log.d("DUMP","  Player : "+color.toString());
-		for(IPiece b : brikker) {
+		for(IPiece b : pieces) {
 			if(b.isHome()) { 
 				Log.d("DUMP","    Brikkepos : Home");
 			} else {
 				Log.d("DUMP","    Brikkepos : "+b);
 			}
 		}
+	}
+
+	/**
+	 * @return, false hvis alle spillernes pieces er hjemme eller i mål, ellers true
+	 */
+	public boolean hasPiecesInPlay()
+	{
+		for(IPiece piece:pieces)
+		{
+			if(!piece.isAtGoal() && !piece.isHome())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -12,9 +12,6 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.ronny.ludo.model.GameHolder;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

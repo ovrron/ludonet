@@ -3,10 +3,12 @@ package com.ronny.ludo.rules;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ronny.ludo.model.GameHolder;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.ronny.ludo.model.IPiece;
 import com.ronny.ludo.model.PieceAction;
-import com.ronny.ludo.model.PlayerColor;
 
 public class StandardRules implements IRules
 {
@@ -15,7 +17,9 @@ public class StandardRules implements IRules
 	
 	private List<Integer> takeOffNumbers;
 	private List<Integer> reRollNumbers;
-	private List<Integer> noOfAttemts;
+	private int noOfAttemts;
+	private String ludoBoardName = null;
+	private String ludoBoardFile = null;
 
 	public StandardRules()
 	{
@@ -44,12 +48,8 @@ public class StandardRules implements IRules
 		}
 	}
 
-	public void setNoOfAttemts(int... noOfAttemts) {
-		this.noOfAttemts = new ArrayList<Integer>();
-		for(int i:noOfAttemts)
-		{
-			this.noOfAttemts.add(i);
-		}
+	public void setNoOfAttemts(int noOfAttemts) {
+		this.noOfAttemts = noOfAttemts;
 	}
 
 	
@@ -182,17 +182,102 @@ public class StandardRules implements IRules
 		}
 	}
 
-	public PlayerColor getNextPlayerColor(PlayerColor currentPlayerColor, int eyes)
+	public boolean canPlayerReRoll(int currentThrow)
 	{
-		if(reRollNumbers.contains(eyes))
+		if(reRollNumbers.contains(currentThrow))
 		{
-			return currentPlayerColor;
+			return true;
 		}
-		else
+		return false;
+	}
+	
+	public boolean hasPlayerMoreAttemts(int noOfAttemts)
+	{
+		if(noOfAttemts<this.noOfAttemts)
 		{
-			//TODO Sp�r TurnManager - ikke game
-			return GameHolder.getInstance().getGame().getLudoBoard().getNextPlayerColor(currentPlayerColor);
+			return true;
+		}
+		return false;
+	}
+
+	public void setLudoBoard(String ludoBoardName, String ludoBoardFile)
+	{
+		this.ludoBoardName = ludoBoardName;
+		this.ludoBoardFile = ludoBoardFile;
+	}
+
+	public String getLudoBoardName()
+	{
+		return ludoBoardName;
+	}
+
+	public String getLudoBoardFile()
+	{
+		return ludoBoardFile;
+	}
+
+	public void setSettings(String settings)
+	{
+		try
+		{
+			JSONObject jSonObject = new JSONObject(settings);
+			JSONArray takeOffArray = jSonObject.getJSONArray("takeOffNumbers");
+			takeOffNumbers = new ArrayList<Integer>();
+			for(int i=0;i<takeOffArray.length();i++)
+			{
+				takeOffNumbers.add(takeOffArray.getInt(i));
+			}
+			
+			JSONArray reRollArray = jSonObject.getJSONArray("reRollNumbers");
+			reRollNumbers = new ArrayList<Integer>();
+			for(int i=0;i<reRollArray.length();i++)
+			{
+				reRollNumbers.add(reRollArray.getInt(i));
+			}
+			
+			noOfAttemts = jSonObject.getInt("noOfAttemts");
+			ludoBoardName = jSonObject.getString("ludoBoardName");
+			ludoBoardFile = jSonObject.getString("ludoBoardFile");
+		} 
+		catch (JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
+	public String getSettings()
+	{
+		JSONObject retVal = new JSONObject();
+		try
+		{
+	
+			JSONArray takeOffArray = new JSONArray();
+			for(Integer i:takeOffNumbers)
+			{
+				takeOffArray.put(i);
+			}
+			retVal.put("takeOffNumbers", takeOffArray);
+			
+			JSONArray reRollArray = new JSONArray();
+			for(Integer i:reRollNumbers)
+			{
+				reRollArray.put(i);
+			}
+			retVal.put("reRollNumbers", reRollArray);
+			
+			retVal.put("noOfAttemts", noOfAttemts);
+			
+			retVal.put("ludoBoardName", ludoBoardName);
+			
+			retVal.put("ludoBoardFile", ludoBoardFile);
+		} 
+		catch (JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return retVal.toString();
+	}
 }
