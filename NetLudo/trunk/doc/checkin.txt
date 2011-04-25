@@ -1,6 +1,13 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110425: RØ: 
+		Kommunikasjon av regler, brett og aktive spillere endelig på plass. Litt nye ting i MessageBroker.
+		Fremdeles en del bugs igjen samt gjenstår litt for å få alt til å snurre sammen sømløst.
+20110423: RØ:
+		Fjernet bugs i SurfaceView og LudoActivity, rettinger
+20110422: RØ:
+		SurfaceView og LudoActivity, rettinger
 20110421: RØ
 		Settings på plass.
 20110420: RHA:
