@@ -1,6 +1,12 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110425: RØ:
+		Rettet flere feil og noen bugs. Nå er det faktisk mulig å spille over nett mellom telefon og emulator 
+		og kast og flytt og tur osv oppdatere seg på begge steder :-)
+		Fremdeles en del bugs.
+		Neste jeg skal se på er muligheten for å legge terningkastanimasjon i og lyd i tråder slik at man venter
+		på disse før gamelogikk starter. 
 20110425: RØ: 
 		Kommunikasjon av regler, brett og aktive spillere endelig på plass. Litt nye ting i MessageBroker.
 		Fremdeles en del bugs igjen samt gjenstår litt for å få alt til å snurre sammen sømløst.
