@@ -34,7 +34,7 @@ public class TurnManager {
 
 	private PlayerColor currentTurnColor;
 	private int currentTurnPos = -1;
-	private int numPlayers = 0;
+	//private int numPlayers = 0;
 
 	/**
 	 * Define a player, color and location
@@ -148,13 +148,13 @@ public class TurnManager {
 			JSONObject jSonObject = new JSONObject(players);
 			JSONArray array = jSonObject.getJSONArray("players");
 			this.players = new Vector<APlayer>();
-			numPlayers = 0;
+			//numPlayers = 0;
 			for(int i=0;i<array.length();i++)
 			{
 				APlayer player = new APlayer(PlayerColor.getColorFromString(array.getString(i)));
 				player.setLocation(PlayerLocation.getLocationFromString(array.getString(++i)));
 				this.players.add(player);
-				numPlayers++;
+				//numPlayers++;
 			}
 		} 
 		catch (JSONException e)
@@ -207,7 +207,7 @@ public class TurnManager {
 						ap.setLocation(remoteOrLocal);
 						Log.d("TurnMGR",
 								"Color allocated (wanted) " + wColor.toString());
-						numPlayers++;
+						//numPlayers++;
 						return ap.getColor();
 					}
 				}
@@ -221,7 +221,7 @@ public class TurnManager {
 					ap.setLocation(remoteOrLocal);
 					Log.d("TurnMGR", "Color allocated (free) "
 							+ ap.getColor().toString());
-					numPlayers++;
+					//numPlayers++;
 					return ap.getColor();
 				}
 			}
@@ -265,11 +265,11 @@ public class TurnManager {
 			//return getFirstPlayerColor();
 			retVal = getFirstPlayerColor();
 		}
-		else if (numPlayers == 0) {
+		else if (getNumPlayers() == 0) {
 			//return PlayerColor.NONE;
 			retVal = PlayerColor.NONE;
 		}
-		else if (numPlayers == 1) {
+		else if (getNumPlayers() == 1) {
 			//return currentTurnColor;
 			retVal = currentTurnColor;
 		}
@@ -289,6 +289,18 @@ public class TurnManager {
 			
 		}
 		//GameHolder.getInstance().getMessageBroker().sendCurrentPlayer(retVal);
+		return retVal;
+	}
+	
+	private int getNumPlayers()
+	{
+		int retVal = 0;
+		for (int i = 0; i < players.size(); i++) {
+			APlayer p = players.get(i);
+			if (p.getLocation() != PlayerLocation.FREE) {
+				retVal++;
+			}
+		}
 		return retVal;
 	}
 
