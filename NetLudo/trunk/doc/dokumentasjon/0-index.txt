@@ -1,0 +1,10 @@
+
+Dokumentasjon som skal opprettes
+
+00100000-Innledning		RHA	Innledning til løsning
+00100010-Overordnet-løsning
+00101000-Overordnet-design
+00101020-Klasser
+00102000-Start-av-spill
+00103000-Flytt-Brikker
+00104000-Avslutning-spill
