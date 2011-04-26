@@ -1,10 +1,17 @@
 
 Dokumentasjon som skal opprettes
 
-00100000-Innledning		RHA	Innledning til l�sning
-00100010-Overordnet-l�sning
-00101000-Overordnet-design
-00101020-Klasser
-00102000-Start-av-spill
-00103000-Flytt-Brikker
-00104000-Avslutning-spill
+Nummereringen av dokumentene er for å få ting enklere å sortere.
+
+Dokument						Hvem	Hva
+------------------------------------------------------------------------------------------------------------------------
+00100000-Innledning				RHA		Innledning til løsning
+00100010-Overordnet-løsning		RHA		Overordnet beskrivelse av løsningen (litt bilder og slikt også)
+00101000-Overordnet-design				Beskrivelse av design - litt om klasser og hovedoppgaver
+00101020-Klasser						Klasser og relasjoner, samt beskrivelse av hva som skjer
+00102000-Start-av-spill					Hvordan starter et spill
+00103000-Flytt-Brikker					Hvordan flyttes en brikke
+00104000-Avslutning-spill				Hvordan avsluttes spill
+
+00200000-Avsluttende-Til-V2				Hva kan gjøres for en V2 av spillet?
+00200100-Konklusjoner-design			Hva burde vært gjort anderledes eller som gjenstår ?	
