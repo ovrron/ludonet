@@ -1,0 +1,18 @@
+RETTET- Navigerer fram og tilbake mellom aktivitetene resulterer av og til i krasj og ofte i at vi ikke klarer å konnekte klient til server
+KEM: - Håndtere når en spiller har fått alle brikker i mål (isAtGoal i Piece er IKKE implementert så jeg)
+KEM: - Av og til når en spiller ikke har noen lovlige kast går man ikke automatisk til neste spiller (muligens rettet, må testes)
+- Av og til blir både grønne og røde brikker highlightet (muligens rettet, må testes)
+RETTET: - En spiller kan kaste for en annen
+RETTET: - Ikke start Ludoactiviteten hos client før server starter spillet
+RETTET: - Grønn og Blå (sikkert også gul) starter på feil sted når de kommer ut fra huset	
+KEM: - Scrolling på de aktivitetene som trengs
+OVRRON: - Standarbrett1 må fikses
+ALLE: - Renske kode, kommentarer
+ALLE: - Sjekke alle TODO
+OVRRON: - Fiks splash
+- Objektmodell og sekvensdiagram
+ANDROD: - Kanskje noen nye brikker?
+RHA STARTER, DERETTER ALLE- Overordnet beskrivelse av systemet.
+- Skal vi ha maks ventetid på en spiller?
+OVRRON: - Fikse players JSON
+ANDROD: - Bakgrunnsbilder
