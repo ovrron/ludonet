@@ -296,7 +296,8 @@ public class LudoMessageBroker {
 				// Klient sjekker ut
 				Log.d("Ludo(C):", clientId + " Checking out with color "
 						+ messageParts[2]);
-				GameHolder.getInstance().getTurnManager().freeColor(PlayerColor.getColorFromString(messageParts[2]));
+				// Dette gjøres i LudoActivity...
+//				GameHolder.getInstance().getTurnManager().freeColor(PlayerColor.getColorFromString(messageParts[2]));
 				sendMessageToBrokerListeners(message.toString());
 			}
 
@@ -490,7 +491,9 @@ public class LudoMessageBroker {
 			GameHolder.getInstance().getMessageManager().sendMessageToClients("A" + SPLITTER + "COS" + SPLITTER + "NONE"); // Send Admin, CheckOutServer
 		} else {
 			//GameHolder.getInstance().getMessageManager().sendMessageToClients("A,CO," + GameHolder.getInstance().getLocalClientColor().toString()); // Check out client color
-			GameHolder.getInstance().getMessageManager().sendMessageToClients("A" + SPLITTER + "CO" + SPLITTER + GameHolder.getInstance().getLocalClientColor().toString()); // Check out client color
+			PlayerColor plc = GameHolder.getInstance().getLocalClientColor().elementAt(0);
+			// I'm a client - send message that I'm quitting
+			GameHolder.getInstance().getMessageManager().sendMessageToClients("A" + SPLITTER + "CO" + SPLITTER + plc.toString()); // Check out client color
 		}
 
 		GameHolder.getInstance().getMessageManager().disconnect();

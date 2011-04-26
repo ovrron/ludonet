@@ -1,6 +1,7 @@
 package com.ronny.ludo;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,10 +32,13 @@ public class LudoJoinGameActivity extends Activity {
 	boolean gotColor = false;
 	boolean gotSettings = false;
 	boolean gotPlayers = false;
+	boolean gotStartGame = false;
+	
 	String ip = null;
 	EditText editTextIP = null;
 	/** SharedPreferences */
 	SharedPreferences settings = null;
+	private ProgressDialog waitDialog;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -85,9 +89,18 @@ public class LudoJoinGameActivity extends Activity {
 							PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 							// Save color for client
 							GameHolder.getInstance().addLocalClientColor(plc);
-							GameHolder.getInstance().getMessageBroker().sendGimmeSettings();
-							GameHolder.getInstance().getMessageBroker().sendGimmePlayers();
 							//gotPlayers = true;
+							
+							// Disable button
+							Button buttonJoin = (Button) findViewById(R.id.buttonIP);
+							buttonJoin.setEnabled(false);
+							
+							// Add the awiting game start message...
+							waitDialog = new ProgressDialog(LudoJoinGameActivity.this);
+							waitDialog.setTitle(getResources().getString(R.string.msg_network_waiting_title));
+							waitDialog.setMessage(getResources().getString(R.string.msg_network_waiting));
+							waitDialog.show();
+
 						}
 					}
 				}
@@ -104,8 +117,20 @@ public class LudoJoinGameActivity extends Activity {
 						GameHolder.getInstance().getTurnManager().setPlayersJSON(messageParts[2]);
 					}
 				}
+
+				if(messageParts[1].equals("START")){
+//					if (messageParts[2] != null) {
+						gotStartGame = true;
+						// Get game info
+						GameHolder.getInstance().getMessageBroker().sendGimmeSettings();
+						GameHolder.getInstance().getMessageBroker().sendGimmePlayers();
+//					}
+				}
+	
 				
-				if(gotColor && gotSettings && gotPlayers){
+				if(gotColor && gotSettings && gotPlayers && gotStartGame){
+//					remove toast/dialog
+					waitDialog.hide();
 					// Remove myself as listener
 					GameHolder.getInstance().getMessageManager().removeListener(this);
 					// Start game

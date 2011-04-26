@@ -354,60 +354,6 @@ public class LudoStartNewGameActivity extends Activity {
 	private void initButtonListeners() {
 		buttonPlayGame.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-
-				// Test p� turn-manager om den holder vann...
-				// PlayerColor p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();Log.d("---------","HelperPlayer: "
-				// + p.toString());
-				// p =
-				// GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
-				// TEST END
-
 				
 				for(HelperPlayer p:players.getPlayers())
 				{
@@ -420,12 +366,16 @@ public class LudoStartNewGameActivity extends Activity {
 				
 				// Closeregistation
 				GameHolder.getInstance().getMessageManager().closeRegistration();
-				
-				// Start game
+				// Remove listener for the game registration part.
+				GameHolder.getInstance().getMessageBroker().removeListener(brokerMessages);
+
+				GameHolder.getInstance().getMessageBroker().distributeMessage("A"+ LudoMessageBroker.SPLITTER + "START");
+
 				Intent ludoIntent = new Intent(v.getContext(),
+						// Start game
 						LudoActivity.class);
 				startActivity(ludoIntent);
-
+				LudoStartNewGameActivity.this.finish();
 			}
 		});
 

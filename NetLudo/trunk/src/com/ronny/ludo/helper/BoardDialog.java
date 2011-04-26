@@ -66,7 +66,7 @@ public class BoardDialog extends Dialog implements OnClickListener
 //		}
     }
  
-    @Override
+//    @Override
     public void onClick(View v) 
     {
     	RadioButton rb = (RadioButton)v;

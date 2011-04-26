@@ -213,13 +213,13 @@ public class Piece implements IPiece{
 		return owner.getBoardPosition(boardPosition).toString();
 	}
 
-	@Override
+//	@Override
 	public boolean highLight()
 	{
 		return highlight;
 	}
 
-	@Override
+//	@Override
 	public void highLight(boolean highlight)
 	{
 		this.highlight = highlight;

@@ -3,9 +3,9 @@ package com.ronny.ludo;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,12 +16,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ronny.ludo.board.LudoSurfaceView;
+import com.ronny.ludo.communication.LudoMessageBroker;
 import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
 import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Die;
 import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.PlayerColor;
+import com.ronny.ludo.model.TurnManager.PlayerLocation;
 
 public class LudoActivity extends Activity {
 	private String TAG = "-Ludo-:";
@@ -32,6 +34,8 @@ public class LudoActivity extends Activity {
 	private LudoSurfaceView surface;
 	SharedPreferences settings = null;
 	private SoundPlayer soundPlayer = null;
+
+	private Handler brokerMessages;
 
 	// RHA
 	// RelativeLayout rl2;
@@ -135,6 +139,45 @@ public class LudoActivity extends Activity {
 //			System.out.println("J: "+j+" - "+(start+j)%maxVal);
 //		}
 		//TEST END 
+		
+		// Create server handle - client messages from server
+		brokerMessages = new Handler() {
+			/*
+			 * This is the message handler which receives messages from the
+			 * TeamMessageManager. Messages about colors allocated should be
+			 * notified all users.
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+				String message = (String) msg.obj;
+				//final String[] messageParts = message.split("\\,");
+				final String[] messageParts = message.split(LudoMessageBroker.SPLITTER);
+				Log.d("LA:handleMessage", "In msg: " + message);
+				if (messageParts[0].equals("A")) { // Administrative messages
+					if (messageParts[1].equals("CO")) { // Client checking out
+						PlayerColor plc = PlayerColor
+								.getColorFromString(messageParts[2]);
+						
+						// Check if the player is the current player.
+						PlayerColor currPlc = GameHolder.getInstance().getTurnManager().getCurrentPlayerColor();
+						if(currPlc==plc) {
+							// check if remote player - local players can not leave
+							if(GameHolder.getInstance().getTurnManager().isRemote(plc)) {
+								GameHolder.getInstance().getMessageBroker().sendGimmeNextPlayer();
+							}
+						}
+						// Free the color
+						GameHolder.getInstance().getTurnManager().freeColor(PlayerColor.getColorFromString(messageParts[2]));
+						// Optionally - we could remove the Pieces from the board. Not implemented
+					}
+				}
+			}
+
+		};
+
+		GameHolder.getInstance().getMessageBroker().addListener(brokerMessages);
 
 	}
 	
@@ -217,8 +260,7 @@ public class LudoActivity extends Activity {
 		}
 		imgButtonSound.setOnClickListener(new OnClickListener()
 		{
-			
-			@Override
+//			@Override
 			public void onClick(View v)
 			{
 				GameHolder.getInstance().setSoundOn(!GameHolder.getInstance().isSoundOn());
@@ -328,6 +370,15 @@ public class LudoActivity extends Activity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		GameHolder.getInstance().getMessageBroker().removeListener(brokerMessages);
+		super.onDestroy();
 	}
 	
 }

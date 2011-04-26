@@ -1,6 +1,10 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110426: RHA: 
+		Oppstart av spillet - klienten venter på server.
+		Klient kan hoppe ut av spillet underveis
+
 20110425: RØ:
 		Endret i LudoActivity slik at vi ikke skriver ut hvem sin tur det er dersom det kun er en spiller
 20110425: RØ:

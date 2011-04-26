@@ -54,4 +54,8 @@
     <string name="game_toast_nolegalmoves">Ingen gyldig flytt</string>
     <string name="game_toast_spillersintur">sin tur til å trille</string>
     
+    <string name="msg_network_waiting_title">Venter...</string>
+    <string name="msg_network_waiting">Venter på at spillet skal starte.</string>
+    
+    
 </resources>
