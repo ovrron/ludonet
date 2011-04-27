@@ -83,7 +83,7 @@
 		<path pos="2" x="143" y="147"/>
 		<path pos="3" x="143" y="246"/>
 	</base>
-	<wayhome start="50"><!--wayhome start="41"-->
+	<wayhome start="11"><!--wayhome start="41"-->
 		<path pos="0" x="113" y="449"/>
 		<path pos="1" x="169" y="449"/>
 		<path pos="2" x="225" y="449"/>
@@ -101,7 +101,7 @@
 		<path pos="2" x="649" y="147"/>
 		<path pos="3" x="649" y="246"/>
 	</base>
-	<wayhome start="50">
+	<wayhome start="24">
 		<path pos="0" x="449" y="113"/>
 		<path pos="1" x="449" y="169"/>
 		<path pos="2" x="449" y="225"/>
@@ -123,7 +123,7 @@
 		<path pos="2" x="675" y="449"/>
 		<path pos="3" x="619" y="449"/-->
 	</base>
-	<wayhome start="50">
+	<wayhome start="37">
 		<path pos="0" x="787" y="449"/>
 		<path pos="1" x="731" y="449"/>
 		<path pos="2" x="675" y="449"/>
