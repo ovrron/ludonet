@@ -7,6 +7,7 @@ Dokument						Hvem	Hva
 ------------------------------------------------------------------------------------------------------------------------
 00100000-Innledning				RHA		Innledning til løsning
 00100010-Overordnet-løsning		RHA		Overordnet beskrivelse av løsningen (litt bilder og slikt også)
+00100020-Overordnet-state-dia 	RHA		State-diagram for deler av spillet (klient og server)
 00101000-Overordnet-design				Beskrivelse av design - litt om klasser og hovedoppgaver
 00101020-Klasser						Klasser og relasjoner, samt beskrivelse av hva som skjer
 00102000-Start-av-spill					Hvordan starter et spill
