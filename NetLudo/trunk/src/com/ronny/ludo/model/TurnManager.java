@@ -1,14 +1,8 @@
 package com.ronny.ludo.model;
 
-import java.util.ArrayList;
 import java.util.Vector;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.ronny.ludo.model.TurnManager.PlayerLocation;
-
 import android.util.Log;
 
 public class TurnManager {
@@ -121,19 +115,21 @@ public class TurnManager {
 	public String getPlayersJSON()
 	{
 		JSONObject retVal = new JSONObject();
-		JSONArray array = new JSONArray();
-		for(APlayer ap:players)
+		try 
 		{
-			if(ap.getLocation()!=PlayerLocation.FREE)
+			int i = 0;
+			for(APlayer ap:players)
 			{
-				array.put(ap.getColor().toString());
-				array.put(ap.getLocation().toString());
+				if(ap.getLocation()!=PlayerLocation.FREE)
+				{
+					JSONObject player = new JSONObject();
+					player.put("PlayerColor", ap.getColor().toString());
+					player.put("PlayerLocation", ap.getLocation().toString());
+					retVal.put("Player"+i++, player);
+				}
 			}
 		}
-		try
-		{
-			retVal.put("players", array);
-		} catch (JSONException e)
+		catch (JSONException e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,15 +142,14 @@ public class TurnManager {
 		try
 		{
 			JSONObject jSonObject = new JSONObject(players);
-			JSONArray array = jSonObject.getJSONArray("players");
 			this.players = new Vector<APlayer>();
-			//numPlayers = 0;
-			for(int i=0;i<array.length();i++)
+			int i=0;
+			while(jSonObject.has("Player"+i))
 			{
-				APlayer player = new APlayer(PlayerColor.getColorFromString(array.getString(i)));
-				player.setLocation(PlayerLocation.getLocationFromString(array.getString(++i)));
+				JSONObject jSonPlayer = jSonObject.getJSONObject("Player"+i++);
+				APlayer player = new APlayer(PlayerColor.getColorFromString(jSonPlayer.getString("PlayerColor")));
+				player.setLocation(PlayerLocation.getLocationFromString(jSonPlayer.getString("PlayerLocation")));
 				this.players.add(player);
-				//numPlayers++;
 			}
 		} 
 		catch (JSONException e)
