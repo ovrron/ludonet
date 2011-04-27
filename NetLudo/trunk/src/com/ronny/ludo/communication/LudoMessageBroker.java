@@ -105,6 +105,8 @@ public class LudoMessageBroker {
 		case TeamMessageMgr.ADMIN_OPERATION_REG_CLOSED:
 			break;
 		case TeamMessageMgr.ADMIN_OPERATION_CLIENT_SOCKET_NOT_CONNECTED:
+			// Lost connecttion to server
+			sendMessageToBrokerListeners("A" + SPLITTER + "LOST" );
 			break;
 		case TeamMessageMgr.ADMIN_OPERATION_SERVER_SOCKET_OPENED:
 			break;
@@ -198,6 +200,8 @@ public class LudoMessageBroker {
 		 *   	A,CT,<color>
 		 * NP - Request Next Player :
 		 *  	A,NP		 
+		 * LOST - Server was closing connection
+		 *      A,LOST
 		 *    
 		 * Game verdier (G) 
 		 *  T - terning er kastet T,farge, �yne

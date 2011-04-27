@@ -56,6 +56,9 @@
     
     <string name="msg_network_waiting_title">Venter...</string>
     <string name="msg_network_waiting">Venter på at spillet skal starte.</string>
+    <string name="msg_error_heading">FEIL!!</string>
+    <string name="msg_network_no_connect">Ingen forbindelse...</string>
+    <string name="msg_network_lost">Mistet forbindelsen...</string>
     
     
 </resources>

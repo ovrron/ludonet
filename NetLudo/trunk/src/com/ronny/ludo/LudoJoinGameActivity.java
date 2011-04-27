@@ -2,8 +2,10 @@ package com.ronny.ludo;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -104,6 +106,8 @@ public class LudoJoinGameActivity extends Activity {
 						}
 					}
 				}
+				
+				// The settings have arrived
 				if(messageParts[1].equals("SS")){
 					if (messageParts[2] != null) {
 						gotSettings = true;
@@ -111,6 +115,8 @@ public class LudoJoinGameActivity extends Activity {
 					}
 					
 				}
+				
+				// The player info have arrived
 				if(messageParts[1].equals("SP")){
 					if (messageParts[2] != null) {
 						gotPlayers = true;
@@ -118,13 +124,12 @@ public class LudoJoinGameActivity extends Activity {
 					}
 				}
 
+				// Let the games begin...
 				if(messageParts[1].equals("START")){
-//					if (messageParts[2] != null) {
 						gotStartGame = true;
 						// Get game info
 						GameHolder.getInstance().getMessageBroker().sendGimmeSettings();
 						GameHolder.getInstance().getMessageBroker().sendGimmePlayers();
-//					}
 				}
 	
 				
@@ -169,10 +174,11 @@ public class LudoJoinGameActivity extends Activity {
      * 
      */
 	private void initButtonListeners() {
-		Button buttonJoin = (Button) findViewById(R.id.buttonIP);
+		final Button buttonJoin = (Button) findViewById(R.id.buttonIP);
 
 		buttonJoin.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				buttonJoin.setEnabled(false);
 				int rc = GameHolder.getInstance().getMessageManager()
 						.initClientConnection(editTextIP.getText().toString());
 				Log.d("CONNECT", "RC=" + rc);
@@ -180,10 +186,18 @@ public class LudoJoinGameActivity extends Activity {
 					// Allocate color
 					GameHolder.getInstance().getMessageBroker().sendGimmeAColor();
 				} else {
-					Toast.makeText(LudoJoinGameActivity.this,
-							"Feil med connection: "+rc,
-							Toast.LENGTH_LONG).show();
-
+//					Toast.makeText(LudoJoinGameActivity.this,
+//							"Feil med connection: "+rc,
+//							Toast.LENGTH_LONG).show();
+					ErrDialog erd = new ErrDialog();
+					erd.setOnDismissListener(new OnDismissListener() {
+						public void onDismiss(DialogInterface dialog) {
+							buttonJoin.setEnabled(true);
+						}
+					});
+					erd.showDialog(LudoJoinGameActivity.this, getResources().getText(R.string.msg_error_heading).toString(), 
+							getResources().getText(R.string.msg_network_no_connect).toString(), R.drawable.scared);
+				
 				}
 			}
 		});

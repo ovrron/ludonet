@@ -85,6 +85,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 	private TeamServerRegistrationListener theListener = null;
 
 	// Which role do I play ? client or server ?
+	// Assumtions are "the mother of all screw'ups", but we made a decision to either be a server or a client.  
 	private boolean isServer = true; // Default server.
 
 	public TeamMessageMgr() {
@@ -175,7 +176,7 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 			if (isSocketConnected) {
 				try {
 					stillRunning = true; // Optimistisk p� denne
-					socket.setSoTimeout(3000); // Timeout for read - mulighet
+					socket.setSoTimeout(10000); // Timeout for read - mulighet
 												// for interrupt av prosess
 
 					// Create pipelines
@@ -352,7 +353,15 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 			} catch (IOException e) {
 				e.printStackTrace();
 				sendAdmMsg(ADMIN_MESSAGE_ID, "ST: IOException " + e.toString(), ADMIN_OPERATION_EXCEPTION);
-			} finally {// close sockets!!
+				theListener = null;
+				isInRegistratingMode = false;
+			} catch (Exception e) {
+				e.printStackTrace();
+				sendAdmMsg(ADMIN_MESSAGE_ID, "ST: IOException " + e.toString(), ADMIN_OPERATION_EXCEPTION);
+				theListener = null;
+				isInRegistratingMode = false;
+			}
+			finally {// close sockets!!
 				try {
 					sendAdmMsg(ADMIN_MESSAGE_ID, "ST: Finally");
 				} catch (Exception e) {

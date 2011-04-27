@@ -153,6 +153,7 @@ public class LudoStartNewGameActivity extends Activity {
 
 	private Handler brokerMessages = null;
 
+	
 	/**
      * 
      */
@@ -547,6 +548,15 @@ public class LudoStartNewGameActivity extends Activity {
 			this.finish();
 	    }
 		return super.onKeyDown(keyCode, event);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		Log.d(this.getClass().getName(), "ON START HAPPEND");
+		super.onStart();
 	}
 
 }
