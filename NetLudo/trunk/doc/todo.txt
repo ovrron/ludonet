@@ -11,7 +11,7 @@ ANDROD: - Kanskje noen nye brikker?
 RHA STARTER, DERETTER ALLE- Overordnet beskrivelse av systemet.
 - Skal vi ha maks ventetid på en spiller?
 ANDROD: - Bakgrunnsbilder
-- Må sjekke om fargene blir ledige igjen etter at man har startet registrering av spillere men velger å gå tilbake ett hakk.
+- Må sjekke om fargene blir ledige igjen etter at man har startet registrering av spillere men velger å gå tilbake ett hakk/avslutte.
 
 DONE.
 ANDROD: - Splash image / logoting (Forslag send til RØØØ)
