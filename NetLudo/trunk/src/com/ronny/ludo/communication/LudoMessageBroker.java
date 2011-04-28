@@ -85,9 +85,11 @@ public class LudoMessageBroker {
 
 	public void handleAdminTeamMessage(Serializable message, Integer clientId,
 			int operation) {
-		Log.d("Ludo(A):", clientId + "/" + operation + "/" + message.toString());
+		Log.d("Ludo(ATM):", clientId + "/" + operation + "/" + message.toString());
 		// messageReceiver.handleIncomingMessage(message.toString(), clientId);
-
+		if(GameHolder.getInstance().getMessageManager().isServer()) {
+			Log.d("Ludo(ATMS):", clientId + "/" + operation + "/" + message.toString());
+		}
 		// Safety check
 		if (clientId == null) {
 			return;
@@ -115,6 +117,9 @@ public class LudoMessageBroker {
 		case TeamMessageMgr.ADMIN_OPERATION_DISCONNECT:
 			break;
 		case TeamMessageMgr.ADMIN_OPERATION_EXCEPTION:
+			break;
+		case TeamMessageMgr.ADMIN_OPERATION_COMMUNICATION_LOST:
+//			sendMessageToBrokerListeners("A" + SPLITTER + "LOST" );
 			break;
 		}
 

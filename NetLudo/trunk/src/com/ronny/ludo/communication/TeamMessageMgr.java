@@ -62,6 +62,8 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 
 	public static final int ADMIN_OPERATION_EXCEPTION = 1010; // Some exception
 
+	public static final int ADMIN_OPERATION_COMMUNICATION_LOST = 1011; // Some exception
+
 	public static Integer ADMIN_MESSAGE_ID = new Integer(-1); // Admin message
 																// identifier
 
@@ -216,6 +218,8 @@ public class TeamMessageMgr extends Thread implements ITeamMessageManager {
 
 						if (receivedString == null) {
 							stillRunning = false;
+							// client/server might been droping out
+							sendAdmMsg(ADMIN_MESSAGE_ID, "Closed socket", ADMIN_OPERATION_COMMUNICATION_LOST);
 						} else {
 							distributeMessage(receivedString, this);
 						}

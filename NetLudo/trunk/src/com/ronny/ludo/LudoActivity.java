@@ -181,8 +181,16 @@ public class LudoActivity extends Activity {
 						// Free the color
 						GameHolder.getInstance().getTurnManager()
 								.freeColor(PlayerColor.getColorFromString(messageParts[2]));
-						// Optionally - we could remove the Pieces from the
-						// board. Not implemented
+						
+						ErrDialog erd = new ErrDialog();
+						erd.setOnDismissListener(new OnDismissListener() {
+							public void onDismiss(DialogInterface dialog) {
+							}
+						});
+						erd.showDialog(LudoActivity.this, getResources().getText(R.string.msg_network_player_gone).toString(), 
+								getResources().getText(R.string.msg_network_player).toString() + " "
+								+plc.toNorwegian() + " "
+								+getResources().getText(R.string.msg_network_player_checked_out).toString(), R.drawable.cry);
 					}
 
 					// Lost connection to server
