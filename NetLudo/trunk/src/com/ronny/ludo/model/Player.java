@@ -186,5 +186,23 @@ public class Player implements IPlayer{
 		}
 		return false;
 	}
+	
+	   /**
+     * @return, true hvis alle spillernes pieces er i mål, ellers false
+     */
+    public boolean isAtGoal()
+    {
+        for(IPiece piece:pieces)
+        {
+            if (piece.isEnabled())
+            {
+                if(!piece.isAtGoal())
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }

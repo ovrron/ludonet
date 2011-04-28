@@ -254,6 +254,11 @@ public class LudoActivity extends Activity {
 		surface.setPickingPiece(false);
 	}
 
+    public void setWinnerPlayer(PlayerColor color) {
+        //TODO håndtere vinner og avslutning
+        Toast.makeText(getBaseContext(), "wwww", Toast.LENGTH_SHORT).show();
+    }
+    
 	public void setCurrentPlayer(PlayerColor color) {
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
 		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");

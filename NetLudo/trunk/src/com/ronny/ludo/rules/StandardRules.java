@@ -61,53 +61,56 @@ public class StandardRules implements IRules
 		//Brikken er i mål
 		if(piece.isAtGoal())
 		{
-			return false;
+			return false;  // Allerede i mål
 		}
 		//Brikken er fremdeles hjemme
-		else if(piece.isHome())
+		if(piece.isHome())
 		{
 			if(takeOffNumbers.contains(eyes))
 			{
-				return true;
+				return true;   // Flytte brikke ut
 			}
 			else
 			{
-				return false;
+				return false;   // Brikke blir stående
 			}
 		}
+		
 		//Brikken er på vei inn til mål
-		else if(piece.isOnWayToGoal())
+		if(piece.isOnWayToGoal())
 		{
-			if(piece.getBoardPosition()+eyes <= piece.getOwner().getWayHomePositions().lastElement().pos)
+			if(piece.getBoardPosition() + eyes <= piece.getOwner().getWayHomePositions().lastElement().pos)
 			{
-				return true;
+			    // Fortsatt på vei hjem
+			    return true;
 			}
 			else
 			{
-				return false;
+			    // Fortsatt på vei hjem men terning er mer enn kun til mål
+				return false;  
 			}
 		}
 		//Brikken er på fellesområdet
-		//TODO må sjekke litt nærmere om dette stemmer
-		else
+		if(piece.getBoardPosition() + eyes > piece.getOwner().getStartWayHomePosition())
 		{
-			//Flyttet vil flytte brikken på vei inn til mål
-			if(piece.getBoardPosition()+eyes > piece.getOwner().getStartWayHomePosition())
+			if((piece.getBoardPosition() + eyes - piece.getOwner().getStartWayHomePosition()) 
+			        <= piece.getOwner().getWayHomePositions().size())
 			{
-				if(piece.getBoardPosition()+eyes-piece.getOwner().getStartWayHomePosition() <= piece.getOwner().getWayHomePositions().size())
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+			    // På vei hjem men ikke i mål
+				return true; 
 			}
 			else
 			{
-				return true;
+			    // På vei hjem men lenger enn mål
+				return false;  
 			}
 		}
+		else
+		{
+		    // Gyldig flytt på fellesområdet
+			return true;  
+		}
+		
 	}
 
     public List< PieceAction > getPieceActionList(IPiece piece, List< IPiece > pieces) {
@@ -199,7 +202,7 @@ public class StandardRules implements IRules
 		}
 		return false;
 	}
-
+	
 	public void setLudoBoard(String ludoBoardName, String ludoBoardFile)
 	{
 		this.ludoBoardName = ludoBoardName;

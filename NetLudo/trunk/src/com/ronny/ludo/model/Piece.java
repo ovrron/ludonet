@@ -114,8 +114,6 @@ public class Piece implements IPiece{
 			// Still in house - position housePosition
 			co = owner.getHomePositions().elementAt(housePosition);
 		} else {
-			
-			
 			if( boardPosition > owner.getStartWayHomePosition()) {
 				// Vi er på vei inn
 				int wayHpos = boardPosition - owner.getStartWayHomePosition() - 1;
@@ -186,9 +184,8 @@ public class Piece implements IPiece{
 			// Still in house - position housePosition
 			co = owner.getHomePositions().elementAt(housePosition);
 		} else {
-			
-			if( newPos > owner.getStartWayHomePosition()) {
-				// Vi er p� vei inn
+		    if(isOnWayToGoal() && getBoardPosition() + newPos <= getOwner().getWayHomePositions().lastElement().pos)
+		    {
 				int wayHpos = newPos - owner.getStartWayHomePosition() - 1;
 				co = owner.getWayHomePositions().elementAt(wayHpos);
 			} else {

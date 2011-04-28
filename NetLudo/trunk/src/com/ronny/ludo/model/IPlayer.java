@@ -28,4 +28,5 @@ public interface IPlayer
 	public String toString();
 	public void DumpGame();
 	public boolean hasPiecesInPlay();
+	public boolean isAtGoal();
 }

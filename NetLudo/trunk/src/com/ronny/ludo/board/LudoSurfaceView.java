@@ -116,8 +116,13 @@ public class LudoSurfaceView extends SurfaceView implements
 	private void whatNow()
 	{
         //Sjekk om vi skal gå til neste spiller eller fortsette med denne spilleren.
-		//Reroll?
-        if(GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow))
+		//Reroll eller vunnet
+	    
+	    // TODO Få inn håndtering av vinner inkl regler for når en vinner kan kåres.
+	    if (GameHolder.getInstance().getGame().getPlayerInfo(currentPlayer).isAtGoal()){
+	        parentActivity.setWinnerPlayer(currentPlayer);
+	    }
+	    else if(GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow))
         {
         	parentActivity.resetDie();
         }
@@ -249,9 +254,9 @@ public class LudoSurfaceView extends SurfaceView implements
         
         GameHolder.getInstance().getGame().getPlayerInfo(PlayerColor.RED).DumpGame();
         
-        // Finn x p� board - legg til offset
+        // Finn x på board - legg til offset
         double currentXBoard = (double) (-1*current_X) + currentX/currentScale;
-        // Finn y p� board - legg til offset
+        // Finn y på board - legg til offset
         double currentYBoard = (double) (-1*current_Y) + currentY/currentScale;
         
         double delta = 0.08 * boardImageX;
@@ -266,7 +271,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
             boolean bo = pp.canPieceMove(currentThrow);
         	if(bo) {
-        		Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
+        		//Coordinate cc = pp.getPositionAtBoardPosition(currentThrow);
         		
         		GameHolder.getInstance().getMessageBroker().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		
@@ -285,6 +290,11 @@ public class LudoSurfaceView extends SurfaceView implements
 				}
  //       		parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
 				whatNow();
+        	} else {
+        	    if(!canMoove())
+                {
+                    whatNow();
+                }
         	}
         }
 
