@@ -1,6 +1,8 @@
 Her legger vi inn hva vi har sjekket inn...
 Husk å legge inn //TODO i koden hvor ting gjenstår - slik at vi kan bruke det aktivt
 
+20110428: RHA:
+		Mix updates til nettverk og feil på linjer... etc.
 20110427: RHA:
 		Div bugfix i TeamMessageManager, feilmeldings-dialog ved connect til server.  Connect tid endret
 		til 10 sekunder.  Nytt spill drar også med seg RegistrationServer opp igjen - hvis du starter registrering og stopper igjen.
