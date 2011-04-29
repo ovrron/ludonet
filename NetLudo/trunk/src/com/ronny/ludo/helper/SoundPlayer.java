@@ -23,19 +23,16 @@ public class SoundPlayer
 	{
 		if(GameHolder.getInstance().isSoundOn())
 		{
-//			mp = MediaPlayer.create(context, soundToPlay);
-//			mp.start();
-//			return mp.getDuration();			
+			mp = MediaPlayer.create(context, soundToPlay);
+			mp.start();
+			return mp.getDuration();			
 		}
 		return 0;
 	}
 
 	public int getDuration(int soundToPlay)
 	{
-//		mp = MediaPlayer.create(context, soundToPlay);
-//		return mp.getDuration();
-	    return 0;
+		mp = MediaPlayer.create(context, soundToPlay);
+		return mp.getDuration();
 	}
-	
-	//mp = MediaPlayer.create(getBaseContext(),R.raw.shake_and_roll_6);
 }
