@@ -495,6 +495,10 @@ public class LudoMessageBroker {
 	 * Quitting game
 	 */
 	public void quitGame() {
+		
+		// Reset TurnManager - free colors.
+		GameHolder.getInstance().getTurnManager().resetGame();
+		
 		// Send message to server or clients that I'm leaving.
 		if (GameHolder.getInstance().getMessageManager().isServer()) {
 			// GameHolder.getInstance().getMessageManager().sendMessageToClients("A,COS,NONE");

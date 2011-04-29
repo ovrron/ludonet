@@ -12,13 +12,13 @@ public class TurnManager {
 	 */
 	public static enum PlayerLocation {
 		FREE, LOCAL, REMOTE;
-		
+
 		public static PlayerLocation getLocationFromString(String theLocation) {
-			if(theLocation  == null) {
+			if (theLocation == null) {
 				return FREE;
 			}
-			for(PlayerLocation pll : PlayerLocation.values()) {
-				if(pll.toString().compareTo(theLocation)==0) {
+			for (PlayerLocation pll : PlayerLocation.values()) {
+				if (pll.toString().compareTo(theLocation) == 0) {
 					return pll;
 				}
 			}
@@ -28,7 +28,8 @@ public class TurnManager {
 
 	private PlayerColor currentTurnColor;
 	private int currentTurnPos = -1;
-	//private int numPlayers = 0;
+
+	// private int numPlayers = 0;
 
 	/**
 	 * Define a player, color and location
@@ -65,45 +66,35 @@ public class TurnManager {
 	}
 
 	// Vector with all players, allocated colors and location
-	private Vector<APlayer> players = new Vector<APlayer>(); // Clients' colors
-																// and location
+	private Vector<APlayer> players = new Vector<APlayer>();
 
 	// Current players' color
 
 	// Default constructor
 	public TurnManager() {
-//		players.add(new APlayer(PlayerColor.RED));
-//		players.add(new APlayer(PlayerColor.GREEN));
-//		players.add(new APlayer(PlayerColor.YELLOW));
-//		players.add(new APlayer(PlayerColor.BLUE));
 	}
-	
-	
+
 	/**
 	 * Legger til en spillerfarge
+	 * 
 	 * @param playerColor
 	 */
-	public void addPlayer(PlayerColor playerColor)
-	{
-		if(!players.contains(playerColor))
-		{
+	public void addPlayer(PlayerColor playerColor) {
+		if (!players.contains(playerColor)) {
 			players.add(new APlayer(playerColor));
 		}
 	}
-	
+
 	/**
 	 * Henter spillfargen til alle spillerne som er med
+	 * 
 	 * @return vector med PlayerColor
 	 */
-	public Vector<PlayerColor> getPlayers()
-	{
+	public Vector<PlayerColor> getPlayers() {
 		Vector<PlayerColor> playerColors = null;
-		if(players!=null)
-		{
-			for(APlayer ap:players)
-			{
-				if(playerColors==null)
-				{
+		if (players != null) {
+			for (APlayer ap : players) {
+				if (playerColors == null) {
 					playerColors = new Vector<PlayerColor>();
 				}
 				playerColors.add(ap.getColor());
@@ -111,57 +102,46 @@ public class TurnManager {
 		}
 		return playerColors;
 	}
-	
-	public String getPlayersJSON()
-	{
+
+	public String getPlayersJSON() {
 		JSONObject retVal = new JSONObject();
-		try 
-		{
+		try {
 			int i = 0;
-			for(APlayer ap:players)
-			{
-				if(ap.getLocation()!=PlayerLocation.FREE)
-				{
+			for (APlayer ap : players) {
+				if (ap.getLocation() != PlayerLocation.FREE) {
 					JSONObject player = new JSONObject();
 					player.put("PlayerColor", ap.getColor().toString());
 					player.put("PlayerLocation", ap.getLocation().toString());
-					retVal.put("Player"+i++, player);
+					retVal.put("Player" + i++, player);
 				}
 			}
-		}
-		catch (JSONException e) 
-		{
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return retVal.toString();
 	}
-	
-	public void setPlayersJSON(String players)
-	{
-		try
-		{
+
+	public void setPlayersJSON(String players) {
+		try {
 			JSONObject jSonObject = new JSONObject(players);
 			this.players = new Vector<APlayer>();
-			int i=0;
-			while(jSonObject.has("Player"+i))
-			{
-				JSONObject jSonPlayer = jSonObject.getJSONObject("Player"+i++);
+			int i = 0;
+			while (jSonObject.has("Player" + i)) {
+				JSONObject jSonPlayer = jSonObject.getJSONObject("Player" + i++);
 				APlayer player = new APlayer(PlayerColor.getColorFromString(jSonPlayer.getString("PlayerColor")));
 				player.setLocation(PlayerLocation.getLocationFromString(jSonPlayer.getString("PlayerLocation")));
 				this.players.add(player);
 			}
-		} 
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Release a previously allocated color.
-	 * This is my silent tribute to 'Free Willie'.
+	 * Release a previously allocated color. This is my silent tribute to 'Free
+	 * Willie'.
 	 * 
 	 * @param theCol
 	 */
@@ -169,8 +149,7 @@ public class TurnManager {
 		for (APlayer ap : players) {
 			if (ap.getColor() == theCol) {
 				ap.setLocation(PlayerLocation.FREE);
-				Log.d("TurnMGR",
-						"Color Freed " + theCol.toString());
+				Log.d("TurnMGR", "Color Freed " + theCol.toString());
 				return;
 			}
 		}
@@ -188,11 +167,9 @@ public class TurnManager {
 	 *            color is not free
 	 * @return allocated color
 	 */
-	public PlayerColor getFreeColor(PlayerLocation remoteOrLocal,
-			PlayerColor wantedColor, boolean shouldSelectAnother) {
+	public PlayerColor getFreeColor(PlayerLocation remoteOrLocal, PlayerColor wantedColor, boolean shouldSelectAnother) {
 
-		PlayerColor wColor = (wantedColor == null ? PlayerColor.NONE
-				: wantedColor);
+		PlayerColor wColor = (wantedColor == null ? PlayerColor.NONE : wantedColor);
 
 		// See if the color is free
 		if (wColor != PlayerColor.NONE) {
@@ -200,9 +177,8 @@ public class TurnManager {
 				if (ap.getColor() == wColor) {
 					if (ap.getLocation() == PlayerLocation.FREE) {
 						ap.setLocation(remoteOrLocal);
-						Log.d("TurnMGR",
-								"Color allocated (wanted) " + wColor.toString());
-						//numPlayers++;
+						Log.d("TurnMGR", "Color allocated (wanted) " + wColor.toString());
+						// numPlayers++;
 						return ap.getColor();
 					}
 				}
@@ -214,9 +190,8 @@ public class TurnManager {
 			for (APlayer ap : players) {
 				if (ap.getLocation() == PlayerLocation.FREE) {
 					ap.setLocation(remoteOrLocal);
-					Log.d("TurnMGR", "Color allocated (free) "
-							+ ap.getColor().toString());
-					//numPlayers++;
+					Log.d("TurnMGR", "Color allocated (free) " + ap.getColor().toString());
+					// numPlayers++;
 					return ap.getColor();
 				}
 			}
@@ -251,44 +226,39 @@ public class TurnManager {
 	 * @return the players color
 	 */
 	public PlayerColor advanceToNextPlayer() {
-//		Log.d("TurnMGR", "Current color : " + currentTurnColor.toString());
+		// Log.d("TurnMGR", "Current color : " + currentTurnColor.toString());
 		// If first time called - init to the first player.
-		
+
 		PlayerColor retVal = PlayerColor.NONE;
-		
+
 		if (currentTurnPos < 0) {
-			//return getFirstPlayerColor();
+			// return getFirstPlayerColor();
 			retVal = getFirstPlayerColor();
-		}
-		else if (getNumPlayers() == 0) {
-			//return PlayerColor.NONE;
+		} else if (getNumPlayers() == 0) {
+			// return PlayerColor.NONE;
 			retVal = PlayerColor.NONE;
-		}
-		else if (getNumPlayers() == 1) {
-			//return currentTurnColor;
+		} else if (getNumPlayers() == 1) {
+			// return currentTurnColor;
 			retVal = currentTurnColor;
-		}
-		else {
+		} else {
 			for (int i = 1; i < players.size(); i++) {
-				Log.d("TurnMGR", "Advance index : "
-						+ ((i + currentTurnPos) % players.size()));
+				Log.d("TurnMGR", "Advance index : " + ((i + currentTurnPos) % players.size()));
 				APlayer p = players.get(((i + currentTurnPos) % players.size()));
 				if (p.getLocation() != PlayerLocation.FREE) {
 					currentTurnPos = ((i + currentTurnPos) % players.size());
 					currentTurnColor = p.getColor();
-					//return currentTurnColor;
+					// return currentTurnColor;
 					retVal = currentTurnColor;
 					break;
 				}
 			}
-			
+
 		}
-		//GameHolder.getInstance().getMessageBroker().sendCurrentPlayer(retVal);
+		// GameHolder.getInstance().getMessageBroker().sendCurrentPlayer(retVal);
 		return retVal;
 	}
-	
-	public int getNumPlayers()
-	{
+
+	public int getNumPlayers() {
 		int retVal = 0;
 		for (int i = 0; i < players.size(); i++) {
 			APlayer p = players.get(i);
@@ -311,17 +281,17 @@ public class TurnManager {
 		}
 		return currentTurnColor;
 	}
-	
 
 	/**
 	 * Check if this color is currently available
+	 * 
 	 * @param theCol
 	 * @return
 	 */
 	public boolean isFree(PlayerColor theCol) {
 		for (APlayer pl : players) {
 			if (pl.getColor() == theCol) {
-				return (pl.getLocation()==PlayerLocation.FREE);
+				return (pl.getLocation() == PlayerLocation.FREE);
 			}
 		}
 		return false;
@@ -329,26 +299,29 @@ public class TurnManager {
 
 	/**
 	 * Check if this color is currently in use locally
+	 * 
 	 * @param theCol
 	 * @return
 	 */
 	public boolean isLocal(PlayerColor theCol) {
 		for (APlayer pl : players) {
 			if (pl.getColor() == theCol) {
-				return (pl.getLocation()==PlayerLocation.LOCAL);
+				return (pl.getLocation() == PlayerLocation.LOCAL);
 			}
 		}
 		return false;
 	}
+
 	/**
 	 * Check if this color is currently in use remotely
+	 * 
 	 * @param theCol
 	 * @return
 	 */
 	public boolean isRemote(PlayerColor theCol) {
 		for (APlayer pl : players) {
 			if (pl.getColor() == theCol) {
-				return (pl.getLocation()==PlayerLocation.REMOTE);
+				return (pl.getLocation() == PlayerLocation.REMOTE);
 			}
 		}
 		return false;
@@ -356,6 +329,7 @@ public class TurnManager {
 
 	/**
 	 * Get the location for a color
+	 * 
 	 * @param color
 	 * @return
 	 */
@@ -367,12 +341,22 @@ public class TurnManager {
 		}
 		return null;
 	}
-	
-	public void setLoaction(PlayerColor color, PlayerLocation location)
-	{
+
+	public void setLoaction(PlayerColor color, PlayerLocation location) {
 		for (APlayer pl : players) {
 			if (pl.getColor() == color) {
 				pl.setLocation(location);
+			}
+		}
+	}
+
+	/**
+	 * Resetting the player colors to 'free'
+	 */
+	public void resetGame() {
+		if (players != null) {
+			for (APlayer ap : players) {
+				ap.setLocation(PlayerLocation.FREE);
 			}
 		}
 	}
