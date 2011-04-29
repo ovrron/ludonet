@@ -234,13 +234,8 @@ public class LudoMessageBroker {
 				int theMove = Integer.parseInt(messageParts[4]);
 				// isDistributing = false;
 				PlayerColor toHouse = GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
+				distributeMessage(message.toString());
 				sendMessageToBrokerListeners(message.toString());
-
-				if (toHouse != PlayerColor.NONE) {
-					if (GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() != toHouse) {
-
-					}
-				}
 
 				// GameHolder.getInstance().getSurfaceView().playerMove(plc,
 				// theBrikke, theMove);
