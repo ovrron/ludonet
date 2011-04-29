@@ -257,6 +257,14 @@ public class LudoMessageBroker {
 				// GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
 				// GameHolder.getInstance().getSurfaceView().reDraw();
 			}
+			
+			if (messageParts[1].equals("W")) {
+				// Send vinner kåret til alle
+				Log.d("Ludo(C):", "Vinneren er : " + messageParts[2]);
+				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+				sendMessageToBrokerListeners(message.toString());
+				//G,W,<color>
+			}
 		}
 		// **************************
 		// Administrative MESSAGES
@@ -448,6 +456,10 @@ public class LudoMessageBroker {
 				+ SPLITTER + numMoves + SPLITTER + jubelHyl);
 	}
 
+	public void sendWinnerPlayer(PlayerColor color) {
+		distributeMessage("G" + SPLITTER + "W" + SPLITTER + color.toString());
+	}
+	
 	public void dieThrowed(PlayerColor color, int eyes) {
 		distributeMessage("G" + SPLITTER + "T" + SPLITTER + color.toString() + SPLITTER + eyes);
 	}

@@ -54,4 +54,18 @@ public class SoundPlayer
 			return 0;
 		}
 	}
+	
+	protected void finalize() throws Throwable
+	{
+	  if(mp!=null)
+	  {
+		  try{
+			mp.stop();  
+		  }
+		  catch(Exception e){
+			  
+		  }
+	  }
+	  super.finalize();
+	} 
 }

@@ -202,7 +202,7 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		// TODO Få inn håndtering av vinner inkl regler for når en vinner kan
 		// kåres.
 		if (GameHolder.getInstance().getGame().getPlayerInfo(currentPlayer).isAtGoal()) {
-			parentActivity.setWinnerPlayer(currentPlayer);
+			GameHolder.getInstance().getMessageBroker().sendWinnerPlayer(currentPlayer);
 		} else if (GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow)) {
 			parentActivity.resetDie();
 		}

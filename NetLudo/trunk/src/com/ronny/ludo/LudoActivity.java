@@ -250,9 +250,8 @@ public class LudoActivity extends Activity implements SensorEventListener {
 						}
 						soundPlayer.playSound(SoundPlayer.DISCONNECT);
 					}
-				}
+				}	
 			}
-
 		};
 
 		GameHolder.getInstance().getMessageBroker().addListener(brokerMessages);
@@ -341,9 +340,31 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		surface.setPickingPiece(false);
 	}
 
-	public void setWinnerPlayer(PlayerColor color) {
+	public void setWinnerPlayer(PlayerColor color, boolean me) {
 		// TODO håndtere vinner og avslutning
-		Toast.makeText(getBaseContext(), "wwww", Toast.LENGTH_SHORT).show();
+		ErrDialog erd = new ErrDialog();
+		if(me){
+			erd.setOnDismissListener(new OnDismissListener() {
+				public void onDismiss(DialogInterface dialog) {
+				}
+			});
+			erd.showDialog(
+					LudoActivity.this,
+					"tittel?",
+					getResources().getText(R.string.msg_winnerme).toString(), 
+					R.drawable.winner);
+		}
+		else {
+			erd.setOnDismissListener(new OnDismissListener() {
+				public void onDismiss(DialogInterface dialog) {
+				}
+			});
+			erd.showDialog(
+					LudoActivity.this,
+					"tittel?",
+					color.toNorwegian() + " " + getResources().getText(R.string.msg_winner).toString(), 
+					R.drawable.winner);
+		}
 	}
 
 	public void setCurrentPlayer(PlayerColor color) {
