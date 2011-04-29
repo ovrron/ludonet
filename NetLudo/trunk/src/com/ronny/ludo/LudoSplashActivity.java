@@ -30,6 +30,7 @@ public class LudoSplashActivity extends Activity {
     private void startAnimation()
     {
     	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.logo);
+    	logo = (ImageView)findViewById(R.id.imageViewLogo);
     	logo.startAnimation(animationLogo);
     	animationLogo.setAnimationListener(new AnimationListener() 
     	{
