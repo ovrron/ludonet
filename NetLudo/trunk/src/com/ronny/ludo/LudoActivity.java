@@ -180,6 +180,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 				final String[] messageParts = message.split(LudoMessageBroker.SPLITTER);
 				Log.d("LA:handleMessage", "In msg: " + message);
 				if (messageParts[0].equals("A")) { // Administrative messages
+					
 					if (messageParts[1].equals("CO")) { // Client checking out
 						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 
@@ -207,6 +208,22 @@ public class LudoActivity extends Activity implements SensorEventListener {
 								+getResources().getText(R.string.msg_network_player_checked_out).toString(), R.drawable.cry);
 					}
 
+					// Server is leaving game...
+					if (messageParts[1].equals("COS")) { // Server checking out
+						
+						ErrDialog erd = new ErrDialog();
+						erd.setOnDismissListener(new OnDismissListener() {
+							public void onDismiss(DialogInterface dialog) {
+								tearDownGame();
+								LudoActivity.this.finish();
+							}
+						});
+						erd.showDialog(LudoActivity.this, getResources().getText(R.string.msg_network_player_gone).toString(), 
+								getResources().getText(R.string.msg_network_server).toString() + " "
+								+getResources().getText(R.string.msg_network_player_checked_out).toString(), R.drawable.strive);
+					}
+
+					
 					// Lost connection to server
 					if (messageParts[1].equals("LOST")) {
 						if (!GameHolder.getInstance().getMessageManager().isServer()) {
@@ -242,7 +259,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 
 	public void onAccuracyChanged(Sensor arg0, int arg1) {}
 	 
-	@Override
 	public void onSensorChanged(SensorEvent event){
   		if(imgButtonDie.isEnabled()){
 			Sensor mySensor = event.sensor;

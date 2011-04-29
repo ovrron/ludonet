@@ -62,6 +62,7 @@
     <string name="msg_network_no_connect">Ingen forbindelse...</string>
     <string name="msg_network_lost">Mistet forbindelsen...</string>
     <string name="msg_network_player">Spiller</string>
+    <string name="msg_network_server">Server</string>
     <string name="msg_network_player_gone">Spiller borte...</string>
     <string name="msg_network_player_checked_out">forlot spillet.</string>
    
