@@ -58,58 +58,65 @@ public class StandardRules implements IRules
 	 */
 	public boolean isLegalMove(IPiece piece, int eyes)
 	{
+	    boolean retval = false;
 		//Brikken er i mål
 		if(piece.isAtGoal())
 		{
-			return false;  // Allerede i mål
+		    retval = false;  // Allerede i mål
 		}
-		//Brikken er fremdeles hjemme
-		if(piece.isHome())
-		{
-			if(takeOffNumbers.contains(eyes))
-			{
-				return true;   // Flytte brikke ut
-			}
-			else
-			{
-				return false;   // Brikke blir stående
-			}
+		else {
+    		//Brikken er fremdeles hjemme
+    		if(piece.isHome())
+    		{
+    			if(takeOffNumbers.contains(eyes))
+    			{
+    			    retval = true;   // Flytte brikke ut
+    			}
+    			else
+    			{
+    			    retval = false;   // Brikke blir stående
+    			}
+    		}
+    		else {
+        		//Brikken er på vei inn til mål
+        		if(piece.isOnWayToGoal())
+        		{
+        			if(piece.getBoardPosition() + eyes <= 1 + piece.getOwner().getStartWayHomePosition() + piece.getOwner().getWayHomePositions().lastElement().pos)
+        			{
+        			    // Fortsatt på vei hjem
+        			    retval = true;
+        			}
+        			else
+        			{
+        			    // Fortsatt på vei hjem men terning er mer enn kun til mål
+        			    retval = false;  
+        			}
+        		}
+        		else {
+            		//Brikken er på fellesområdet
+            		if(piece.getBoardPosition() + eyes > piece.getOwner().getStartWayHomePosition())
+            		{
+            			if((piece.getBoardPosition() + eyes - piece.getOwner().getStartWayHomePosition()) 
+            			        <= piece.getOwner().getWayHomePositions().size())
+            			{
+            			    // På vei hjem men ikke i mål
+            			    retval = true; 
+            			}
+            			else
+            			{
+            			    // På vei hjem men lenger enn mål
+            			    retval = false;  
+            			}
+            		}
+            		else
+            		{
+            		    // Gyldig flytt på fellesområdet
+            		    retval = true;  
+            		}
+        		}
+    		}
 		}
-		
-		//Brikken er på vei inn til mål
-		if(piece.isOnWayToGoal())
-		{
-			if(piece.getBoardPosition() + eyes <= piece.getOwner().getWayHomePositions().lastElement().pos)
-			{
-			    // Fortsatt på vei hjem
-			    return true;
-			}
-			else
-			{
-			    // Fortsatt på vei hjem men terning er mer enn kun til mål
-				return false;  
-			}
-		}
-		//Brikken er på fellesområdet
-		if(piece.getBoardPosition() + eyes > piece.getOwner().getStartWayHomePosition())
-		{
-			if((piece.getBoardPosition() + eyes - piece.getOwner().getStartWayHomePosition()) 
-			        <= piece.getOwner().getWayHomePositions().size())
-			{
-			    // På vei hjem men ikke i mål
-				return true; 
-			}
-			else
-			{
-			    // På vei hjem men lenger enn mål
-				return false;  
-			}
-		}
-		else
-		{
-		    // Gyldig flytt på fellesområdet
-			return true;  
-		}
+		return retval;
 		
 	}
 

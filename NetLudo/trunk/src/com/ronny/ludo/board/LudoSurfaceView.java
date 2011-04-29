@@ -45,6 +45,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
 	int brikSize = 0;
 	private float lastTwoXMoves[] = new float[2];
+	//int teller =  0; 
 	private float lastTwoYMoves[] = new float[2];
 	private int moveHistorySize = 0;
 	private int current_X = 0; // Dette er offset i X-retning for bildet i forhold til det vi ser på skjerm
@@ -175,6 +176,21 @@ public class LudoSurfaceView extends SurfaceView implements
         //Sjekk om vi skal gå til neste spiller eller fortsette med denne spilleren.
 		//Reroll eller vunnet
 	    
+	    
+//        if (teller == 0) {
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0, 49);
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 1, 48);
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 2, 47);
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 3, 46);
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 0, 49);
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 1, 48);
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 2, 47);
+//            GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 3, 46);
+//            teller = 1;
+//        }
+//        
+//        
+                
 	    // TODO Få inn håndtering av vinner inkl regler for når en vinner kan kåres.
 	    if (GameHolder.getInstance().getGame().getPlayerInfo(currentPlayer).isAtGoal()){
 	        parentActivity.setWinnerPlayer(currentPlayer);
@@ -347,15 +363,15 @@ public class LudoSurfaceView extends SurfaceView implements
 				}
  //       		parentActivity.setCurrentPlayer(GameHolder.getInstance().getTurnManager().advanceToNextPlayer());
 				whatNow();
-        	} else {
-        	    if(!canMoove())
+        	}
+        	else
+            {
+                if(!canMoove())
                 {
                     whatNow();
                 }
-        	}
-        }
-
-        
+            }
+        }   
         
         // ******************************************DEBUG
         // Plot på skjerm
@@ -854,11 +870,13 @@ public class LudoSurfaceView extends SurfaceView implements
 				IPlayer currentPlayer = GameHolder.getInstance().getGame().getPlayerInfo(pc);
 				for(IPiece piece:currentPlayer.getBrikker())
 				{
-					if(GameHolder.getInstance().getRules().isLegalMove(piece, currentThrow))
-					{
-						piece.highLight(true);
-						retVal = true;
-					}
+				    if (piece.isEnabled()){
+    					if(GameHolder.getInstance().getRules().isLegalMove(piece, currentThrow))
+    					{
+    						piece.highLight(true);
+    						retVal = true;
+    					}
+				    }
 				}
 			}
 		}

@@ -154,18 +154,21 @@ public class Piece implements IPiece{
 
 	// Flytte en brikke litt
 	public void moveForward(int theMove) {
-		// boardPosition += theMove;
-		if (isAtGoal) {
+
+	    if (isAtGoal) {
 			return;
 		}
 		
 		Log.d("IPiece"," Col: "+owner.getColor().toString()+"IPiece: "+housePosition+" Current pos: "+boardPosition+" move: "+theMove);
-		boardPosition += theMove;
-		// Sjekk om vi har gått for langt...
-		if (boardPosition >= (owner.getWayHomePositions().size() + owner.getStartWayHomePosition())) {
-			boardPosition = owner.getWayHomePositions().size() + owner.getStartWayHomePosition();
-			isAtGoal = true;
+        boardPosition += theMove;
+        
+		if (!isOnWayToGoal() && getBoardPosition() > owner.getStartWayHomePosition()) {
+		    isOnWayToGoal = true;
 		}
+	    if(isOnWayToGoal() && getBoardPosition() == owner.getStartWayHomePosition()+ 1 + getOwner().getWayHomePositions().lastElement().pos){
+//	        boardPosition = owner.getWayHomePositions().size() + owner.getStartWayHomePosition();
+	        isAtGoal = true;
+	    }
 	}
 
 	public boolean isOnWayToGoal()
