@@ -70,15 +70,13 @@ public class LudoActivity extends Activity implements SensorEventListener {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		// HER SKAL VI HA VALGT ET GAME - SOM ER OPPRETTET TIDLIGERE....
-		// VI LEGGER DET INN HER FOR Å FÅ TING TIL Å SNURRE
+		// Sett Game instans
 		GameHolder.getInstance().setGame(new Game());
 
 		// Load board definisjoner - lastes før inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 
-		// Henter valgt bord fra settings
-		// TODO håndter feil
+		// Brett er lagt inn i regler - for lasting på klient.  Dette er et bevisst valg siden egene brett kan ha egene regler (framtidig utvidelse)
 		String boardFile = GameHolder.getInstance().getRules().getLudoBoardFile();
 		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
 		// parseXmlDefs();
@@ -555,6 +553,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			// Log.d(this.getClass().getName(), "back button pressed");
 			// TODO Disconnect other players
+			sensorMgr.unregisterListener(this);
 			tearDownGame();
 			this.finish();
 		}
