@@ -488,14 +488,15 @@ public class LudoMessageBroker {
 	}
 
 	public void sendGimmeNextPlayer() {
-		Log.d("Ludo(C):", "Asking server for next player");
 		if (currentServer.isServer()) {
+			Log.d("Ludo(C):", "Sending next player to clients");
 			PlayerColor plc = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
 			currentServer.sendMessageToClients("G" + SPLITTER + "CP" + SPLITTER + plc);
 			sendMessageToBrokerListeners("G" + SPLITTER + "CP" + SPLITTER + plc);
 //			GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
 //			GameHolder.getInstance().getSurfaceView().reDraw();
 		} else {
+			Log.d("Ludo(C):", "Asking server for next player");
 			distributeMessage("A" + SPLITTER + "NP");
 		}
 
