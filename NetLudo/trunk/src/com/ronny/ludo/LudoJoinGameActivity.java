@@ -13,9 +13,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ronny.ludo.communication.LudoMessageBroker;
@@ -35,6 +39,7 @@ public class LudoJoinGameActivity extends Activity {
 	boolean gotSettings = false;
 	boolean gotPlayers = false;
 	boolean gotStartGame = false;
+	private ImageView o = null;
 	
 	String ip = null;
 	EditText editTextIP = null;
@@ -151,6 +156,8 @@ public class LudoJoinGameActivity extends Activity {
 		GameHolder.getInstance().getMessageManager().addListener(hnd);
 
 		initButtonListeners();
+		startAnimation();
+
 	}
 
 	// /**
@@ -203,6 +210,25 @@ public class LudoJoinGameActivity extends Activity {
 		});
 	}
 	
+    private void startAnimation()
+    {
+    	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.rotate);
+    	o = (ImageView) findViewById(R.id.imageViewO);
+    	o.startAnimation(animationLogo);
+    	animationLogo.setAnimationListener(new AnimationListener() 
+    	{
+    	
+    		public void onAnimationEnd(Animation animation) {
+ 
+		    }
+		
+		    public void onAnimationRepeat(Animation animation) {
+		    }
+		
+		    public void onAnimationStart(Animation animation) {
+		    }
+		});    	
+    }
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)

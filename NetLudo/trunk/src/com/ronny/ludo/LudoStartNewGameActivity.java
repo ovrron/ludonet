@@ -15,10 +15,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ronny.ludo.communication.LudoMessageBroker;
@@ -141,7 +145,8 @@ public class LudoStartNewGameActivity extends Activity {
 	private Button buttonPlayGame = null;
 	private Button buttonInvite = null;
 	private HelperPlayers players = new HelperPlayers();
-
+	private ImageView o = null;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -149,6 +154,7 @@ public class LudoStartNewGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startnewgame);
 		init();
+		startAnimation();
 	}
 
 	private Handler brokerMessages = null;
@@ -274,6 +280,27 @@ public class LudoStartNewGameActivity extends Activity {
 //		}
 //	}
 
+	
+    private void startAnimation()
+    {
+    	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.rotate);
+    	o = (ImageView) findViewById(R.id.imageViewO);
+    	o.startAnimation(animationLogo);
+    	animationLogo.setAnimationListener(new AnimationListener() 
+    	{
+    	
+    		public void onAnimationEnd(Animation animation) {
+ 
+		    }
+		
+		    public void onAnimationRepeat(Animation animation) {
+		    }
+		
+		    public void onAnimationStart(Animation animation) {
+		    }
+		});    	
+    }
+    
 	private void initImageButtonListeners() {
 		OnClickListener listener = new OnClickListener() 
 		{

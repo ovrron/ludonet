@@ -17,9 +17,13 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -50,6 +54,8 @@ public class LudoSettingsActivity extends Activity
 	/** Radiobuttongroup for reroll valg */
 	private RadioGroup radioGroupReRoll = null;
 	
+	private ImageView o = null;
+	
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -60,6 +66,7 @@ public class LudoSettingsActivity extends Activity
 		setContentView(R.layout.settings);
 		
 		init();
+		startAnimation();
 	}
 	
 
@@ -125,6 +132,26 @@ public class LudoSettingsActivity extends Activity
 			}
 		});
 	}
+	
+    private void startAnimation()
+    {
+    	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.rotate);
+    	o = (ImageView) findViewById(R.id.imageViewO);
+    	o.startAnimation(animationLogo);
+    	animationLogo.setAnimationListener(new AnimationListener() 
+    	{
+    	
+    		public void onAnimationEnd(Animation animation) {
+ 
+		    }
+		
+		    public void onAnimationRepeat(Animation animation) {
+		    }
+		
+		    public void onAnimationStart(Animation animation) {
+		    }
+		});    	
+    }
 	
 	/**
 	 * Importerer  valg som tidligere er lagret i sharedpreferences
