@@ -1,5 +1,7 @@
 package com.ronny.ludo;
 
+import com.ronny.ludo.helper.SoundPlayer;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -20,14 +22,9 @@ public class LudoSplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         startAnimation();
-        // Faststart for debug
-//        startActivity(new Intent(LudoSplashActivity.this, LudoChooseGameActivity.class));
-//    	LudoSplashActivity.this.finish();
-    	// End faststart
-    	
-//        startDieFrameAnimation(true);
-//        MediaPlayer mp = MediaPlayer.create(getBaseContext(),R.raw.viacom2);
-//        mp.start();
+ 
+        SoundPlayer soundPlayer = new SoundPlayer(this);
+        soundPlayer.PlaySound(SoundPlayer.SPLASH);
     }
 
     
@@ -49,6 +46,7 @@ public class LudoSplashActivity extends Activity {
 		    }
 		
 		    public void onAnimationStart(Animation animation) {
+    			logo.setVisibility(ImageView.VISIBLE);
 		    }
 		});    	
     	}

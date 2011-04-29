@@ -3,25 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shareInterpolator="false">
 
-	<!-- FADE INN      --> 
+	<!-- FADE INN     -->  
     <alpha
         android:fromAlpha="0.0"
         android:toAlpha="1.0"
-        android:duration="2000"
+        android:duration="3000"
         >
     </alpha>
 
-    <!-- FORSTØRRER -->
+    <!-- FORSTØRRER 	-->
     <scale
         android:pivotX="50%"
         android:pivotY="50%"
-        android:fromXScale="1.0"
+        android:fromXScale="0"
         android:fromYScale="0"
         android:toXScale="1.0"
         android:toYScale="1.0"
-        android:duration="2000"
+        android:duration="3000"
         >
 	</scale>
+
 	<scale
         android:pivotX="50%"
         android:pivotY="50%"
@@ -30,7 +31,7 @@
         android:toXScale="0"
         android:toYScale="1.0"
         android:duration="2000"
-        android:startOffset="2000"
+        android:startOffset="4000"
         >
 	</scale>
 	
@@ -39,7 +40,7 @@
         android:fromAlpha="1.0"
         android:toAlpha="0.0"
         android:duration="2000"
-        android:startOffset="2000"
+        android:startOffset="4000"
         >
     </alpha>
 	

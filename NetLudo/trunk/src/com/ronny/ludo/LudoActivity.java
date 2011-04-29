@@ -526,6 +526,11 @@ public class LudoActivity extends Activity implements SensorEventListener {
 			}
 		});
 	}
+	
+	public void playerMove()
+	{
+		soundPlayer.PlaySound(SoundPlayer.MOVE);
+	}
 
 	/**
 	 * Shutting down this intent

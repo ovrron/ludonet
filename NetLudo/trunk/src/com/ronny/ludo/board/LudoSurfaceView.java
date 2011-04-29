@@ -17,19 +17,16 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.ronny.ludo.LudoActivity;
 import com.ronny.ludo.R;
 import com.ronny.ludo.helper.LudoConstants;
-import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPiece;
@@ -97,6 +94,13 @@ public class LudoSurfaceView extends SurfaceView implements
 		
 		// setFocusable(true); // make sure we get key events
 		// setOnTouchListener(metroListener);
+	}
+	
+	public void playerMove(PlayerColor theColor, int theBrikke, int theMove)
+	{
+		GameHolder.getInstance().getGame().playerMove(theColor, theBrikke, theMove);
+		reDraw();
+		parentActivity.playerMove();
 	}
 	
 	public void reDraw()
@@ -279,6 +283,7 @@ public class LudoSurfaceView extends SurfaceView implements
 
         		//Dette skal vel egentlig håndteres i messageBroker?
         		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
+        		parentActivity.playerMove();
         		debugRedrawBoard();
 //        		parentActivity.resetDie(); //
         		

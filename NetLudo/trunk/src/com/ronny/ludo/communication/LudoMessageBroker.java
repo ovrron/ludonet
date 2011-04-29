@@ -233,8 +233,9 @@ public class LudoMessageBroker {
 				int theBrikke = Integer.parseInt(messageParts[3]);
 				int theMove = Integer.parseInt(messageParts[4]);
 				// isDistributing = false;
-				GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
-				GameHolder.getInstance().getSurfaceView().reDraw();
+//				GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
+//				GameHolder.getInstance().getSurfaceView().reDraw();
+				GameHolder.getInstance().getSurfaceView().playerMove(plc, theBrikke, theMove);
 				// TODO Skal denne innover ?
 				// sendMessageToBrokerListeners(message.toString());
 			}

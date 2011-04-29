@@ -1,36 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<RelativeLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/splashlayout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <LinearLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/splashlayout"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="fill_parent" android:layout_gravity="center">
     <ImageView 
     	android:id="@+id/imageViewLogo" 
-    	android:layout_width="200dip" 
-    	android:background="@drawable/logosplash" 
-    	android:layout_height="200dip"
-    	android:scaleType="fitXY" android:layout_gravity="center_vertical">
-    </ImageView>
-<!-- 
-    <ImageView 
-    	android:id="@+id/imageViewLogo" 
-    	android:layout_centerVertical="true" 
-    	android:layout_centerHorizontal="true" 
-    	android:layout_width="fill_parent" 
     	android:paddingLeft="20px" 
     	android:paddingRight="20px" 
-    	android:src="@drawable/logosplash" 
-    	android:layout_height="wrap_content"
-    	>
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content" 
+    	android:layout_centerInParent="true" android:src="@drawable/logosplash" android:visibility="invisible">
     </ImageView>
-     -->
-     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
