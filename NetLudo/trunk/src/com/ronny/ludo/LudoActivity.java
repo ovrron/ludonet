@@ -381,6 +381,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	}
 
 	private void initSoundButton() {
+		soundPlayer = new SoundPlayer(getBaseContext());
 		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
 		GameHolder.getInstance().setSoundOn(
 				settings.getBoolean((String) getResources().getText(R.string.sharedpreferences_sound), true));
