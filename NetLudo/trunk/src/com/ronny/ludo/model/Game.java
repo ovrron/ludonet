@@ -38,7 +38,7 @@ public class Game  {
 
 	//TODO Må sees i sammenheng med flere lokale spillere.	
 	@SuppressWarnings("unused")
-	private IPlayer localPlayer; // who is the local player
+//	private IPlayer localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
 	private ILudoBoard ludoBoard = new LudoBoard();
 	private String gameImageName = null;

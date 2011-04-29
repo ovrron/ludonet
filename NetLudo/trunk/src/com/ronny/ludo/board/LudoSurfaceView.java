@@ -335,7 +335,7 @@ public class LudoSurfaceView extends SurfaceView implements
 //        		GameHolder.getInstance().getMessageBroker().distributeMessage("G,M,"+ currentPlayer + "," + currentThrow);
 
         		//Dette skal vel egentlig håndteres i messageBroker?
-        		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
+//        		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
         		debugRedrawBoard();
 //        		parentActivity.resetDie(); //
         		

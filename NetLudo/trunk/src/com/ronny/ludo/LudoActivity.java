@@ -45,7 +45,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	Die die = null;
 	ImageButton imgButtonDie = null;
 	boolean firstTime = true;
-	
+
 	// RHA
 	// RelativeLayout rl2;
 
@@ -55,13 +55,13 @@ public class LudoActivity extends Activity implements SensorEventListener {
 
 	// RHA
 	// private Moves currentTouchtype = Moves.NONE;
-	
-	 // For shake motion detection.
-	  private SensorManager sensorMgr;    
-	  private long lastUpdate = -1;
-	  private float x, y, z;
-	  private float last_x, last_y, last_z;
-	  private static final int SHAKE_THRESHOLD = 800;
+
+	// For shake motion detection.
+	private SensorManager sensorMgr;
+	private long lastUpdate = -1;
+	private float x, y, z;
+	private float last_x, last_y, last_z;
+	private static final int SHAKE_THRESHOLD = 800;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -179,39 +179,47 @@ public class LudoActivity extends Activity implements SensorEventListener {
 				// final String[] messageParts = message.split("\\,");
 				final String[] messageParts = message.split(LudoMessageBroker.SPLITTER);
 				Log.d("LA:handleMessage", "In msg: " + message);
+
 				if (messageParts[0].equals("A")) { // Administrative messages
-					
+
 					if (messageParts[1].equals("CO")) { // Client checking out
 						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 
-						// Check if the player is the current player.
-						PlayerColor currPlc = GameHolder.getInstance().getTurnManager().getCurrentPlayerColor();
-						if (currPlc == plc) {
-							// check if remote player - local players can not
-							// leave
-							if (GameHolder.getInstance().getTurnManager().isRemote(plc)) {
-								GameHolder.getInstance().getMessageBroker().sendGimmeNextPlayer();
+						if (plc != PlayerColor.NONE) {
+							// Check if the player is the current player.
+							PlayerColor currPlc = GameHolder.getInstance().getTurnManager().getCurrentPlayerColor();
+							if (currPlc == plc) {
+								// check if remote player - local players can
+								// not leave
+								if (GameHolder.getInstance().getTurnManager().isRemote(plc)) {
+									GameHolder.getInstance().getMessageBroker().sendGimmeNextPlayer();
+								}
 							}
+							// Free the color
+							GameHolder.getInstance().getTurnManager()
+									.freeColor(PlayerColor.getColorFromString(messageParts[2]));
+
+							ErrDialog erd = new ErrDialog();
+							erd.setOnDismissListener(new OnDismissListener() {
+								public void onDismiss(DialogInterface dialog) {
+								}
+							});
+							erd.showDialog(
+									LudoActivity.this,
+									getResources().getText(R.string.msg_network_player_gone).toString(),
+									getResources().getText(R.string.msg_network_player).toString()
+											+ " "
+											+ plc.toNorwegian()
+											+ " "
+											+ getResources().getText(R.string.msg_network_player_checked_out)
+													.toString(), R.drawable.cry);
+							soundPlayer.playSound(SoundPlayer.DISCONNECT);
 						}
-						// Free the color
-						GameHolder.getInstance().getTurnManager()
-								.freeColor(PlayerColor.getColorFromString(messageParts[2]));
-						
-						ErrDialog erd = new ErrDialog();
-						erd.setOnDismissListener(new OnDismissListener() {
-							public void onDismiss(DialogInterface dialog) {
-							}
-						});
-						erd.showDialog(LudoActivity.this, getResources().getText(R.string.msg_network_player_gone).toString(), 
-								getResources().getText(R.string.msg_network_player).toString() + " "
-								+plc.toNorwegian() + " "
-								+getResources().getText(R.string.msg_network_player_checked_out).toString(), R.drawable.cry);
-						soundPlayer.playSound(SoundPlayer.DISCONNECT);
 					}
 
 					// Server is leaving game...
 					if (messageParts[1].equals("COS")) { // Server checking out
-						
+
 						ErrDialog erd = new ErrDialog();
 						erd.setOnDismissListener(new OnDismissListener() {
 							public void onDismiss(DialogInterface dialog) {
@@ -219,14 +227,14 @@ public class LudoActivity extends Activity implements SensorEventListener {
 								LudoActivity.this.finish();
 							}
 						});
-						erd.showDialog(LudoActivity.this, getResources().getText(R.string.msg_network_player_gone).toString(), 
-								getResources().getText(R.string.msg_network_server).toString() + " "
-								+getResources().getText(R.string.msg_network_player_checked_out).toString(), R.drawable.strive);
-						
+						erd.showDialog(LudoActivity.this, getResources().getText(R.string.msg_network_player_gone)
+								.toString(), getResources().getText(R.string.msg_network_server).toString() + " "
+								+ getResources().getText(R.string.msg_network_player_checked_out).toString(),
+								R.drawable.strive);
+
 						soundPlayer.playSound(SoundPlayer.DISCONNECT);
 					}
 
-					
 					// Lost connection to server
 					if (messageParts[1].equals("LOST")) {
 						if (!GameHolder.getInstance().getMessageManager().isServer()) {
@@ -250,46 +258,47 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		};
 
 		GameHolder.getInstance().getMessageBroker().addListener(brokerMessages);
-		
+
 		sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-		boolean accelSupported = sensorMgr.registerListener(this, sensorMgr.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER),SensorManager.SENSOR_DELAY_GAME);
-		if (!accelSupported) 
-		{
+		boolean accelSupported = sensorMgr.registerListener(this,
+				sensorMgr.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+		if (!accelSupported) {
 			// non accelerometer on this device
 			sensorMgr.unregisterListener(this);
 		}
 
 	}
-	
-	public void onAccuracyChanged(Sensor arg0, int arg1) {}
-	 
-	public void onSensorChanged(SensorEvent event){
-  		if(imgButtonDie.isEnabled()){
-			Sensor mySensor = event.sensor;
-		    if (mySensor.getType() == SensorManager.SENSOR_ACCELEROMETER){
-		    	long curTime = System.currentTimeMillis();
-		       	// only allow one update every 100ms.
-		       	if ((curTime - lastUpdate) > 100){
-		       		long diffTime = (curTime - lastUpdate);
-		  	    	lastUpdate = curTime;
-		  	    		
-		  	    	x = event.values[SensorManager.DATA_X];
-		  	    	y = event.values[SensorManager.DATA_Y];
-		  	    	z = event.values[SensorManager.DATA_Z];
-		  	    		
-		  	    	float speed = Math.abs(x+y+z - last_x - last_y - last_z)/ diffTime * 10000;
-		  	    	if (speed > SHAKE_THRESHOLD){
-		  	    		// yes, this is a shake action! 
-		  	    		rollDie();
-		  	    	}
-		  	    	last_x = x;
-		  	    	last_y = y;
-		  	    	last_z = z;
-		       	}
-		    }        	
-  		}
+
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
 	}
-	
+
+	public void onSensorChanged(SensorEvent event) {
+		if (imgButtonDie.isEnabled()) {
+			Sensor mySensor = event.sensor;
+			if (mySensor.getType() == SensorManager.SENSOR_ACCELEROMETER) {
+				long curTime = System.currentTimeMillis();
+				// only allow one update every 100ms.
+				if ((curTime - lastUpdate) > 100) {
+					long diffTime = (curTime - lastUpdate);
+					lastUpdate = curTime;
+
+					x = event.values[SensorManager.DATA_X];
+					y = event.values[SensorManager.DATA_Y];
+					z = event.values[SensorManager.DATA_Z];
+
+					float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+					if (speed > SHAKE_THRESHOLD) {
+						// yes, this is a shake action!
+						rollDie();
+					}
+					last_x = x;
+					last_y = y;
+					last_z = z;
+				}
+			}
+		}
+	}
+
 	private OnClickListener zoomInListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Zoom in");
@@ -334,11 +343,11 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		surface.setPickingPiece(false);
 	}
 
-    public void setWinnerPlayer(PlayerColor color) {
-        //TODO håndtere vinner og avslutning
-        Toast.makeText(getBaseContext(), "wwww", Toast.LENGTH_SHORT).show();
-    }
-    
+	public void setWinnerPlayer(PlayerColor color) {
+		// TODO håndtere vinner og avslutning
+		Toast.makeText(getBaseContext(), "wwww", Toast.LENGTH_SHORT).show();
+	}
+
 	public void setCurrentPlayer(PlayerColor color) {
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
 		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");
@@ -348,34 +357,31 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		// sin tur
 		// Din tur, skrive at det er din tur
 		// En annen sin tur, skrive at vi venter på xxx
-		
+
 		String toastMessage = null;
 		int toastLength = 0;
-		
-		//Dette er meg og jeg er bare en
-		if(GameHolder.getInstance().getLocalClientColor().size() == 1 && GameHolder.getInstance().getLocalClientColor().contains(color))
-		{
+
+		// Dette er meg og jeg er bare en
+		if (GameHolder.getInstance().getLocalClientColor().size() == 1
+				&& GameHolder.getInstance().getLocalClientColor().contains(color)) {
 			toastMessage = getResources().getText(R.string.game_toast_playersturnyou).toString();
 		}
-		//Dette er en annen spiller
-		else
-		{
-			toastMessage = color.toNorwegian() + " " + getResources().getText(R.string.game_toast_playersturn).toString();
+		// Dette er en annen spiller
+		else {
+			toastMessage = color.toNorwegian() + " "
+					+ getResources().getText(R.string.game_toast_playersturn).toString();
 		}
-		
-		if(firstTime)
-		{
+
+		if (firstTime) {
 			firstTime = false;
 			toastMessage += "\n" + getResources().getText(R.string.game_toast_firsttime).toString();
 			toastLength = Toast.LENGTH_LONG;
-		}
-		else
-		{
+		} else {
 			toastLength = Toast.LENGTH_SHORT;
 		}
-		
+
 		if (GameHolder.getInstance().getTurnManager().getNumPlayers() > 1) {
-			Toast.makeText(getBaseContext(),toastMessage,toastLength).show();
+			Toast.makeText(getBaseContext(), toastMessage, toastLength).show();
 		}
 	}
 
@@ -407,8 +413,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		});
 	}
 
-	private void rollDie()
-	{
+	private void rollDie() {
 		imgButtonDie.setEnabled(false);
 		imgButtonDie.setImageBitmap(null);
 		final int eyes = die.roll();
@@ -429,8 +434,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 						soundPlayer = new SoundPlayer(getBaseContext());
 					}
 					soundPlayer.playSound(SoundPlayer.NO_LEGAL_MOVE);
-					Toast.makeText(getBaseContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getBaseContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT).show();
 				}
 			}
 		};
@@ -457,12 +461,11 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					duration = soundDuration;
 				}
 				frameAnimation.start();
-				handler.postDelayed(runnable, duration); 
+				handler.postDelayed(runnable, duration);
 			}
 		});
 	}
 
-	
 	private void initDie() {
 		die = new Die();
 		imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
@@ -470,67 +473,71 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		imgButtonDie.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				rollDie();
-//				imgButtonDie.setEnabled(false);
-//				imgButtonDie.setImageBitmap(null);
-//				final int eyes = die.roll();
-//				int animationId = getResources().getIdentifier("die" + eyes + "anim", "drawable", "com.ronny.ludo");
-//				imgButtonDie.clearAnimation();
-//				imgButtonDie.setBackgroundResource(animationId);
-//				final AnimationDrawable frameAnimation = (AnimationDrawable) imgButtonDie.getBackground();
-//
-//				final Handler handler = new Handler();
-//				final Runnable runnable = new Runnable() {
-//
-//					public void run() {
-//						handler.removeCallbacks(this);
-//						if (surface.setThrow(eyes)) {
-//							surface.setPickingPiece(true);
-//						} else {
-//							if (soundPlayer == null) {
-//								soundPlayer = new SoundPlayer(getBaseContext());
-//							}
-//							soundPlayer.PlaySound(SoundPlayer.NO_LEGAL_MOVE);
-//							Toast.makeText(getBaseContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT)
-//									.show();
-//						}
-//					}
-//				};
-//
-//				imgButtonDie.post(new Runnable() {
-//					public void run() {
-//						int soundDuration = 0;
-//						if (soundPlayer == null) {
-//							soundPlayer = new SoundPlayer(getBaseContext());
-//						}
-//						if (eyes == 6) {
-//							soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL6);
-//						} else {
-//							soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL);
-//						}
-//						if (soundDuration == 0) {
-//							soundDuration = soundPlayer.getDuration(SoundPlayer.ROLL);
-//						}
-//						int duration = 0;
-//						for (int i = 0; i < frameAnimation.getNumberOfFrames(); i++) {
-//							duration = +frameAnimation.getDuration(i);
-//						}
-//						if (duration < soundDuration) {
-//							duration = soundDuration;
-//						}
-//						frameAnimation.start();
-//						handler.postDelayed(runnable, duration); // Put this
-//																	// where you
-//																	// start
-//																	// your
-//																	// animation
-//						// surface.setThrow(eyes);
-//						// surface.setPickingPiece(true);
-//					}
-//				});
+				// imgButtonDie.setEnabled(false);
+				// imgButtonDie.setImageBitmap(null);
+				// final int eyes = die.roll();
+				// int animationId = getResources().getIdentifier("die" + eyes +
+				// "anim", "drawable", "com.ronny.ludo");
+				// imgButtonDie.clearAnimation();
+				// imgButtonDie.setBackgroundResource(animationId);
+				// final AnimationDrawable frameAnimation = (AnimationDrawable)
+				// imgButtonDie.getBackground();
+				//
+				// final Handler handler = new Handler();
+				// final Runnable runnable = new Runnable() {
+				//
+				// public void run() {
+				// handler.removeCallbacks(this);
+				// if (surface.setThrow(eyes)) {
+				// surface.setPickingPiece(true);
+				// } else {
+				// if (soundPlayer == null) {
+				// soundPlayer = new SoundPlayer(getBaseContext());
+				// }
+				// soundPlayer.PlaySound(SoundPlayer.NO_LEGAL_MOVE);
+				// Toast.makeText(getBaseContext(),
+				// R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT)
+				// .show();
+				// }
+				// }
+				// };
+				//
+				// imgButtonDie.post(new Runnable() {
+				// public void run() {
+				// int soundDuration = 0;
+				// if (soundPlayer == null) {
+				// soundPlayer = new SoundPlayer(getBaseContext());
+				// }
+				// if (eyes == 6) {
+				// soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL6);
+				// } else {
+				// soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL);
+				// }
+				// if (soundDuration == 0) {
+				// soundDuration = soundPlayer.getDuration(SoundPlayer.ROLL);
+				// }
+				// int duration = 0;
+				// for (int i = 0; i < frameAnimation.getNumberOfFrames(); i++)
+				// {
+				// duration = +frameAnimation.getDuration(i);
+				// }
+				// if (duration < soundDuration) {
+				// duration = soundDuration;
+				// }
+				// frameAnimation.start();
+				// handler.postDelayed(runnable, duration); // Put this
+				// // where you
+				// // start
+				// // your
+				// // animation
+				// // surface.setThrow(eyes);
+				// // surface.setPickingPiece(true);
+				// }
+				// });
 			}
 		});
 	}
-	
+
 	/**
 	 * Shutting down this intent
 	 */

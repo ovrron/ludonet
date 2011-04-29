@@ -262,6 +262,7 @@ public class LudoMessageBroker {
 					PlayerColor plc = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
 					// sendMessageToBrokerListeners("G"+SPLITTER+"CP"+SPLITTER+plc);
 					currentServer.sendMessageToClients("G" + SPLITTER + "CP" + SPLITTER + plc);
+					sendMessageToBrokerListeners("G" + SPLITTER + "CP" + SPLITTER + plc);
 					//GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
 					// currentServer.sendMessageToClient("G"+SPLITTER+"CP"+SPLITTER+plc,
 					// clientId);
@@ -422,9 +423,15 @@ public class LudoMessageBroker {
 	 *            number of moves
 	 */
 	public void playerMove(PlayerColor color, int pieceIndex, int numMoves) {
-		// distributeMessage("G,M," + color.toString() + "," + pieceIndex + ","+
-		// numMoves);
+		// Flytt i brettet
+		GameHolder.getInstance().getGame().playerMove(color, pieceIndex, numMoves);
+
+		// Melding til alle
 		distributeMessage("G" + SPLITTER + "M" + SPLITTER + color.toString() + SPLITTER + pieceIndex + SPLITTER
+				+ numMoves);
+		
+		// Distribuer melding til interne listeners
+		sendMessageToBrokerListeners("G" + SPLITTER + "M" + SPLITTER + color.toString() + SPLITTER + pieceIndex + SPLITTER
 				+ numMoves);
 	}
 
