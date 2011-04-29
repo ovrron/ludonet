@@ -5,6 +5,8 @@ Nummereringen av dokumentene er for å få ting enklere å sortere.
 
 Dokument						Hvem	Hva
 ------------------------------------------------------------------------------------------------------------------------
+Master dokument: NetLudo-fletting.doc
+
 00100000-Innledning				RHA		Innledning til løsning
 00100005-Spill					RHA		Enkel (visuell) beskrivelse av oppstart og spill (userguide)
 00100010-Overordnet-løsning		RHA		Overordnet beskrivelse av løsningen (litt bilder og slikt også)
