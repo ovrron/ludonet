@@ -22,7 +22,7 @@ public class SoundPlayer
 		this.context = context;
 	}
 
-	public int PlaySound(int soundToPlay)
+	public int playSound(int soundToPlay)
 	{
 		if(GameHolder.getInstance().isSoundOn())
 		{

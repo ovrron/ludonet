@@ -206,6 +206,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 								getResources().getText(R.string.msg_network_player).toString() + " "
 								+plc.toNorwegian() + " "
 								+getResources().getText(R.string.msg_network_player_checked_out).toString(), R.drawable.cry);
+						soundPlayer.playSound(SoundPlayer.DISCONNECT);
 					}
 
 					// Server is leaving game...
@@ -221,6 +222,8 @@ public class LudoActivity extends Activity implements SensorEventListener {
 						erd.showDialog(LudoActivity.this, getResources().getText(R.string.msg_network_player_gone).toString(), 
 								getResources().getText(R.string.msg_network_server).toString() + " "
 								+getResources().getText(R.string.msg_network_player_checked_out).toString(), R.drawable.strive);
+						
+						soundPlayer.playSound(SoundPlayer.DISCONNECT);
 					}
 
 					
@@ -239,6 +242,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 									.toString(), getResources().getText(R.string.msg_network_lost).toString(),
 									R.drawable.scared);
 						}
+						soundPlayer.playSound(SoundPlayer.DISCONNECT);
 					}
 				}
 			}
@@ -256,7 +260,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		}
 
 	}
-
+	
 	public void onAccuracyChanged(Sensor arg0, int arg1) {}
 	 
 	public void onSensorChanged(SensorEvent event){
@@ -424,7 +428,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					if (soundPlayer == null) {
 						soundPlayer = new SoundPlayer(getBaseContext());
 					}
-					soundPlayer.PlaySound(SoundPlayer.NO_LEGAL_MOVE);
+					soundPlayer.playSound(SoundPlayer.NO_LEGAL_MOVE);
 					Toast.makeText(getBaseContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT)
 							.show();
 				}
@@ -438,9 +442,9 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					soundPlayer = new SoundPlayer(getBaseContext());
 				}
 				if (eyes == 6) {
-					soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL6);
+					soundDuration = soundPlayer.playSound(SoundPlayer.ROLL6);
 				} else {
-					soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL);
+					soundDuration = soundPlayer.playSound(SoundPlayer.ROLL);
 				}
 				if (soundDuration == 0) {
 					soundDuration = soundPlayer.getDuration(SoundPlayer.ROLL);
@@ -529,7 +533,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	
 	public void playerMove()
 	{
-		soundPlayer.PlaySound(SoundPlayer.MOVE);
+		soundPlayer.playSound(SoundPlayer.MOVE);
 	}
 
 	/**

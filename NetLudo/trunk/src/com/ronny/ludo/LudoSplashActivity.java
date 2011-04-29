@@ -24,7 +24,7 @@ public class LudoSplashActivity extends Activity {
         startAnimation();
  
         SoundPlayer soundPlayer = new SoundPlayer(this);
-        soundPlayer.PlaySound(SoundPlayer.SPLASH);
+        soundPlayer.playSound(SoundPlayer.SPLASH);
     }
 
     
