@@ -105,7 +105,15 @@ public class LudoJoinGameActivity extends Activity {
 							// Add the awiting game start message...
 							waitDialog = new ProgressDialog(LudoJoinGameActivity.this);
 							waitDialog.setTitle(getResources().getString(R.string.msg_network_waiting_title));
-							waitDialog.setMessage(getResources().getString(R.string.msg_network_waiting));
+							String message = null;
+							if(plc!=PlayerColor.NONE){
+								message = getResources().getString(R.string.msg_network_waitingfarge) + " " + plc.toNorwegian() + ".";
+							}
+							else{
+								message = getResources().getString(R.string.msg_network_waitingingenfarge);
+							}
+							message += "\n"+ getResources().getString(R.string.msg_network_waiting);
+							waitDialog.setMessage(message);
 							waitDialog.show();
 
 						}

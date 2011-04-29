@@ -57,6 +57,8 @@
     <string name="game_toast_firsttime">Rist telefonen eller trykk på terningen.</string>
     
     <string name="msg_network_waiting_title">Venter...</string>
+    <string name="msg_network_waitingfarge">Du har blitt tildelt fargen</string>
+    <string name="msg_network_waitingingenfarge">Du er satt opp som tilskuer.</string>
     <string name="msg_network_waiting">Venter på at spillet skal starte.</string>
     <string name="msg_error_heading">FEIL!!</string>
     <string name="msg_network_no_connect">Ingen forbindelse...</string>
