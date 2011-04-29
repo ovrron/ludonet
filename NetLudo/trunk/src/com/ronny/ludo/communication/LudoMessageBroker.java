@@ -233,19 +233,20 @@ public class LudoMessageBroker {
 				int theBrikke = Integer.parseInt(messageParts[3]);
 				int theMove = Integer.parseInt(messageParts[4]);
 				// isDistributing = false;
-//				GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
-//				GameHolder.getInstance().getSurfaceView().reDraw();
-				GameHolder.getInstance().getSurfaceView().playerMove(plc, theBrikke, theMove);
+				GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
+				sendMessageToBrokerListeners(message.toString());
+//				GameHolder.getInstance().getSurfaceView().playerMove(plc, theBrikke, theMove);
 				// TODO Skal denne innover ?
 				// sendMessageToBrokerListeners(message.toString());
 			}
 			if (messageParts[1].equals("CP")) {
 				// Send current player til alle
 				Log.d("Ludo(C):", "Current player er nå : " + messageParts[2]);
-				// sendMessageToBrokerListeners(message.toString());
-				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
-				GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
-				GameHolder.getInstance().getSurfaceView().reDraw();
+				sendMessageToBrokerListeners(message.toString());
+				
+//				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+//				GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
+//				GameHolder.getInstance().getSurfaceView().reDraw();
 			}
 		}
 		// **************************
@@ -261,7 +262,7 @@ public class LudoMessageBroker {
 					PlayerColor plc = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
 					// sendMessageToBrokerListeners("G"+SPLITTER+"CP"+SPLITTER+plc);
 					currentServer.sendMessageToClients("G" + SPLITTER + "CP" + SPLITTER + plc);
-					GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
+					//GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
 					// currentServer.sendMessageToClient("G"+SPLITTER+"CP"+SPLITTER+plc,
 					// clientId);
 				}
@@ -484,8 +485,9 @@ public class LudoMessageBroker {
 		if (currentServer.isServer()) {
 			PlayerColor plc = GameHolder.getInstance().getTurnManager().advanceToNextPlayer();
 			currentServer.sendMessageToClients("G" + SPLITTER + "CP" + SPLITTER + plc);
-			GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
-			GameHolder.getInstance().getSurfaceView().reDraw();
+			sendMessageToBrokerListeners("G" + SPLITTER + "CP" + SPLITTER + plc);
+//			GameHolder.getInstance().getSurfaceView().initNewPlayer(plc);
+//			GameHolder.getInstance().getSurfaceView().reDraw();
 		} else {
 			distributeMessage("A" + SPLITTER + "NP");
 		}

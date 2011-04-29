@@ -352,8 +352,8 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		String toastMessage = null;
 		int toastLength = 0;
 		
-		//Dette er meg
-		if(GameHolder.getInstance().getLocalClientColor().contains(color))
+		//Dette er meg og jeg er bare en
+		if(GameHolder.getInstance().getLocalClientColor().size() == 1 && GameHolder.getInstance().getLocalClientColor().contains(color))
 		{
 			toastMessage = getResources().getText(R.string.game_toast_playersturnyou).toString();
 		}
@@ -362,7 +362,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		{
 			toastMessage = color.toNorwegian() + " " + getResources().getText(R.string.game_toast_playersturn).toString();
 		}
-		
 		
 		if(firstTime)
 		{
@@ -532,11 +531,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		});
 	}
 	
-	public void playerMove()
-	{
-		soundPlayer.playSound(SoundPlayer.MOVE);
-	}
-
 	/**
 	 * Shutting down this intent
 	 */

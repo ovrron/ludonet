@@ -10,6 +10,8 @@ package com.ronny.ludo.board;
  */
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,6 +19,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -24,9 +28,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageButton;
 
+import com.ronny.ludo.ErrDialog;
 import com.ronny.ludo.LudoActivity;
 import com.ronny.ludo.R;
+import com.ronny.ludo.communication.LudoMessageBroker;
 import com.ronny.ludo.helper.LudoConstants;
+import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPiece;
@@ -69,8 +76,11 @@ public class LudoSurfaceView extends SurfaceView implements
 	private ImageButton zoomInButton;
 	@SuppressWarnings("unused")
 	private ImageButton zoomOutButton;
+	
+	private Handler brokerMessages;
+	private SoundPlayer soundPlayer = null;
 
-	public LudoSurfaceView(Context context) {
+	private LudoSurfaceView(Context context) {
 		super(context);
 
 	}
@@ -90,17 +100,60 @@ public class LudoSurfaceView extends SurfaceView implements
 		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
 
 		GameHolder.getInstance().setSurfaceView(this);
+		soundPlayer = new SoundPlayer(context);
+		
+		// Create server handle - client messages from server
+		brokerMessages = new Handler() {
+			/*
+			 * This is the message handler which receives messages from the
+			 * TeamMessageManager. Messages about colors allocated should be
+			 * notified all users.
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+				String message = (String) msg.obj;
+				// final String[] messageParts = message.split("\\,");
+				final String[] messageParts = message.split(LudoMessageBroker.SPLITTER);
+				Log.d("SW:handleMessage", "In msg: " + message);
+				if (messageParts[0].equals("G")) { // Game messages
+					
+					if (messageParts[1].equals("M")) { //Move
+						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+						//int theBrikke = Integer.parseInt(messageParts[3]);
+						int theMove = Integer.parseInt(messageParts[4]);
+						//Jeg har blitt slått ut
+						if(GameHolder.getInstance().getLocalClientColor().contains(plc) && 
+								currentPlayer != plc && theMove<0)
+						{
+							soundPlayer.playSound(SoundPlayer.TOHOUSEBAD);
+						}
+						//Jeg slår ut
+						else if(currentPlayer == plc && theMove<0)
+						{
+							soundPlayer.playSound(SoundPlayer.TOHOUSEGOOD);
+						}
+						//Vanlig flytt
+						else
+						{
+							soundPlayer.playSound(SoundPlayer.MOVE);
+						}
+						reDraw();
+					}
+					else if (messageParts[1].equals("CP")) {
+						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+						initNewPlayer(plc);
+					}
+				}
+			}
 
+		};
+
+		GameHolder.getInstance().getMessageBroker().addListener(brokerMessages);
 		
 		// setFocusable(true); // make sure we get key events
 		// setOnTouchListener(metroListener);
-	}
-	
-	public void playerMove(PlayerColor theColor, int theBrikke, int theMove)
-	{
-		GameHolder.getInstance().getGame().playerMove(theColor, theBrikke, theMove);
-		reDraw();
-		parentActivity.playerMove();
 	}
 	
 	public void reDraw()
@@ -157,7 +210,7 @@ public class LudoSurfaceView extends SurfaceView implements
         }
 	}
 	
-	public void initNewPlayer(PlayerColor currentPlayer)
+	private void initNewPlayer(PlayerColor currentPlayer)
 	{
 		this.currentPlayer = currentPlayer;
 		if(GameHolder.getInstance().getLocalClientColor().contains(currentPlayer))
@@ -283,7 +336,6 @@ public class LudoSurfaceView extends SurfaceView implements
 
         		//Dette skal vel egentlig håndteres i messageBroker?
         		GameHolder.getInstance().getGame().playerMove(pp.getColor(), pp.getHousePosition(), currentThrow);
-        		parentActivity.playerMove();
         		debugRedrawBoard();
 //        		parentActivity.resetDie(); //
         		

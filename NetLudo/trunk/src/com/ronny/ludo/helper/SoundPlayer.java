@@ -14,6 +14,8 @@ public class SoundPlayer
 	public static final int SPLASH = R.raw.viacom2;
 	public static final int DISCONNECT = R.raw.disconnect;
 	public static final int MOVE = R.raw.move;
+	public static final int TOHOUSEBAD = R.raw.tohousebad;
+	public static final int TOHOUSEGOOD = R.raw.tohousegood;
 	private MediaPlayer mp = null;
 	private Context context = null;
 	
