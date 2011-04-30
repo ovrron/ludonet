@@ -220,6 +220,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 													.toString(), R.drawable.cry);
 							soundPlayer.playSound(SoundPlayer.DISCONNECT);
 						}
+						surface.reDraw();
 					}
 
 					// Server is leaving game...
