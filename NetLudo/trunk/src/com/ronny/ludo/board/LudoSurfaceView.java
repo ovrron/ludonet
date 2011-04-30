@@ -126,8 +126,12 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				Log.d("SW:handleMessage", "In msg: " + message);
 				if (messageParts[0].equals("G")) { // Game messages
 					if (messageParts[1].equals("T")) {
-						int eyes = Integer.parseInt(messageParts[3]);
-						setDie(eyes);
+						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+						//Hvis lokal farge er vises terningen allerede
+						if(!GameHolder.getInstance().getLocalClientColor().contains(plc)){
+							int eyes = Integer.parseInt(messageParts[3]);
+							setDie(eyes);
+						}
 					}
 					if (messageParts[1].equals("M")) { // Move
 						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);

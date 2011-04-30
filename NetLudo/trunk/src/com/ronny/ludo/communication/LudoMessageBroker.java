@@ -223,6 +223,9 @@ public class LudoMessageBroker {
 				// sendMessageToBrokerListeners(message.toString());
 				// currentServer.sendMessageToClients(message.toString());
 				//int eyes = Integer.parseInt(messageParts[3]);
+				if(currentServer.isServer()){
+					distributeMessage(message.toString());
+				}
 				sendMessageToBrokerListeners(message.toString());
 				//GameHolder.getInstance().getSurfaceView().setDie(eyes);
 				//GameHolder.getInstance().getSurfaceView().reDraw();
