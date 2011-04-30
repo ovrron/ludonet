@@ -55,6 +55,9 @@
     <string name="game_toast_playersturn">sin tur til å trille.</string>
     <string name="game_toast_playersturnyou">Det er din tur å trille.</string>
     <string name="game_toast_firsttime">Rist telefonen eller trykk på terningen.</string>
+    <string name="game_dialog_quit">Er du sikker på at du vil avslutte?</string>
+    <string name="game_dialog_quit_yes">Ja</string>
+    <string name="game_dialog_quit_no">Nei</string>
     
     <string name="msg_network_waiting_title">Venter...</string>
     <string name="msg_network_waitingfarge">Du har blitt tildelt fargen</string>

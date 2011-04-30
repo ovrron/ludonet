@@ -1,6 +1,8 @@
 package com.ronny.ludo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
@@ -579,12 +581,30 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			// Log.d(this.getClass().getName(), "back button pressed");
-			// TODO Disconnect other players
-			sensorMgr.unregisterListener(this);
-			tearDownGame();
-			this.finish();
+			
+			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                switch (which) {
+	                	case DialogInterface.BUTTON_POSITIVE:
+	            			sensorMgr.unregisterListener(LudoActivity.this);
+	            			tearDownGame();
+	            			LudoActivity.this.finish();
+	            			//retVal = true;
+	                		break;
+	                }
+	            }
+	        };
+			
+			//Oppretter dialog med spørsmål om du vil avslutte
+			AlertDialog.Builder builder = new AlertDialog.Builder(LudoActivity.this);
+			builder.setMessage(getResources().getString(R.string.game_dialog_quit))
+				.setPositiveButton(getResources().getString(R.string.game_dialog_quit_yes), dialogClickListener)
+				.setNegativeButton(getResources().getString(R.string.game_dialog_quit_no), dialogClickListener)
+				.show();
 		}
 		return super.onKeyDown(keyCode, event);
+		//return retVal;
 	}
 
 	/*
