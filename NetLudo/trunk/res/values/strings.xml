@@ -68,7 +68,9 @@
     <string name="msg_network_player_gone">Spiller borte...</string>
     <string name="msg_network_player_checked_out">forlot spillet.</string>
     <string name="msg_winnerme">Du er vinneren.</string>
-    <string name="msg_winner">har vunnet spillet.</string>
+    <string name="msg_winnermetitle">Gratulerer!</string>
+    <string name="msg_winner">har vunnet.</string>
+    <string name="msg_winnertitle">Spiller er over!</string>
    
     
 </resources>

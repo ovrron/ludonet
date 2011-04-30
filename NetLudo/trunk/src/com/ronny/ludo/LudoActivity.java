@@ -31,6 +31,12 @@ import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.PlayerColor;
 
+
+/**
+ * 
+ * @author ovrron
+ *
+ */
 public class LudoActivity extends Activity implements SensorEventListener {
 	private String TAG = "-Ludo-:";
 
@@ -352,18 +358,20 @@ public class LudoActivity extends Activity implements SensorEventListener {
 			});
 			erd.showDialog(
 					LudoActivity.this,
-					"tittel?",
+					getResources().getText(R.string.msg_winnermetitle).toString(),
 					getResources().getText(R.string.msg_winnerme).toString(), 
 					R.drawable.winner);
 		}
 		else {
 			erd.setOnDismissListener(new OnDismissListener() {
 				public void onDismiss(DialogInterface dialog) {
+					tearDownGame();
+					LudoActivity.this.finish();
 				}
 			});
 			erd.showDialog(
 					LudoActivity.this,
-					"tittel?",
+					getResources().getText(R.string.msg_winnertitle).toString(),
 					color.toNorwegian() + " " + getResources().getText(R.string.msg_winner).toString(), 
 					R.drawable.sad);
 		}
