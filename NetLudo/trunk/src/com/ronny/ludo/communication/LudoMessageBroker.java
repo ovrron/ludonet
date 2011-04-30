@@ -334,6 +334,7 @@ public class LudoMessageBroker {
 				Log.d("Ludo(C):", clientId + " Checking out with color " + messageParts[2]);
 				// Dette gjøres i LudoActivity...
 				sendMessageToBrokerListeners(message.toString());
+				distributeMessage(message.toString());
 			}
 
 			// Server quits
