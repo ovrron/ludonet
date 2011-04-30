@@ -465,6 +465,7 @@ public class LudoMessageBroker {
 	}
 
 	public void sendWinnerPlayer(PlayerColor color) {
+		
 		distributeMessage("G" + SPLITTER + "W" + SPLITTER + color.toString());
 	}
 	

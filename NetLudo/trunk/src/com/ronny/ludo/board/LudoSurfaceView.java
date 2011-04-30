@@ -133,7 +133,7 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 							setDie(eyes);
 						}
 					}
-					if (messageParts[1].equals("M")) { // Move
+					else if (messageParts[1].equals("M")) { // Move
 						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 						int theBrikke = Integer.parseInt(messageParts[3]);
 						int theMove = Integer.parseInt(messageParts[4]);
@@ -145,33 +145,39 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 						// Melding om at noen er slått ut
 						if (messageParts.length == 9) {
-							// Jeg har blitt slått ut
 							PlayerColor kicker = PlayerColor.getColorFromString(messageParts[5]);
 							PlayerColor kicked = PlayerColor.getColorFromString(messageParts[7]);
-
 							// Jeg slår ut
-							if (GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() == kicker) {
+							if (GameHolder.getInstance().getLocalClientColor().contains(kicker)) {
 								soundPlayer.playSound(SoundPlayer.TOHOUSEGOOD);
 							}
+							// Jeg blir slått ut
 							else if (GameHolder.getInstance().getLocalClientColor().contains(kicked)) {
 								soundPlayer.playSound(SoundPlayer.TOHOUSEBAD);
-							} else {
+							}
+							// Jeg er ikke involvert 
+							else {
 								soundPlayer.playSound(SoundPlayer.MOVE);
 							}
-
 						}
 						// Vanlig flytt
 						else {
 							soundPlayer.playSound(SoundPlayer.MOVE);
 						}
 						reDraw();
-					} else if (messageParts[1].equals("CP")) {
+					} 
+					
+					//Ny spiller
+					else if (messageParts[1].equals("CP")) {
 						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 						initNewPlayer(plc);
 					}
+					else if(messageParts[1].equals("W")) {
+						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+						parentActivity.setWinnerPlayer(plc, GameHolder.getInstance().getLocalClientColor().contains(plc));
+					}
 				}
 			}
-
 		};
 
 		GameHolder.getInstance().getMessageBroker().addListener(brokerMessages);
@@ -215,7 +221,8 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		// kåres.
 		if (GameHolder.getInstance().getGame().getPlayerInfo(currentPlayer).isAtGoal()) {
 			GameHolder.getInstance().getMessageBroker().sendWinnerPlayer(currentPlayer);
-		} else if (GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow)) {
+		} 
+		else if (GameHolder.getInstance().getRules().canPlayerReRoll(currentThrow)) {
 			parentActivity.resetDie();
 		}
 		// Spiller har ingen brikker i spill
