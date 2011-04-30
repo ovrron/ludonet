@@ -125,11 +125,19 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 				Log.d("SW:handleMessage", "In msg: " + message);
 				if (messageParts[0].equals("G")) { // Game messages
-
+					if (messageParts[1].equals("T")) {
+						int eyes = Integer.parseInt(messageParts[3]);
+						setDie(eyes);
+					}
 					if (messageParts[1].equals("M")) { // Move
 						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
-						// int theBrikke = Integer.parseInt(messageParts[3]);
+						int theBrikke = Integer.parseInt(messageParts[3]);
 						int theMove = Integer.parseInt(messageParts[4]);
+						
+						//Hvis lokal farge er allerede flyttet foretatt i LudoMessageBroker.playerMove(...)
+						if(!GameHolder.getInstance().getLocalClientColor().contains(plc)){
+							GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
+						}
 
 						// Melding om at noen er slått ut
 						if (messageParts.length == 9) {

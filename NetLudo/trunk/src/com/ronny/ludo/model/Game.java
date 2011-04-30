@@ -250,7 +250,7 @@ public class Game {
 	 * @param theColor
 	 * @param theBrikke
 	 * @param theMove
-	 * @return true if player is moving a piece to the house.
+	 * @return playercolor if kicked to the house.
 	 */
 	public PlayerColor playerMove(PlayerColor theColor, int theBrikke, int theMove) {
 		PlayerColor retVal = PlayerColor.NONE;
