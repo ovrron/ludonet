@@ -1,5 +1,8 @@
 package com.ronny.ludo.model;
 
+/**
+ * Definerer farger
+*/ 
 public enum PlayerColor {
 	BLUE, GREEN, YELLOW, RED, NONE;
 	
@@ -14,7 +17,12 @@ public enum PlayerColor {
 		}
 		return NONE;
 	}
-	
+
+    /**
+     * Finner norsk betegnelse på farge
+     * 
+     * @return String, norsk betegnelse
+     */ 	
 	public String toNorwegian()
 	{
 		switch (this)
