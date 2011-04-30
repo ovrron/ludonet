@@ -8,7 +8,6 @@ import com.ronny.ludo.model.PieceAction;
 public interface IRules
 {
 	public boolean isLegalMove(IPiece piece, int eyes);
-	public boolean handleMove(IPiece piece, List<IPiece> pieces);
 	public List<PieceAction> getPieceActionList(IPiece piece, List<IPiece> pieces);
 	public boolean canPlayerReRoll(int currentThrow);
 	public boolean hasPlayerMoreAttemts(int noOfAttemts);

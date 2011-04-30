@@ -2,11 +2,9 @@ package com.ronny.ludo.rules;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.ronny.ludo.model.IPiece;
 import com.ronny.ludo.model.PieceAction;
 
@@ -21,6 +19,9 @@ public class StandardRules implements IRules
 	private String ludoBoardName = null;
 	private String ludoBoardFile = null;
 
+	 /**
+     * Konstruktør
+     */
 	public StandardRules()
 	{
 		takeOffNumbers = new ArrayList<Integer>();
@@ -29,6 +30,11 @@ public class StandardRules implements IRules
 		reRollNumbers.add(STANDAR_REROLL_NUMBER);
 	}
 	
+    /**
+     * Setter hvilke tall som kreves for å starte 
+     * 
+     * @param takeOffNumbers, Tall som skal gjelde for å starte
+     */	
 	public void setTakeOffNumbers(int... takeOffNumbers)
 	{
 		this.takeOffNumbers = new ArrayList<Integer>();
@@ -38,7 +44,11 @@ public class StandardRules implements IRules
 		}
 	}
 
-	
+    /**
+     * Setter hvilke tall som kreves for å få kaste en ekstra gang 
+     * 
+     * @param reRollNumbers, Tall som skal gjelde for å få kaste på nytt
+     */
 	public void setReRollNumbers(int... reRollNumbers)
 	{
 		this.reRollNumbers = new ArrayList<Integer>();
@@ -48,13 +58,22 @@ public class StandardRules implements IRules
 		}
 	}
 
+     /**
+     * Setter hvor mange forsøk en spiller skal få 
+     * 
+     * @param noOfAttemts, Antall forsøk
+     */
 	public void setNoOfAttemts(int noOfAttemts) {
 		this.noOfAttemts = noOfAttemts;
 	}
 
 	
-	/**
-	 * @return int, hvor brikken kan flyttes, -10 hvis den ikke kan flyttes 
+	 /**
+	 * Sjekker om et flytt er gyldig
+	 * 
+	 * @param piece, Brikke som skal flyttes
+	 * @param eyes, Antall posisjoner som skal flyttes
+	 * @return boolean, True hvis gyldig flytt, false ellers 
 	 */
 	public boolean isLegalMove(IPiece piece, int eyes)
 	{
@@ -120,6 +139,13 @@ public class StandardRules implements IRules
 		
 	}
 
+	 /**
+     * Lager liste med aksjoner på brikker som står på samme posisjon som brikke er flyttet til.
+     * 
+     * @param piece, Brikke som skal flyttes
+     * @param pieces, Liste med brikker som står i samme posisjon
+     * @return liste av PieceAction, inneholder en liste med aksjoner
+     */
     public List< PieceAction > getPieceActionList(IPiece piece, List< IPiece > pieces) {
        
         List<PieceAction> actionList = new ArrayList<PieceAction>();
@@ -145,53 +171,12 @@ public class StandardRules implements IRules
         return actionList;
     }
     
-	//TODO IKKE I BRUK. ER FLYTTET TIL GAME
-	public boolean handleMove(IPiece piece, List<IPiece> pieces)
-	{
-		//Det finnes ingen brikker der fra før
-		if(pieces==null || pieces.size()==0)
-		{
-			return false;
-		}
-		else
-		{
-			//Det finnes minst en brikke der fra før med samme farge
-			if(piece.getOwner().getColor().compareTo(pieces.get(0).getOwner().getColor())==0)
-			{
-				for(IPiece p:pieces)
-				{
-					p.setEnabled(false);
-                    // Tar eksisternde tårn inn i tårn
-					if (p.getInTowerWith()!= null){
-					    for (IPiece pUnder : p.getInTowerWith()){
-					        piece.addInTowerWith(pUnder);
-					    }
-					}
-					p.clearInTowerWith();
-					piece.addInTowerWith(p);
-				}
-			}
-			//Det finnes minst en brikke der fra før med en annen farge			
-			else
-			{
-				for(IPiece p:pieces)
-				{
-					p.placePieceInHouse();
-					if (p.getInTowerWith()!= null){
-					    // løser opp alle brikker i tårnet og slår hjem
-                        for (IPiece pUnder : p.getInTowerWith()){
-                            pUnder.setEnabled(true);
-                            pUnder.placePieceInHouse();
-                        }
-                    }
-					p.clearInTowerWith();
-					p.setEnabled(true);
-				}				
-			}
-			return true;
-		}
-	}
-
+    /**
+     * Sjekker om en bruker kan kaste på nytt
+     * 
+     * @param currentThrow, gjeldende kast
+     * @return boolean, true hvis nytt kast, false hvis ikke
+     */
 	public boolean canPlayerReRoll(int currentThrow)
 	{
 		if(reRollNumbers.contains(currentThrow))
@@ -201,6 +186,12 @@ public class StandardRules implements IRules
 		return false;
 	}
 	
+    /**
+     * Sjekker om spiller har flere forsøk
+     * 
+     * @param noOfAttemts, antall forsøk brukt
+     * @return boolean, true hvis flere forsøk igjen, false hvis alle forsøk er brukt
+     */	
 	public boolean hasPlayerMoreAttemts(int noOfAttemts)
 	{
 		if(noOfAttemts<this.noOfAttemts)
@@ -210,22 +201,43 @@ public class StandardRules implements IRules
 		return false;
 	}
 	
+    /**
+     * Setter ludoboard og datafil
+     * 
+     * @param ludoBoardName, board navn
+     * @praram ludoBoardFile, filnavn
+     */ 
 	public void setLudoBoard(String ludoBoardName, String ludoBoardFile)
 	{
 		this.ludoBoardName = ludoBoardName;
 		this.ludoBoardFile = ludoBoardFile;
 	}
 
+    /**
+     * Finner boardnavn
+     * 
+     * @return String, boardnavn
+     */ 
 	public String getLudoBoardName()
 	{
 		return ludoBoardName;
 	}
 
+	/**
+     * Finner boardfilnavn
+     * 
+     * @return String, boardfilnavn
+     */ 
 	public String getLudoBoardFile()
 	{
 		return ludoBoardFile;
 	}
-
+    
+	/**
+     * Setter innstillinger for regler
+     * 
+     * @param settings, innstillingene som skal gjelde for spillet
+     */ 
 	public void setSettings(String settings)
 	{
 		try
@@ -251,17 +263,20 @@ public class StandardRules implements IRules
 		} 
 		catch (JSONException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	  /**
+     * Finner innstillingene for regler
+     * 
+     * @return String, innstillingene som gjelder for spillet
+     */ 
 	public String getSettings()
 	{
 		JSONObject retVal = new JSONObject();
 		try
 		{
-	
 			JSONArray takeOffArray = new JSONArray();
 			for(Integer i:takeOffNumbers)
 			{
@@ -284,7 +299,6 @@ public class StandardRules implements IRules
 		} 
 		catch (JSONException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
