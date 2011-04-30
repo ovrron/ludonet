@@ -268,9 +268,15 @@ public class LudoMessageBroker {
 			if (messageParts[1].equals("W")) {
 				// Send vinner kåret til alle
 				Log.d("Ludo(C):", "Vinneren er : " + messageParts[2]);
-				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+				//PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
+				//sendMessageToBrokerListeners(message.toString());
+				//distributeMessage(message.toString());
+				
+				if(currentServer.isServer()){
+					distributeMessage(message.toString());
+				}
+				//Send internt
 				sendMessageToBrokerListeners(message.toString());
-				distributeMessage(message.toString());
 				//G,W,<color>
 			}
 		}
