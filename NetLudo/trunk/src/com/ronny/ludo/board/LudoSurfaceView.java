@@ -56,7 +56,7 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	private SurfaceHolder holder;
 	private Bitmap backgroundImage;
 	private float currentScale = 1.0f;
-	int teller = 0; 
+//	int teller = 0; 
 
 	private boolean pickingPiece = false;
 	private PlayerColor pickingColor = PlayerColor.NONE;
@@ -204,17 +204,17 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		// Reroll eller vunnet
 		
 	    
-      if (teller == 0) {
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0, 49);
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 1, 49);
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 2, 49);
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 3, 49);
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 0, 49);
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 1, 49);
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 2, 49);
-          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 3, 49);
-          teller = 1;
-      }
+//      if (teller == 0) {
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0, 49);
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 1, 49);
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 2, 49);
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 3, 49);
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 0, 49);
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 1, 49);
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 2, 49);
+//          GameHolder.getInstance().getGame().playerMove(PlayerColor.GREEN, 3, 49);
+//          teller = 1;
+//      }
       
       
               
