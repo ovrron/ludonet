@@ -12,10 +12,10 @@ Master dokument: NetLudo-fletting.doc
 00100010-Overordnet-løsning		RHA		Overordnet beskrivelse av løsningen (litt bilder og slikt også)
 00100020-Overordnet-state-dia 	RHA		State-diagram for deler av spillet (klient og server)
 00101000-Overordnet-design		RHA		Beskrivelse av design - litt om klasser og hovedoppgaver
-00101020-Klasser						Klasser og relasjoner, samt beskrivelse av hva som skjer
-00102000-Start-av-spill					Hvordan starter et spill 
-00103000-Flytt-Brikker					Hvordan flyttes en brikke
-00104000-Avslutning-spill				Hvordan avsluttes spill
+00101020-Klasser				??		Klasser og relasjoner, samt beskrivelse av hva som skjer
+00102000-Start-av-spill			RHA		Hvordan starter et spill 
+00103000-Flytt-Brikker			KEM		Hvordan flyttes en brikke
+00104000-Avslutning-spill		RØ		Hvordan avsluttes spill
 
 00200000-Avsluttende-Til-V2				Hva kan gjøres for en V2 av spillet?
 00200100-Konklusjoner-design			Hva burde vært gjort anderledes eller som gjenstår ?	
