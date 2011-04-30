@@ -222,9 +222,10 @@ public class LudoMessageBroker {
 				// Terning kastet - melding til alle
 				// sendMessageToBrokerListeners(message.toString());
 				// currentServer.sendMessageToClients(message.toString());
-				int eyes = Integer.parseInt(messageParts[3]);
-				GameHolder.getInstance().getSurfaceView().setDie(eyes);
-				GameHolder.getInstance().getSurfaceView().reDraw();
+				//int eyes = Integer.parseInt(messageParts[3]);
+				sendMessageToBrokerListeners(message.toString());
+				//GameHolder.getInstance().getSurfaceView().setDie(eyes);
+				//GameHolder.getInstance().getSurfaceView().reDraw();
 			}
 			if (messageParts[1].equals("M")) {
 				// Flytt en brikke
@@ -233,9 +234,17 @@ public class LudoMessageBroker {
 				int theBrikke = Integer.parseInt(messageParts[3]);
 				int theMove = Integer.parseInt(messageParts[4]);
 				// isDistributing = false;
-				PlayerColor toHouse = GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
-				distributeMessage(message.toString());
+				if(currentServer.isServer()){
+					distributeMessage(message.toString());
+				}
+				//Send internt
 				sendMessageToBrokerListeners(message.toString());
+//				PlayerColor toHouse = GameHolder.getInstance().getGame().playerMove(plc, theBrikke, theMove);
+//				if (toHouse != PlayerColor.NONE) {
+//					if (GameHolder.getInstance().getTurnManager().getCurrentPlayerColor() != toHouse) {
+//
+//					}
+//				}
 
 				// GameHolder.getInstance().getSurfaceView().playerMove(plc,
 				// theBrikke, theMove);
@@ -258,6 +267,7 @@ public class LudoMessageBroker {
 				Log.d("Ludo(C):", "Vinneren er : " + messageParts[2]);
 				PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 				sendMessageToBrokerListeners(message.toString());
+				distributeMessage(message.toString());
 				//G,W,<color>
 			}
 		}
