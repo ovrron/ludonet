@@ -75,7 +75,7 @@
 	</wayhome>
 </itemdef>
 
-<itemdef col="green" firstmove="13">
+<itemdef col="green" firstmove="10">
 	<icon prefix="g"/>
 	<base>
 		<path pos="0" x="249" y="147"/>
