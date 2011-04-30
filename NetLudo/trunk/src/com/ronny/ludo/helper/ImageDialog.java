@@ -1,11 +1,11 @@
-package com.ronny.ludo;
+package com.ronny.ludo.helper;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 
-public class ErrDialog {
+public class ImageDialog {
 	private  AlertDialog alertDialog;
 	private  OnDismissListener onDismissListener;
 

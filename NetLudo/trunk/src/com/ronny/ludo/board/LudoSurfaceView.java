@@ -28,10 +28,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageButton;
 
-import com.ronny.ludo.ErrDialog;
 import com.ronny.ludo.LudoActivity;
 import com.ronny.ludo.R;
 import com.ronny.ludo.communication.LudoMessageBroker;
+import com.ronny.ludo.helper.ImageDialog;
 import com.ronny.ludo.helper.LudoConstants;
 import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Coordinate;
@@ -175,7 +175,7 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 					}
 					else if(messageParts[1].equals("W")) {
 						PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
-						parentActivity.setWinnerPlayer(plc, GameHolder.getInstance().getLocalClientColor().contains(plc));
+						parentActivity.setWinnerPlayer(plc);
 					}
 				}
 			}

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.ronny.ludo.board.LudoSurfaceView;
 import com.ronny.ludo.communication.LudoMessageBroker;
+import com.ronny.ludo.helper.ImageDialog;
 import com.ronny.ludo.helper.ParseBoardDefinitionHelper;
 import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Die;
@@ -197,7 +198,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 							GameHolder.getInstance().getTurnManager()
 									.freeColor(PlayerColor.getColorFromString(messageParts[2]));
 
-							ErrDialog erd = new ErrDialog();
+							ImageDialog erd = new ImageDialog();
 							erd.setOnDismissListener(new OnDismissListener() {
 								public void onDismiss(DialogInterface dialog) {
 								}
@@ -218,7 +219,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					// Server is leaving game...
 					if (messageParts[1].equals("COS")) { // Server checking out
 
-						ErrDialog erd = new ErrDialog();
+						ImageDialog erd = new ImageDialog();
 						erd.setOnDismissListener(new OnDismissListener() {
 							public void onDismiss(DialogInterface dialog) {
 								tearDownGame();
@@ -236,7 +237,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					// Lost connection to server
 					if (messageParts[1].equals("LOST")) {
 						if (!GameHolder.getInstance().getMessageManager().isServer()) {
-							ErrDialog erd = new ErrDialog();
+							ImageDialog erd = new ImageDialog();
 							erd.setOnDismissListener(new OnDismissListener() {
 								public void onDismiss(DialogInterface dialog) {
 									Log.d("LOST", "SERVER CONNECTION");
@@ -340,10 +341,9 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		surface.setPickingPiece(false);
 	}
 
-	public void setWinnerPlayer(PlayerColor color, boolean me) {
-		// TODO håndtere vinner og avslutning
-		ErrDialog erd = new ErrDialog();
-		if(me){
+	public void setWinnerPlayer(PlayerColor color) {
+		ImageDialog erd = new ImageDialog();
+		if(GameHolder.getInstance().getLocalClientColor().contains(color)) {
 			erd.setOnDismissListener(new OnDismissListener() {
 				public void onDismiss(DialogInterface dialog) {
 					tearDownGame();
@@ -365,7 +365,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					LudoActivity.this,
 					"tittel?",
 					color.toNorwegian() + " " + getResources().getText(R.string.msg_winner).toString(), 
-					R.drawable.winner);
+					R.drawable.sad);
 		}
 	}
 
@@ -373,11 +373,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
 		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");
 		imageCurrentPlayer.setBackgroundResource(id);
-
-		// TODO Kanskje her en idé å skille på om den er din tur eller en annen
-		// sin tur
-		// Din tur, skrive at det er din tur
-		// En annen sin tur, skrive at vi venter på xxx
 
 		String toastMessage = null;
 		int toastLength = 0;

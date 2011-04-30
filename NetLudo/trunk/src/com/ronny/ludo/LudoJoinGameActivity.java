@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.ronny.ludo.communication.LudoMessageBroker;
 import com.ronny.ludo.communication.TeamMessageMgr;
+import com.ronny.ludo.helper.ImageDialog;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.PlayerColor;
 import com.ronny.ludo.model.TurnManager;
@@ -204,7 +205,7 @@ public class LudoJoinGameActivity extends Activity {
 //					Toast.makeText(LudoJoinGameActivity.this,
 //							"Feil med connection: "+rc,
 //							Toast.LENGTH_LONG).show();
-					ErrDialog erd = new ErrDialog();
+					ImageDialog erd = new ImageDialog();
 					erd.setOnDismissListener(new OnDismissListener() {
 						public void onDismiss(DialogInterface dialog) {
 							buttonJoin.setEnabled(true);
