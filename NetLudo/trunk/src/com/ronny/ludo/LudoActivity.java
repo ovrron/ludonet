@@ -346,6 +346,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		if(me){
 			erd.setOnDismissListener(new OnDismissListener() {
 				public void onDismiss(DialogInterface dialog) {
+					tearDownGame();
 				}
 			});
 			erd.showDialog(
