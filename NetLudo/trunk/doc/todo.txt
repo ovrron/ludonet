@@ -10,7 +10,6 @@ OVRRON: - Fiks splash
 ANDROD: - Kanskje noen nye brikker?
 RHA STARTER, DERETTER ALLE- Overordnet beskrivelse av systemet.
 - Skal vi ha maks ventetid på en spiller?
-ANDROD: - Bakgrunnsbilder
 - Må sjekke om fargene blir ledige igjen etter at man har startet registrering av spillere men velger å gå tilbake ett hakk/avslutte.
 
 DONE.
@@ -21,7 +20,8 @@ RETTET: - Ikke start Ludoactiviteten hos client før server starter spillet
 RETTET: - Grønn og Blå (sikkert også gul) starter på feil sted når de kommer ut fra huset	
 RETTET: OVRRON: - Standarbrett1 må fikses
 RETTET: OVRRON: - Fikse players JSON
-
-Ikke testet:
+RETTET: ANDROD: - Bakgrunnsbilder
 RETTET: ANDROD: - Når kommunikasjon brytes fra en klient (mistet forbindelse) må vi ha en toast opp.  Har noen ikoner som kan være aktuelle...
 		http://icons.iconarchive.com/icons/tpdkdesign.net/refresh-cl/256/Network-Internet-Connection-icon.png
+
+Ikke testet:

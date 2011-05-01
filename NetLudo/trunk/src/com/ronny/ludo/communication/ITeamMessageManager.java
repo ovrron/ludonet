@@ -5,6 +5,8 @@ import java.io.Serializable;
 import android.os.Handler;
 
 /**
+ * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+ * 
  * Team message manager interface
  * 
  * @author ANDROD
@@ -45,7 +47,7 @@ public interface ITeamMessageManager {
 	 */
 	public void openRegistration();
 	/**
-	 * Chlose for new client connections
+	 * Close for new client connections
 	 */
 	public void closeRegistration();
 	

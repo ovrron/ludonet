@@ -583,7 +583,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 			// Log.d(this.getClass().getName(), "back button pressed");
 			
 			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
 	                switch (which) {
 	                	case DialogInterface.BUTTON_POSITIVE:
