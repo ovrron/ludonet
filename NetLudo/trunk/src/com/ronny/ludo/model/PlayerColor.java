@@ -1,3 +1,8 @@
+/** 
+* PlayerColor.java 
+* Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+*/
+
 package com.ronny.ludo.model;
 
 /**
@@ -21,7 +26,7 @@ public enum PlayerColor {
     /**
      * Finner norsk betegnelse på farge
      * 
-     * @return String, norsk betegnelse
+     * @return fargen   norsk betegnelse
      */ 	
 	public String toNorwegian()
 	{
