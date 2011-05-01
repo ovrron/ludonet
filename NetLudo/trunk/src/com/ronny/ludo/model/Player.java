@@ -1,3 +1,8 @@
+/** 
+* IRules.java 
+* Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+*/
+
 package com.ronny.ludo.model;
 
 import java.util.Vector;
@@ -29,8 +34,8 @@ public class Player implements IPlayer{
     /**
      * Konstruktør som oppretter en spiller
      *
-     * @param color, spillerens farge
-     * @param owner, ludobrettet som eier spiller
+     * @param color     spillerens farge
+     * @param owner     ludobrettet som eier spiller
      */ 
 	public Player(PlayerColor color,ILudoBoard owner) {
 		this.owner = owner;
@@ -46,7 +51,7 @@ public class Player implements IPlayer{
 	/**
      * Finner brikkene til spiller
      *
-     * @return pieces, spillerens brikker
+     * @return pieces       spillerens brikker
      */
 	public IPiece[] getBrikker() {
 		return pieces; 
@@ -56,7 +61,7 @@ public class Player implements IPlayer{
 	/**
 	 * Finner ikonprefix
 	 * 
-	 * @return the iconPrefix
+	 * @return iconPrefix
 	 */
 	public String getIconPrefix() {
 		return iconPrefix;
@@ -78,7 +83,7 @@ public class Player implements IPlayer{
 	 /**
      * Sjekker om en spiller er aktiv
      *
-     * @return isAvtive, true hvis spiller er aktiv, false hvis ikke
+     * @return isAvtive     true hvis spiller er aktiv, false hvis ikke
      */
 	public boolean isActive() {
 		return isActive;
@@ -87,7 +92,7 @@ public class Player implements IPlayer{
     /**
      * Setter en spiller som aktiv eller ikke
      *
-     * @param isAvtive, true hvis spiller skal være aktiv, false hvis ikke
+     * @param isAvtive       true hvis spiller skal være aktiv, false hvis ikke
      */
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
@@ -96,7 +101,7 @@ public class Player implements IPlayer{
     /**
      * Setter farge til spiller
      *
-     * @param color, fargen som skal settes
+     * @param color     fargen som skal settes
      */
 	public void setColor(PlayerColor color) {
 		this.color = color;
@@ -105,7 +110,7 @@ public class Player implements IPlayer{
     /**
      * Finner farge til spiller
      *
-     * @return color, fargen til spiller
+     * @return color        fargen til spiller
      */
 	public PlayerColor getColor() {
 		return color;
@@ -114,7 +119,7 @@ public class Player implements IPlayer{
     /**
      * Setter første posisjon ut fra home
      *
-     * @param firstMovePosition, første posisjon til spiller
+     * @param firstMovePosition     første posisjon til spiller
      */
 	public void setFirstBoardPosition(int firsMovePosition) {
 		firstPositionOnBoard = firsMovePosition;
@@ -123,7 +128,7 @@ public class Player implements IPlayer{
     /**
      * Finner første posisjon for spiller
      *
-     * @return firstMovePosition, første posisjon til spiller
+     * @return firstMovePosition        første posisjon til spiller
      */
 	public int getFirstBoardPosition() {
 		return firstPositionOnBoard;
@@ -132,7 +137,7 @@ public class Player implements IPlayer{
     /**
      * Setter siste posisjon før start av spiller sin vei hjem
      *
-     * @param fieldToStartWayHome, siste posisjon før spiller går hjem
+     * @param fieldToStartWayHome       siste posisjon før spiller går hjem
      */	
 	public void setStartWayHomePosition(int fieldToStartWayHome) {
 		lastPositionBeforeWayHome = fieldToStartWayHome;
@@ -141,7 +146,7 @@ public class Player implements IPlayer{
     /**
      * Finner siste posisjon før spiller sin vei hjem
      *
-     * @return lastPositionBeforeWayHome, 
+     * @return lastPositionBeforeWayHome 
      */	
 	public int getStartWayHomePosition() {
 		return lastPositionBeforeWayHome;
@@ -150,7 +155,7 @@ public class Player implements IPlayer{
     /**
      * Setter koordinater for posisjon i home
      *
-     * @param baseHome, vektor med posisjoner i home
+     * @param baseHome      vektor med posisjoner i home
      */ 	
 	public void setHomePositions(Vector<Coordinate> baseHome) {
 		homePositions = baseHome;
@@ -160,7 +165,7 @@ public class Player implements IPlayer{
     /**
      * Finner koordinater for 'home positions'
      *
-     * @return homePositions, vektor med koordinater
+     * @return homePositions        vektor med koordinater
      */
 	public Vector<Coordinate> getHomePositions() {
 //		Log.d(TAG,"IPlayer hom>"+color.toString()+" + base home + "+homePositions);
@@ -170,7 +175,7 @@ public class Player implements IPlayer{
     /**
      * Setter koordinater for 'way home' til mål
      *
-     * @param wayHome, vektor med koordinater for way home
+     * @param wayHome       vektor med koordinater for way home
      */ 	
 	public void setWayHomePositions(Vector<Coordinate> wayHome) {
 		wayHomePositions = wayHome;		
@@ -180,7 +185,7 @@ public class Player implements IPlayer{
     /**
      * Finner koordinater for 'way home' til mål
      *
-     * @return homePositions, vektor med koordinater
+     * @return homePositions        vektor med koordinater
      */ 	
 	public Vector<Coordinate> getWayHomePositions() {
 //		Log.d(TAG,"IPlayer way>"+color.toString()+" + way home + "+wayHomePositions);
@@ -190,7 +195,7 @@ public class Player implements IPlayer{
     /**
      * Finner string repr. av spiller
      *
-     * @return String, navn på spiller
+     * @return String       navn på spiller
      */ 	
 	public String toString() {
 		String str = "IPlayer: " +color.toString();
@@ -200,8 +205,8 @@ public class Player implements IPlayer{
     /**
      * Finner koordinatene til brikke som er i posisjon numberOfMovesFromhome
      * 
-     * @param numberOfMovesFromhome, antall flytt fra home
-     * @return Coordinate, koordinatene til posisjonen
+     * @param numberOfMovesFromhome     antall flytt fra home
+     * @return Coordinate               koordinatene til posisjonen
      */ 
 	public Coordinate getBoardPosition(int numberOfMovesFromhome) {
 		int boardIndex = owner.getPathNumberFromRelativeMove(numberOfMovesFromhome, firstPositionOnBoard);
@@ -212,8 +217,8 @@ public class Player implements IPlayer{
     /**
      * Flytter en brikke et gitt antall steg
      * 
-     * @param theBrikke, brikken som skal flyttes
-     * @param theMove, antall flytt som skal gjøres
+     * @param theBrikke     brikken som skal flyttes
+     * @param theMove       antall flytt som skal gjøres
      */ 	
 	public void moveBrikke(int theBrikke, int theMove) {
 		IPiece b = pieces[theBrikke];
@@ -241,7 +246,8 @@ public class Player implements IPlayer{
 	/**
 	 * Sjekker om spiller har aktive brikker i spill
 	 * 
-	 * @return, false hvis alle spillernes pieces er hjemme eller i mål, ellers true
+	 * @return hasPiecesInPlay     false hvis alle spillernes pieces er hjemme 
+	 *                             eller i mål, ellers true
 	 */
 	public boolean hasPiecesInPlay()
 	{
@@ -258,7 +264,7 @@ public class Player implements IPlayer{
 	 /**
 	 * Sjekker om spiller er kommet i mål med alle brikkene
 	 * 
-     * @return boolean, true hvis alle spillernes pieces er i mål, ellers false
+     * @return boolean      true hvis alle spillernes pieces er i mål, ellers false
      */
     public boolean isAtGoal()
     {
