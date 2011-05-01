@@ -1,8 +1,4 @@
 TODO:
-KEM: - Håndtere når en spiller har fått alle brikker i mål (isAtGoal i Piece er IKKE implementert så jeg)
-KEM: - Av og til når en spiller ikke har noen lovlige kast går man ikke automatisk til neste spiller (muligens rettet, må testes)
-- Av og til blir både grønne og røde brikker highlightet (muligens rettet, må testes)
-KEM: - Scrolling på de aktivitetene som trengs
 ALLE: - Renske kode, kommentarer
 ALLE: - Sjekke alle TODO
 OVRRON: - Fiks splash
@@ -23,5 +19,8 @@ RETTET: OVRRON: - Fikse players JSON
 RETTET: ANDROD: - Bakgrunnsbilder
 RETTET: ANDROD: - Når kommunikasjon brytes fra en klient (mistet forbindelse) må vi ha en toast opp.  Har noen ikoner som kan være aktuelle...
 		http://icons.iconarchive.com/icons/tpdkdesign.net/refresh-cl/256/Network-Internet-Connection-icon.png
-
+RETTET: KEM: - Håndtere når en spiller har fått alle brikker i mål (isAtGoal i Piece er IKKE implementert så jeg)
+RETTET: KEM: - Av og til når en spiller ikke har noen lovlige kast går man ikke automatisk til neste spiller (muligens rettet, må testes)
+RETTET: - Av og til blir både grønne og røde brikker highlightet (muligens rettet, må testes)
+RETTET: KEM: - Scrolling på de aktivitetene som trengs
 Ikke testet:
