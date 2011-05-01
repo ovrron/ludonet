@@ -8,7 +8,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.content.res.XmlResourceParser;
 import android.util.Log;
 
-import com.ronny.ludo.model.Game;
 import com.ronny.ludo.model.Coordinate;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.IPlayer;
@@ -53,9 +52,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 	public boolean parseBoardDefinition(XmlResourceParser defs){
 		boolean retVal = true;
 		int eventType = -1;
-//		Game.getInstance(); // Initiering av brikker etc..?
 		GameHolder.getInstance().getGame().resetGame();
-		// TODO Reset Game-klassen.
 		
 		
 		// Parse definisjonsdata
@@ -65,7 +62,7 @@ public class ParseBoardDefinitionHelper implements IParseBoardDefinitionHelper{
 					String strName = defs.getName();
 
 					if (strName.equals("image")) {
-						String thename = defs.getAttributeValue(null,"name");
+//						String thename = defs.getAttributeValue(null,"name");
 						GameHolder.getInstance().getGame().setGameImageName(defs.getAttributeValue(null,"name"));
 					}
 
