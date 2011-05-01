@@ -26,6 +26,7 @@ import com.ronny.ludo.communication.TeamMessageMgr;
 import com.ronny.ludo.helper.ImageDialog;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.PlayerColor;
+import com.ronny.ludo.model.TurnManager;
 
 /**
  * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
@@ -70,12 +71,12 @@ public class LudoJoinGameActivity extends Activity {
 			editTextIP.setText(ip);
 		}
 		
-//		// Create server object - always done
-//		GameHolder.getInstance().setMessageManager(new TeamMessageMgr());
-//		// Create message broker - always done
-//		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
-//		// Create Turn Manager - always done
-//		GameHolder.getInstance().setTurnManager(new TurnManager());
+		// Create server object - always done
+		GameHolder.getInstance().setMessageManager(new TeamMessageMgr());
+		// Create message broker - always done
+		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
+		// Create Turn Manager - always done
+		GameHolder.getInstance().setTurnManager(new TurnManager());
 
 		// Her må vi sette opp en listener som tar oss videre til spillet når vi har connect.
 		final Handler hnd = new Handler() {

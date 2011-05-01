@@ -36,12 +36,12 @@ public class LudoChooseGameActivity extends Activity {
 		setContentView(R.layout.choosegame);
 		initButtonListeners();
 
-		// Create server object - always done
-		GameHolder.getInstance().setMessageManager(new TeamMessageMgr());
-		// Create message broker - always done 
-		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
-		// Create Turn Manager - always done
-		GameHolder.getInstance().setTurnManager(new TurnManager());
+//		// Create server object - always done
+//		GameHolder.getInstance().setMessageManager(new TeamMessageMgr());
+//		// Create message broker - always done 
+//		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
+//		// Create Turn Manager - always done
+//		GameHolder.getInstance().setTurnManager(new TurnManager());
 		startAnimation();
 	}
 

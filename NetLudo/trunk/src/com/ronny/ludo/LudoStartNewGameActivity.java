@@ -26,9 +26,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ronny.ludo.communication.LudoMessageBroker;
+import com.ronny.ludo.communication.TeamMessageMgr;
 import com.ronny.ludo.helper.IPAddressHelper;
 import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.PlayerColor;
+import com.ronny.ludo.model.TurnManager;
 import com.ronny.ludo.model.TurnManager.PlayerLocation;
 
 /**
@@ -153,6 +155,14 @@ public class LudoStartNewGameActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startnewgame);
+		
+		// Create server object - always done
+		GameHolder.getInstance().setMessageManager(new TeamMessageMgr());
+		// Create message broker - always done 
+		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
+		// Create Turn Manager - always done
+		GameHolder.getInstance().setTurnManager(new TurnManager());
+		
 		init();
 		startAnimation();
 	}
