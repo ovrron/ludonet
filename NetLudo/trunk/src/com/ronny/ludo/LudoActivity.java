@@ -45,60 +45,65 @@ import com.ronny.ludo.model.PlayerColor;
  *
  */
 public class LudoActivity extends Activity implements SensorEventListener {
-	private String TAG = "-Ludo-:";
 
 	private ImageButton zoomInButton;
 	private ImageButton zoomFitButton;
 	private ImageButton zoomOutButton;
+	private ImageButton imgButtonDie = null;
+
+	private Die die = null;
 	private LudoSurfaceView surface;
-	SharedPreferences settings = null;
+	private SharedPreferences settings = null;
 	private SoundPlayer soundPlayer = null;
 
 	private Handler brokerMessages;
 
-	Die die = null;
-	ImageButton imgButtonDie = null;
 	boolean firstTime = true;
+	private String TAG = "-Ludo-:";
 
-	// For shake motion detection.
+	// For detektering av risting
 	private SensorManager sensorMgr;
 	private long lastUpdate = -1;
 	private float x, y, z;
 	private float last_x, last_y, last_z;
 	private static final int SHAKE_THRESHOLD = 800;
 
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Ingen tittel
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// Sett Game instans
 		GameHolder.getInstance().setGame(new Game());
 
+
 		// Load board definisjoner - lastes før inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 
-		// Brett er lagt inn i regler - for lasting på klient.  Dette er et bevisst valg siden egne brett kan ha egne regler (framtidig utvidelse)
+		// Brett er lagt inn i regler - for lasting på klient.
+		// Dette er et bevisst valg siden egne brett kan ha egne regler (framtidig utvidelse)
 		String boardFile = GameHolder.getInstance().getRules().getLudoBoardFile();
-		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
-		// parseXmlDefs();
-		if (!ph.parseBoardDefinition(getResources().getXml(iidd))) {
+		int id = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
+		// Laster brettdefinsjon
+		if (!ph.parseBoardDefinition(getResources().getXml(id))) {
 			// TODO Håndter feil ved lasting av brettdefinisjon
 			// Vis feilmelding og ev. avslutt
 		}
 
-//		GameHolder.getInstance().getGame().DumpGame();
-
 		setContentView(R.layout.main);
 
+		
 		zoomInButton = (ImageButton) findViewById(R.id.zoomIn);
 		zoomFitButton = (ImageButton) findViewById(R.id.zoomFit);
 		zoomOutButton = (ImageButton) findViewById(R.id.zoomOut);
 
 		initDie();
 		initSoundButton();
+		
 		surface = (LudoSurfaceView) findViewById(R.id.image);
 		surface.setParentActivity(this);
 
@@ -118,7 +123,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 			@Override
 			public void handleMessage(Message msg) {
 				String message = (String) msg.obj;
-				// final String[] messageParts = message.split("\\,");
 				final String[] messageParts = message.split(LudoMessageBroker.SPLITTER);
 				Log.d("LA:handleMessage", "In msg: " + message);
 
@@ -201,18 +205,19 @@ public class LudoActivity extends Activity implements SensorEventListener {
 
 		GameHolder.getInstance().getMessageBroker().addListener(brokerMessages);
 
+		//Initierer lytter for ev. risting
 		sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
 		boolean accelSupported = sensorMgr.registerListener(this,
 				sensorMgr.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+		//Hvis telefonen ikke har accelerometer
 		if (!accelSupported) {
-			// non accelerometer on this device
 			sensorMgr.unregisterListener(this);
 		}
-
 	}
 
 	/**
 	 * For sensor shake...
+	 * Denne har vi ikke bruk for
 	 */
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 	}
@@ -221,6 +226,8 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	 * For sensor shake to roll the die...
 	 */
 	public void onSensorChanged(SensorEvent event) {
+		
+		//Kun hvis kast er enablet
 		if (imgButtonDie.isEnabled()) {
 			Sensor mySensor = event.sensor;
 			if (mySensor.getType() == SensorManager.SENSOR_ACCELEROMETER) {
@@ -247,6 +254,9 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		}
 	}
 
+	/**
+	 * Lytter for zoom inn
+	 */
 	private OnClickListener zoomInListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Zoom in");
@@ -254,6 +264,9 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		}
 	};
 
+	/**
+	 * Lytter for å vise hele brettet
+	 */
 	private OnClickListener zoomFitListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Zoom FIT");
@@ -261,6 +274,9 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		}
 	};
 
+	/**
+	 * Lytter for zoom ut
+	 */
 	private OnClickListener zoomOutListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Zoom out");
@@ -268,10 +284,12 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		}
 	};
 
+	/**
+	 * Public metode for å enable terningen for kast 
+	 */
 	public void resetDie() {
-		surface.setPickingPiece(false);
-		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
-		imgButtonDie.setEnabled(true);
+		surface.setPickingPiece(false); // Vi skal ikke velge brikker i denne tilstanden
+		imgButtonDie.setEnabled(true); 
 		imgButtonDie.clearAnimation();
 		imgButtonDie.setBackgroundResource(R.drawable.die_roll_anim);
 		final AnimationDrawable frameAnimation = (AnimationDrawable) imgButtonDie.getBackground();
@@ -282,6 +300,11 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		});
 	}
 
+	/**
+	 * Public metode for å sette et terningkast.
+	 * Brukes for å vise de andre spillerne hva en spiller kastet
+	 * @param eyes, (1 - 6)
+	 */
 	public void setDie(int eyes) {
 		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
 		int id = getResources().getIdentifier("die" + eyes, "drawable", "com.ronny.ludo");
@@ -290,8 +313,15 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		surface.setPickingPiece(false);
 	}
 
+	/**
+	 * Public metode for å vise at spillet er over og hvem som har vunnet
+	 * Oppretter et dialogvindu med info. Når dialogvinduet lukkes avsluttes spillet
+	 * @param color, fargen som har vunnet
+	 */
 	public void setWinnerPlayer(PlayerColor color) {
 		ImageDialog erd = new ImageDialog();
+		
+		//Det er jeg som har vunnet
 		if(GameHolder.getInstance().getLocalClientColor().contains(color)) {
 			erd.setOnDismissListener(new OnDismissListener() {
 				public void onDismiss(DialogInterface dialog) {
@@ -306,6 +336,8 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					getResources().getText(R.string.msg_winnerme).toString(), 
 					R.drawable.winner);
 		}
+		
+		//Det er noen andre som har vunnet
 		else {
 			erd.setOnDismissListener(new OnDismissListener() {
 				public void onDismiss(DialogInterface dialog) {
@@ -323,46 +355,55 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	}
 
 	/**
-	 * Set the current player color on the screen - give Toast message
-	 * @param color
+	 * Public metode for å vise hvem som spiller.
+	 * Vises med farge og en toast melding
+	 * @param color, current player color
 	 */
 	public void setCurrentPlayer(PlayerColor color) {
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
 		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");
 		imageCurrentPlayer.setBackgroundResource(id);
 
-		String toastMessage = null;
-		int toastLength = 0;
-
-		// Dette er meg og jeg er bare en
-		if (GameHolder.getInstance().getLocalClientColor().size() == 1
-				&& GameHolder.getInstance().getLocalClientColor().contains(color)) {
-			toastMessage = getResources().getText(R.string.game_toast_playersturnyou).toString();
-		}
-		// Dette er en annen spiller
-		else {
-			toastMessage = color.toNorwegian() + " "
-					+ getResources().getText(R.string.game_toast_playersturn).toString();
-		}
-
-		if (firstTime) {
-			firstTime = false;
-			toastMessage += "\n" + getResources().getText(R.string.game_toast_firsttime).toString();
-			toastLength = Toast.LENGTH_LONG;
-		} else {
-			toastLength = Toast.LENGTH_SHORT;
-		}
-
+		//Viser toast bare dersom det er flere enn en spiller totalt
 		if (GameHolder.getInstance().getTurnManager().getNumPlayers() > 1) {
+			
+			String toastMessage = null;
+			int toastLength = 0;
+	
+			// Dette er meg og jeg er bare en
+			if (GameHolder.getInstance().getLocalClientColor().size() == 1
+					&& GameHolder.getInstance().getLocalClientColor().contains(color)) {
+				toastMessage = getResources().getText(R.string.game_toast_playersturnyou).toString();
+			}
+			// Dette er en annen spiller, eller meg og det er flere lokale spillere
+			else {
+				toastMessage = color.toNorwegian() + " "
+						+ getResources().getText(R.string.game_toast_playersturn).toString();
+			}
+	
+			//Dette er første gangen det er min tur
+			if (firstTime) {
+				firstTime = false;
+				toastMessage += "\n" + getResources().getText(R.string.game_toast_firsttime).toString();
+				toastLength = Toast.LENGTH_LONG;
+			}
+			//Ikke første gang
+			else {
+				toastLength = Toast.LENGTH_SHORT;
+			}
+	
 			Toast.makeText(getBaseContext(), toastMessage, toastLength).show();
 		}
 	}
 
 	/**
-	 * Init the sound button
+	 * Initierer lyd av/på knapp
 	 */
 	private void initSoundButton() {
 		soundPlayer = new SoundPlayer(getBaseContext());
+		
+		//Sjekker om du valgte å ha lyd på forrige gang du spilte
+		//Dersom første gang, lyd på
 		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
 		GameHolder.getInstance().setSoundOn(
 				settings.getBoolean((String) getResources().getText(R.string.sharedpreferences_sound), true));
@@ -381,6 +422,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 				} else {
 					imgButtonSound.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
 				}
+				//Lagrer valget ditt
 				SharedPreferences.Editor prefEditor = settings.edit();
 				prefEditor.putBoolean((String) getResources().getText(R.string.sharedpreferences_sound), GameHolder
 						.getInstance().isSoundOn());
@@ -390,28 +432,27 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	}
 
 	/**
-	 * Roll the die
+	 * Rull terning
 	 */
 	private void rollDie() {
-		imgButtonDie.setEnabled(false);
+		imgButtonDie.setEnabled(false); // Disabler terningen
 		imgButtonDie.setImageBitmap(null);
 		final int eyes = die.roll();
 		int animationId = getResources().getIdentifier("die" + eyes + "anim", "drawable", "com.ronny.ludo");
 		imgButtonDie.clearAnimation();
 		imgButtonDie.setBackgroundResource(animationId);
 		final AnimationDrawable frameAnimation = (AnimationDrawable) imgButtonDie.getBackground();
-
 		final Handler handler = new Handler();
 		final Runnable runnable = new Runnable() {
 
 			public void run() {
 				handler.removeCallbacks(this);
+				//Spiller kan bruke kastet
 				if (surface.setThrow(eyes)) {
 					surface.setPickingPiece(true);
-				} else {
-					if (soundPlayer == null) {
-						soundPlayer = new SoundPlayer(getBaseContext());
-					}
+				} 
+				//Ingen gyldige flytt med dette kastet
+				else {
 					soundPlayer.playSound(SoundPlayer.NO_LEGAL_MOVE);
 					Toast.makeText(getBaseContext(), R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT).show();
 				}
@@ -421,9 +462,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		imgButtonDie.post(new Runnable() {
 			public void run() {
 				int soundDuration = 0;
-				if (soundPlayer == null) {
-					soundPlayer = new SoundPlayer(getBaseContext());
-				}
 				if (eyes == 6) {
 					soundDuration = soundPlayer.playSound(SoundPlayer.ROLL6);
 				} else {
@@ -433,6 +471,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					soundDuration = soundPlayer.getDuration(SoundPlayer.ROLL);
 				}
 				int duration = 0;
+				//Finner lengden av rulleanimasjonen
 				for (int i = 0; i < frameAnimation.getNumberOfFrames(); i++) {
 					duration = +frameAnimation.getDuration(i);
 				}
@@ -440,11 +479,15 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					duration = soundDuration;
 				}
 				frameAnimation.start();
+				//Venter til animasjon og lyd er ferdig før kastet sendes til surfaceview
 				handler.postDelayed(runnable, duration);
 			}
 		});
 	}
 
+	/**
+	 * Initierer terningen
+	 */
 	private void initDie() {
 		die = new Die();
 		imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
@@ -457,7 +500,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	}
 
 	/**
-	 * Shutting down this intent
+	 * Avslutter denne intenten
 	 */
 	private void tearDownGame() {
 		GameHolder.getInstance().getMessageBroker().quitGame();
@@ -470,17 +513,19 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		//Bruker har trykket på tilbakeknappen
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			// Log.d(this.getClass().getName(), "back button pressed");
 			
+			//Lytter for dialogknappene
 			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) {
 	                switch (which) {
+	                	//Bruker har valgt å avslutte spillet
 	                	case DialogInterface.BUTTON_POSITIVE:
 	            			sensorMgr.unregisterListener(LudoActivity.this);
 	            			tearDownGame();
 	            			LudoActivity.this.finish();
-	            			//retVal = true;
 	                		break;
 	                }
 	            }
