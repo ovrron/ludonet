@@ -1,24 +1,40 @@
 package com.ronny.ludo.model;
 
+/** 
+* Coordinate.java 
+* Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+*/
 
 public class Coordinate{
 	public int pos; // optional
 	public int x;
 	public int y;
 
+	
+    /**
+     * Konstruktør  
+     */ 
 	public Coordinate() {
 	}
+
+    /**
+     * Konstruktør  
+     */ 
 	public Coordinate(Coordinate co) {
 		this.pos = co.pos;
 		this.x = co.x;
 		this.y = co.y;
 	}
 
+    /**
+     * Konstruktør  
+     */ 
 	public Coordinate(int pos, int x, int y) {
 		this.pos = pos;
 		this.x = x;
 		this.y = y;
 	}
+	
 	public String toString() {
 		return "["+pos+","+x+","+y+"]";
 	}

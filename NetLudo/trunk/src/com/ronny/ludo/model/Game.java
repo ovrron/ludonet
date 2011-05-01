@@ -3,13 +3,16 @@ package com.ronny.ludo.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Vector;
-
 import android.util.Log;
 
+/**
+ * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+ * 
+ * Game.java. 
+ */
 
  /**
- * FORSLAG TIL SPILLEREGLER:
+ * SPILLEREGLER:
  * 1. 2-4 personer kan delta i spillet. Hver spiller får 4 brikker av samme farge og anbringer disse i et firkantet felt (gården) av samme farge som brikkene.
  * 2. Det kastes med en terning som viser 1-6. Det spilles på brettet fra høyre til venstre. Den som har de røde brikkene begynner, nestemann til venstre fortsetter.
  * 3. Ingen brikke kommer ut av gården før eieren kaster 6. (Her kan vi kanskje legge inn valg for flere for å få fortgang i spillet (f.eks. 1 og 6)) Seinere flyttes brikkene til venstre etter terningkastene.
@@ -24,38 +27,15 @@ import android.util.Log;
 
 public class Game {
 
-	// Siden vi er en av fargene, så må vi lagre 'vår' farge.
-	// private PlayerColor localColor;
-
-	private List<ILudoEventListener> requestListeners = new ArrayList<ILudoEventListener>();
-
-	// TODO Tur må flyttes til comm-mgr og behandling av slikt...
-	@SuppressWarnings("unused")
 	private PlayerColor currentTurnColor = PlayerColor.RED; // Rød starter
-															// alltid
-
-	// TODO Må sees i sammenheng med flere lokale spillere.
-	@SuppressWarnings("unused")
 	// private IPlayer localPlayer; // who is the local player
 	private Random randomNumbers = new Random(); // random number generator
 	private ILudoBoard ludoBoard = new LudoBoard();
 	private String gameImageName = null;
 
-	// private IRules rules = new StandardRules();
-
-	// PLACEHOLDER for TurnManager
-	// private TurnManager turnManager = new TurnManager();
-
-	// Singleton type game
-	// private static Game INSTANCE = null;
-	//
-	// public static Game getInstance() {
-	// if(INSTANCE==null) {
-	// INSTANCE = new Game();
-	// }
-	// return INSTANCE;
-	// }
-
+	 /**
+     * Default konstruktør
+     */
 	public Game() {
 		// Set up game
 		// rules.setTakeOffNumbers(2,4,6); // Flyttet til GameHolder
@@ -65,16 +45,10 @@ public class Game {
 
 	}
 
-	// public IRules getRules() // Flyttet til GameHolder
-	// {
-	// return rules;
-	// }
-
 	/**
 	 * Returnere en spiller basert på farge
 	 * 
-	 * @param theColor
-	 *            fargen på spiller
+	 * @param theColor     fargen på spiller
 	 * @return IPlayer
 	 */
 	public IPlayer getPlayerInfo(String theColor) {
@@ -85,8 +59,7 @@ public class Game {
 	/**
 	 * Returnere en spiller basert på farge
 	 * 
-	 * @param theColor
-	 *            String med fargenavn
+	 * @param theColor     String med fargenavn
 	 * @return
 	 */
 	public IPlayer getPlayerInfo(PlayerColor theColor) {
@@ -102,18 +75,15 @@ public class Game {
 	}
 
 	/**
-	 * @param gameImageName
-	 *            the gameImageName to set
+	 * @param gameImageName    the gameImageName to set
 	 */
 	public void setGameImageName(String gameImageName) {
 		this.gameImageName = gameImageName;
 	}
-
-	public PlayerColor getcurrentTurnColor() {
-
-		return currentTurnColor;
-	}
-
+	
+    /**
+     * Testmetode
+     */
 	public void setnextTurnColorTest() {
 
 		if (currentTurnColor.compareTo(PlayerColor.RED) == 0) {
@@ -127,39 +97,9 @@ public class Game {
 		}
 	}
 
+	
 	/**
-	 * Hente ut status på bordet akkurat nå - slik at nye klienter evt. kan
-	 * hoppe på for å følge spillet...
-	 * 
-	 * @return string med definisjonen av bordet akkurat nå.
-	 */
-	public String getCurrentStatus() {
-		// TODO ikke prioritert oppgave .
-		String cs = "";
-		return cs;
-	}
-
-	// /**
-	// * Flytter en brikke for en spiller
-	// *
-	// * @param col
-	// * Farge
-	// * @param brikkeNumber
-	// * brikkens nummer
-	// * @param moves
-	// * antall flytninger
-	// * @param kickHome
-	// * true=flytter motstanderens brikke hjem hvis treff.
-	// */
-	// public void doMove(PlayerColor col, int brikkeNumber, int moves,
-	// boolean kickHome) {
-	// // Move the item
-	//
-	// // Set next turn ?
-	// }
-
-	/**
-	 * Roll the die
+	 * Ruller terning. Testmeotde
 	 * 
 	 * @return
 	 */
@@ -168,49 +108,19 @@ public class Game {
 		return eyes;
 	}
 
-	/**
-	 * Sets the local players color
-	 * 
-	 * @param color
-	 */
-
-	// Listener sink for event.
-	public void ludoActionEvent(IGameEvent event) {
-		// Lokale endringer gjør vi selv. - eller så gjør vi det på en
-		// eventbasert total-løsning
-		// Mer om dette senere i diskusjon av modellen
-		// if(event.getColor() == localColor) {
-		// return;
-		// }
-
-		// Behandle event
-
-	}
-
-	// Game moves
-
-	// Event listener og håndtering
-	public void addEventListener(ILudoEventListener client) {
-		requestListeners.add(client);
-	}
-
-	public void removeEventListener(ILudoEventListener client) {
-		requestListeners.remove(client);
-	}
-
-	public void fireGameEvent(IGameEvent event) {
-		for (ILudoEventListener l : requestListeners) {
-			l.ludoActionEvent(event);
-		}
-
-	}
-
+	 /**
+     * Returnerer tilhørende ludoboard
+     */
 	public ILudoBoard getLudoBoard() {
 		return ludoBoard;
 	}
 
-	// Utils
-	// Returnere en spiller basert på farge
+	 /**
+     * Utils. Returnere en spiller basert på farge
+     * 
+     * @param theColor     fargen på spiller
+     * @return IPlayer
+     */
 	public static PlayerColor convertPlayerColor(String theColor) {
 		PlayerColor ret = null;
 		if (theColor.compareToIgnoreCase("RED") == 0) {
@@ -323,15 +233,13 @@ public class Game {
 	}
 
 	/**
-	 * Finn ut om posisjonen oppgitt kan kalles et trykk p� en brikke som
-	 * tilh�rer den som skal flytte.
+	 * Finn ut om posisjonen oppgitt kan kalles et trykk på en brikke som
+	 * tilhører den som skal flytte.
 	 * 
-	 * @param xPos
-	 *            x-posisjon p� skjerm
-	 * @param yPos
-	 *            y-posisjon p� skjerm
+	 * @param xPos     x-posisjon på skjerm
+	 * @param yPos     y-posisjon på skjerm
 	 * @param delta
-	 * @return IPiece hvis den finnes
+	 * @return IPiece  hvis den finnes
 	 */
 	public IPiece getPieceNearPos(PlayerColor playerColor, int xPos, int yPos, double delta) {
 		IPiece retP = null;
@@ -372,9 +280,8 @@ public class Game {
 	/**
 	 * Finner alle brikker på samme sted som current spiller nettopp flyttet til
 	 * 
-	 * @param brikkeFlytt
-	 *            brikke som nettopp er flyttet
-	 * @retur Arraylist over brikker som må håndters av rules.
+	 * @param brikkeFlytt      brikke som nettopp er flyttet
+	 * @retur Arraylist        liste med brikker som må håndters av rules.
 	 */
 	private ArrayList<IPiece> findOtherPicesAtCoordinate(IPiece brikkeFlytt) {
 		ArrayList<IPiece> pices = new ArrayList<IPiece>();

@@ -2,6 +2,6 @@ package com.ronny.ludo.model;
 
 public interface ILudoEventListener {
 	
-	void ludoActionEvent(IGameEvent event);
+	void ludoActionEvent(_SLETTES_IGameEvent event);
 
 }

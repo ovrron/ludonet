@@ -48,39 +48,55 @@ public class TurnManager {
 		public APlayer() {
 		}
 
+		/** 
+		* Create a player 
+		* 
+		* @param color
+		*/
 		public APlayer(PlayerColor color) {
 			this.color = color;
 			this.location = PlayerLocation.FREE;
 		}
 
+      /** 
+        * Set location based on new location 
+        * 
+        * @param newLocation
+        */
 		public void setLocation(PlayerLocation newLocation) {
 			this.location = newLocation;
 		}
 
+      /** 
+        * Returns current location 
+        * 
+        * @return location
+        */
 		public PlayerLocation getLocation() {
 			return location;
 		}
 
-		public void setColor(PlayerColor newColor) {
-			this.color = newColor;
-		}
-
+      /** 
+        * Returns current colcor 
+        * 
+        * @return color
+        */
 		public PlayerColor getColor() {
 			return color;
 		}
 	}
 
-	// Vector with all players, allocated colors and location
+	//Vector with all players, allocated colors and location
 	private Vector<APlayer> players = new Vector<APlayer>();
 
-	// Current players' color
-
-	// Default constructor
+    /** 
+     * Default constructor 
+    **/
 	public TurnManager() {
 	}
 
 	/**
-	 * Legger til en spillerfarge
+	 * Add a new player based on playercolor
 	 * 
 	 * @param playerColor
 	 */
@@ -91,9 +107,9 @@ public class TurnManager {
 	}
 
 	/**
-	 * Henter spillfargen til alle spillerne som er med
+	 * Returns a vector with the colors for all players
 	 * 
-	 * @return vector med PlayerColor
+	 * @return vector      with all PlayerColor
 	 */
 	public Vector<PlayerColor> getPlayers() {
 		Vector<PlayerColor> playerColors = null;
@@ -108,6 +124,11 @@ public class TurnManager {
 		return playerColors;
 	}
 
+    /**
+     * Returns a String with all players
+     * 
+     * @return vector      with all PlayerColor
+     */	
 	public String getPlayersJSON() {
 		JSONObject retVal = new JSONObject();
 		try {
@@ -121,12 +142,16 @@ public class TurnManager {
 				}
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return retVal.toString();
 	}
 
+    /**
+     * Set all players
+     * 
+     * @param players
+     */ 
 	public void setPlayersJSON(String players) {
 		try {
 			JSONObject jSonObject = new JSONObject(players);
@@ -139,7 +164,6 @@ public class TurnManager {
 				this.players.add(player);
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -163,14 +187,11 @@ public class TurnManager {
 	/**
 	 * Get a free player color.
 	 * 
-	 * @param remote
-	 *            where is the player asking for the color from ?
-	 * @param wantedColor
-	 *            try to allocate the color if it can be done.
-	 * @param shouldSelectAnother
-	 *            true if the routine should give you another free if the wanted
-	 *            color is not free
-	 * @return allocated color
+	 * @param remote               where is the player asking for the color from ?
+	 * @param wantedColor          try to allocate the color if it can be done.
+	 * @param shouldSelectAnother  true if the routine should give you another free if the wanted
+	 *                             color is not free
+	 * @return allocated           color
 	 */
 	public PlayerColor getFreeColor(PlayerLocation remoteOrLocal, PlayerColor wantedColor, boolean shouldSelectAnother) {
 
@@ -263,6 +284,11 @@ public class TurnManager {
 		return retVal;
 	}
 
+    /**
+     * Returns the number of players
+     * 
+     * @return numberofplayers
+     */ 
 	public int getNumPlayers() {
 		int retVal = 0;
 		for (int i = 0; i < players.size(); i++) {
@@ -277,7 +303,7 @@ public class TurnManager {
 	/**
 	 * Get the current player color.
 	 * 
-	 * @return
+	 * @return currentTurnColor
 	 */
 	public PlayerColor getCurrentPlayerColor() {
 		// If first time called - init to the first player.
@@ -291,7 +317,7 @@ public class TurnManager {
 	 * Check if this color is currently available
 	 * 
 	 * @param theCol
-	 * @return
+	 * @return true    if color is free, else false
 	 */
 	public boolean isFree(PlayerColor theCol) {
 		for (APlayer pl : players) {
@@ -306,7 +332,7 @@ public class TurnManager {
 	 * Check if this color is currently in use locally
 	 * 
 	 * @param theCol
-	 * @return
+	 * @return true    if player is local, else false
 	 */
 	public boolean isLocal(PlayerColor theCol) {
 		for (APlayer pl : players) {
@@ -321,7 +347,7 @@ public class TurnManager {
 	 * Check if this color is currently in use remotely
 	 * 
 	 * @param theCol
-	 * @return
+	 * @return true    if player is remote, else false
 	 */
 	public boolean isRemote(PlayerColor theCol) {
 		for (APlayer pl : players) {
@@ -336,7 +362,7 @@ public class TurnManager {
 	 * Get the location for a color
 	 * 
 	 * @param color
-	 * @return
+	 * @return currentlocation
 	 */
 	public PlayerLocation getLocation(PlayerColor color) {
 		for (APlayer pl : players) {
@@ -346,7 +372,13 @@ public class TurnManager {
 		}
 		return null;
 	}
-
+	
+    /**
+     * Set the location for playercolor
+     * 
+     * @param color
+     * @return location
+     */	
 	public void setLoaction(PlayerColor color, PlayerLocation location) {
 		for (APlayer pl : players) {
 			if (pl.getColor() == color) {
