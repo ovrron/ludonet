@@ -36,9 +36,9 @@ public class StandardRules implements IRules
 	}
 	
     /**
-     * Setter hvilke tall som kreves for å starte 
+     * Setter hvilke tall som kreves for å starte.
      * 
-     * @param takeOffNumbers, Tall som skal gjelde for å starte
+     * @param takeOffNumbers    tall som skal gjelde for å starte
      */	
 	public void setTakeOffNumbers(int... takeOffNumbers)
 	{
@@ -52,7 +52,7 @@ public class StandardRules implements IRules
     /**
      * Setter hvilke tall som kreves for å få kaste en ekstra gang 
      * 
-     * @param reRollNumbers, Tall som skal gjelde for å få kaste på nytt
+     * @param reRollNumbers  Tall som skal gjelde for å få kaste på nytt
      */
 	public void setReRollNumbers(int... reRollNumbers)
 	{
@@ -66,7 +66,7 @@ public class StandardRules implements IRules
      /**
      * Setter hvor mange forsøk en spiller skal få 
      * 
-     * @param noOfAttemts, Antall forsøk
+     * @param noOfAttemts   Antall forsøk
      */
 	public void setNoOfAttemts(int noOfAttemts) {
 		this.noOfAttemts = noOfAttemts;
@@ -76,9 +76,9 @@ public class StandardRules implements IRules
 	 /**
 	 * Sjekker om et flytt er gyldig
 	 * 
-	 * @param piece, Brikke som skal flyttes
-	 * @param eyes, Antall posisjoner som skal flyttes
-	 * @return boolean, True hvis gyldig flytt, false ellers 
+	 * @param piece    Brikke som skal flyttes
+	 * @param eyes     Antall posisjoner som skal flyttes
+	 * @return boolean True hvis gyldig flytt, false ellers 
 	 */
 	public boolean isLegalMove(IPiece piece, int eyes)
 	{
@@ -147,9 +147,9 @@ public class StandardRules implements IRules
 	 /**
      * Lager liste med aksjoner på brikker som står på samme posisjon som brikke er flyttet til.
      * 
-     * @param piece, Brikke som skal flyttes
-     * @param pieces, Liste med brikker som står i samme posisjon
-     * @return liste av PieceAction, inneholder en liste med aksjoner
+     * @param piece     Brikke som skal flyttes
+     * @param pieces    Liste med brikker som står i samme posisjon
+     * @return liste    av PieceAction, inneholder en liste med aksjoner
      */
     public List< PieceAction > getPieceActionList(IPiece piece, List< IPiece > pieces) {
        
@@ -179,8 +179,8 @@ public class StandardRules implements IRules
     /**
      * Sjekker om en bruker kan kaste på nytt
      * 
-     * @param currentThrow, gjeldende kast
-     * @return boolean, true hvis nytt kast, false hvis ikke
+     * @param currentThrow      gjeldende kast
+     * @return boolean          true hvis nytt kast, false hvis ikke
      */
 	public boolean canPlayerReRoll(int currentThrow)
 	{
@@ -194,8 +194,8 @@ public class StandardRules implements IRules
     /**
      * Sjekker om spiller har flere forsøk
      * 
-     * @param noOfAttemts, antall forsøk brukt
-     * @return boolean, true hvis flere forsøk igjen, false hvis alle forsøk er brukt
+     * @param noOfAttemts   antall forsøk brukt
+     * @return boolean      true hvis flere forsøk igjen, false hvis alle forsøk er brukt
      */	
 	public boolean hasPlayerMoreAttemts(int noOfAttemts)
 	{
@@ -209,8 +209,8 @@ public class StandardRules implements IRules
     /**
      * Setter ludoboard og datafil
      * 
-     * @param ludoBoardName, board navn
-     * @praram ludoBoardFile, filnavn
+     * @param ludoBoardName     board navn
+     * @praram ludoBoardFile    filnavn
      */ 
 	public void setLudoBoard(String ludoBoardName, String ludoBoardFile)
 	{
@@ -221,7 +221,7 @@ public class StandardRules implements IRules
     /**
      * Finner boardnavn
      * 
-     * @return String, boardnavn
+     * @return ludoBoardName   boardnavn
      */ 
 	public String getLudoBoardName()
 	{
@@ -231,7 +231,7 @@ public class StandardRules implements IRules
 	/**
      * Finner boardfilnavn
      * 
-     * @return String, boardfilnavn
+     * @return ludoBoardFile    boardfilnavn
      */ 
 	public String getLudoBoardFile()
 	{
@@ -241,7 +241,7 @@ public class StandardRules implements IRules
 	/**
      * Setter innstillinger for regler
      * 
-     * @param settings, innstillingene som skal gjelde for spillet
+     * @param settings  innstillingene som skal gjelde for spillet
      */ 
 	public void setSettings(String settings)
 	{
@@ -275,7 +275,7 @@ public class StandardRules implements IRules
 	  /**
      * Finner innstillingene for regler
      * 
-     * @return String, innstillingene som gjelder for spillet
+     * @return Settings     innstillingene som gjelder for spillet
      */ 
 	public String getSettings()
 	{
