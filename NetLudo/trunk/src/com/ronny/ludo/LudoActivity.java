@@ -2,7 +2,6 @@ package com.ronny.ludo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
@@ -35,6 +34,12 @@ import com.ronny.ludo.model.PlayerColor;
 
 
 /**
+ * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+ * 
+ * The main Ludo game activity.
+ * This class implements some control of the game and game logic.
+ * 
+ * Other game behavior is done in the {@link LudoSurfaceView}
  * 
  * @author ovrron
  *
@@ -54,16 +59,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	Die die = null;
 	ImageButton imgButtonDie = null;
 	boolean firstTime = true;
-
-	// RHA
-	// RelativeLayout rl2;
-
-	// private enum Moves {
-	// NONE, DRAG, ZOOM;
-	// };
-
-	// RHA
-	// private Moves currentTouchtype = Moves.NONE;
 
 	// For shake motion detection.
 	private SensorManager sensorMgr;
@@ -94,39 +89,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 			// Vis feilmelding og ev. avslutt
 		}
 
-		// settings = getSharedPreferences((String)
-		// getResources().getText(R.string.sharedpreferences_name),
-		// MODE_PRIVATE);
-		// if (settings.contains((String)
-		// getResources().getText(R.string.sharedpreferences_ludoboardfile)) ==
-		// true)
-		// {
-		// String boardFile = settings.getString((String)
-		// getResources().getText(R.string.sharedpreferences_ludoboardfile),
-		// null);
-		// int iidd = getResources().getIdentifier(boardFile, "xml",
-		// "com.ronny.ludo");
-		// //parseXmlDefs();
-		// if(!ph.parseBoardDefinition(getResources().getXml(iidd))){
-		// //TODO Håndter feil ved lasting av brettdefinisjon
-		// //Vis feilmelding og ev. avslutt
-		// }
-		//
-		// }
-		// // TODO på lasting av board
-		// Vector<String> boards =
-		// ph.parseBoardsAvailable(getResources().getXml(R.xml.boarddefinition));
-		// int iidd = getResources().getIdentifier(boards.get(0), "xml",
-		// "com.ronny.ludo");
-
-		// GameHolder.getInstance().getGame().DumpGame();
-
-		// DENNE ER FLYTTET SIDEN VI TRENGER Størrelsen på bildet før vi tar en
-		// recalc.
-		// Game.getInstance().getLudoBoard().recalcPositions();
-		// End load board.
-
-		GameHolder.getInstance().getGame().DumpGame();
+//		GameHolder.getInstance().getGame().DumpGame();
 
 		setContentView(R.layout.main);
 
@@ -139,44 +102,16 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		surface = (LudoSurfaceView) findViewById(R.id.image);
 		surface.setParentActivity(this);
 
-		// Vector<PlayerColor> activePlayers =
-		// GameHolder.getInstance().getTurnManager().getPlayers();
-		// for(PlayerColor pc:activePlayers)
-		// {
-		// if(GameHolder.getInstance().getTurnManager().isLocal(pc))
-		// {
-		// surface.addPlayer(pc);
-		// }
-		// }
-
 		zoomInButton.setOnClickListener(zoomInListener);
 		zoomFitButton.setOnClickListener(zoomFitListener);
 		zoomOutButton.setOnClickListener(zoomOutListener);
-
-		// Dette må vi kun gjøre for current player
-		// resetDie();
-
-		// TEST
-		// Test av mod
-		// int start = 0;
-		// int maxVal = 13;
-		//
-		// for(int j=0;j<20;j++) {
-		// System.out.println("J: "+j+" - "+(start+j)%maxVal);
-		// }
-		//
-		// start = 7;
-		// for(int j=0;j<20;j++) {
-		// System.out.println("J: "+j+" - "+(start+j)%maxVal);
-		// }
-		// TEST END
 
 		// Create server handle - client messages from server
 		brokerMessages = new Handler() {
 			/*
 			 * This is the message handler which receives messages from the
-			 * TeamMessageManager. Messages about colors allocated should be
-			 * notified all users.
+			 * TeamMessageManager. Only control structures are resolved here,
+			 * game logic in {@link LudoSurfaceView}
 			 * 
 			 * @see android.os.Handler#handleMessage(android.os.Message)
 			 */
@@ -276,9 +211,15 @@ public class LudoActivity extends Activity implements SensorEventListener {
 
 	}
 
+	/**
+	 * For sensor shake...
+	 */
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 	}
 
+	/**
+	 * For sensor shake to roll the die...
+	 */
 	public void onSensorChanged(SensorEvent event) {
 		if (imgButtonDie.isEnabled()) {
 			Sensor mySensor = event.sensor;
@@ -330,7 +271,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 	public void resetDie() {
 		surface.setPickingPiece(false);
 		ImageButton imgButtonDie = (ImageButton) findViewById(R.id.imageButtonDie);
-		// imgButtonDie.setBackgroundResource(R.drawable.die);
 		imgButtonDie.setEnabled(true);
 		imgButtonDie.clearAnimation();
 		imgButtonDie.setBackgroundResource(R.drawable.die_roll_anim);
@@ -380,6 +320,10 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		}
 	}
 
+	/**
+	 * Set the current player color on the screen - give Toast message
+	 * @param color
+	 */
 	public void setCurrentPlayer(PlayerColor color) {
 		ImageView imageCurrentPlayer = (ImageView) findViewById(R.id.imagePlayerCurrent);
 		int id = getResources().getIdentifier("player_" + color.toString().toLowerCase(), "drawable", "com.ronny.ludo");
@@ -412,6 +356,9 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		}
 	}
 
+	/**
+	 * Init the sound button
+	 */
 	private void initSoundButton() {
 		soundPlayer = new SoundPlayer(getBaseContext());
 		settings = getSharedPreferences((String) getResources().getText(R.string.sharedpreferences_name), MODE_PRIVATE);
@@ -440,6 +387,9 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		});
 	}
 
+	/**
+	 * Roll the die
+	 */
 	private void rollDie() {
 		imgButtonDie.setEnabled(false);
 		imgButtonDie.setImageBitmap(null);
@@ -500,67 +450,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		imgButtonDie.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				rollDie();
-				// imgButtonDie.setEnabled(false);
-				// imgButtonDie.setImageBitmap(null);
-				// final int eyes = die.roll();
-				// int animationId = getResources().getIdentifier("die" + eyes +
-				// "anim", "drawable", "com.ronny.ludo");
-				// imgButtonDie.clearAnimation();
-				// imgButtonDie.setBackgroundResource(animationId);
-				// final AnimationDrawable frameAnimation = (AnimationDrawable)
-				// imgButtonDie.getBackground();
-				//
-				// final Handler handler = new Handler();
-				// final Runnable runnable = new Runnable() {
-				//
-				// public void run() {
-				// handler.removeCallbacks(this);
-				// if (surface.setThrow(eyes)) {
-				// surface.setPickingPiece(true);
-				// } else {
-				// if (soundPlayer == null) {
-				// soundPlayer = new SoundPlayer(getBaseContext());
-				// }
-				// soundPlayer.PlaySound(SoundPlayer.NO_LEGAL_MOVE);
-				// Toast.makeText(getBaseContext(),
-				// R.string.game_toast_nolegalmoves, Toast.LENGTH_SHORT)
-				// .show();
-				// }
-				// }
-				// };
-				//
-				// imgButtonDie.post(new Runnable() {
-				// public void run() {
-				// int soundDuration = 0;
-				// if (soundPlayer == null) {
-				// soundPlayer = new SoundPlayer(getBaseContext());
-				// }
-				// if (eyes == 6) {
-				// soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL6);
-				// } else {
-				// soundDuration = soundPlayer.PlaySound(SoundPlayer.ROLL);
-				// }
-				// if (soundDuration == 0) {
-				// soundDuration = soundPlayer.getDuration(SoundPlayer.ROLL);
-				// }
-				// int duration = 0;
-				// for (int i = 0; i < frameAnimation.getNumberOfFrames(); i++)
-				// {
-				// duration = +frameAnimation.getDuration(i);
-				// }
-				// if (duration < soundDuration) {
-				// duration = soundDuration;
-				// }
-				// frameAnimation.start();
-				// handler.postDelayed(runnable, duration); // Put this
-				// // where you
-				// // start
-				// // your
-				// // animation
-				// // surface.setThrow(eyes);
-				// // surface.setPickingPiece(true);
-				// }
-				// });
 			}
 		});
 	}
@@ -603,7 +492,6 @@ public class LudoActivity extends Activity implements SensorEventListener {
 				.show();
 		}
 		return super.onKeyDown(keyCode, event);
-		//return retVal;
 	}
 
 	/*
