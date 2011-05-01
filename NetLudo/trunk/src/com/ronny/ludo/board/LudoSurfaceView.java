@@ -202,7 +202,9 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	private void whatNow() {
 		// Sjekk om vi skal gå til neste spiller eller fortsette med denne spilleren.
 		// Reroll eller vunnet
-		GameHolder.getInstance().getMessageBroker().sendWinnerPlayer(currentPlayer);
+		
+		
+		
 //      if (teller == 0) {
 //          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 0, 49);
 //          GameHolder.getInstance().getGame().playerMove(PlayerColor.RED, 1, 49);
