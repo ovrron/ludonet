@@ -46,7 +46,7 @@ public class GameHolder  {
 	// Instantiation prevention
 	private GameHolder() {
 		localClientColors = new Vector<PlayerColor>();
-		localClientColors.add(PlayerColor.NONE);
+//		localClientColors.add(PlayerColor.NONE);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class GameHolder  {
 	}
 	
 	public void resetPlayers(){
-		localClientColors = null;
+		localClientColors.removeAllElements();
 	}
 	
 	
