@@ -429,7 +429,6 @@ public class Game {
 	 * Reset the game
 	 */
 	public void resetGame() {
-		// TODO Auto-generated method stub
 		ludoBoard.resetGame();
 
 	}

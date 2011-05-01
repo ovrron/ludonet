@@ -1,11 +1,14 @@
+/** 
+* LudoBoard.java 
+* Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+*/
+
 package com.ronny.ludo.model;
 
 import java.util.LinkedHashMap;
 import java.util.Vector;
-
 import junit.framework.Assert;
 import android.util.Log;
-
 import com.ronny.ludo.helper.LudoConstants;
 
 public class LudoBoard implements ILudoBoard {
@@ -17,13 +20,22 @@ public class LudoBoard implements ILudoBoard {
 	private Vector<Coordinate> movingPath = new Vector<Coordinate>(); // Veien rundt bordet.
 	private LinkedHashMap<PlayerColor, IPlayer> players = new LinkedHashMap<PlayerColor, IPlayer>();
 
+	 /**
+     * Konstruktør for LodoBoard  
+     */ 
 	public LudoBoard() {
 		players.put(PlayerColor.RED, new Player(PlayerColor.RED,this));
 		players.put(PlayerColor.GREEN, new Player(PlayerColor.GREEN,this));
 		players.put(PlayerColor.YELLOW, new Player(PlayerColor.YELLOW,this));
 		players.put(PlayerColor.BLUE, new Player(PlayerColor.BLUE,this));
 	}
-
+    
+	/**
+     * Legger til en ny spiller  
+     * 
+     * @param pc    Spillerens farge
+     * @param pl    Spilleren
+     */ 
 	public void addPlayer(PlayerColor pc, IPlayer pl) {
 		players.put(pc, pl);
 	}
@@ -32,15 +44,15 @@ public class LudoBoard implements ILudoBoard {
 	 * En IPlayer flytter en brikke et visst antall ruter eller ut fra hus, eller
 	 * hjem/goal
 	 * 
-	 * @param theColor
-	 * @param theBrikke
-	 * @param theMove
+	 * @param theColor     Spillerens farge
+	 * @param theBrikke    Brikken som skal flyttes
+	 * @param theMove      Antall flytt av brikke
 	 */
 	public IPiece playerMove(PlayerColor theColor, int theBrikke, int theMove) {
 		IPlayer p = getPlayer(theColor);
 		IPiece b = p.getBrikker()[theBrikke];
-// Disse tre linjene skal inn		
-	    if (b.isHome()) {
+		// For test: De tre neste linjene tas ut hvis raskt flytt av tårn før homeway
+		if (b.isHome()) {
 	        theMove = LudoConstants.MOVE_FROM_HOUSE;
 	    }
 		if (theMove > 6) {
@@ -56,37 +68,32 @@ public class LudoBoard implements ILudoBoard {
 				break;
 			case LudoConstants.MOVE_TO_GOAL:
 				break;
-// Disse to linjene skal ut				
-//			default: 
-//			    p.moveBrikke(theBrikke, theMove);
+			// For test: De to neste linjene tas inn hvis raskt flytt av tårn før homeway	
+			// default: 
+			// p.moveBrikke(theBrikke, theMove);
 			}
 		} else {
 			// Move the brikke - delegate to player
 			p.moveBrikke(theBrikke, theMove);
-			
-//			int currentPos = b.getBoardPosition();
-//			// Sjekk om vi er på vei hjem
-//			if(currentPos + theMove > p.getStartWayHomePosition()) {
-//				int delta = p.getStartWayHomePosition() - currentPos;
-//				b.setOnWayHome();
-//				b.setBoardPosition(delta);				
-//			} else if(currentPos + theMove > movingPath.size()) {
-//				// Vi er kommet til en grense og må fortsette 'over' vektoren
-//			
-//			}else {
-//				// Vi kan flytte normalt
-//				b.addMove(theMove);;
-//			}
 		}
 		return b; 
 	}
 
+    /**
+     * Finner spiller basert på farge  
+     * 
+     * @param color
+     */ 	
 	public IPlayer getPlayer(PlayerColor color) {
 		IPlayer pl = players.get(color);
 		return pl;
 	}
 
-	// Returnere en spiller basert på farge
+     /**
+     * Returnere en spiller basert på farge/streng  
+     * 
+     * @param theColor  Fargen til spilleren
+     */ 
 	public IPlayer getPlayer(String theColor) {
 		IPlayer ret = null;
 		if (theColor.compareToIgnoreCase("RED") == 0) {
@@ -101,13 +108,20 @@ public class LudoBoard implements ILudoBoard {
 		return ret;
 	}
 
-	// Add commond fields - the path to move on
+    /**
+     * Legger til common felt - veien rundt brettet  
+     * 
+     * @param pos
+     * @param x
+     * @param y
+     */ 
 	public void addCommon(int pos, int x, int y) {
 		movingPath.add(new Coordinate(pos, x, y));
 	}
 
 	/**
 	 * Henter koordinat i path rundt bordet
+	 * 
 	 * @param position
 	 * @return
 	 */
@@ -118,8 +132,9 @@ public class LudoBoard implements ILudoBoard {
 
 	/**
 	 * Brikker beveger seg i økende lengde fra 'home'. Dette er mapping til index fra relativ posisjon
+	 * 
 	 * @param position
-	 * @return
+	 * @return ret
 	 */
 	public int getPathNumberFromRelativeMove(int currentPosition, int startingPosition) {
 		int ret = 0;
@@ -129,10 +144,13 @@ public class LudoBoard implements ILudoBoard {
 	}
 
 
-	// Definerer første start i brettet ut fra home base
+    /**
+     * Definerer første start i brettet ut fra home base  
+     * 
+     * @param playerColor           Spillerens farge
+     * @param firsMovePosition      Første start i brettet
+     */	
 	public void addPlayerInfo(String playerColor, int firsMovePosition) {
-		//TODO Verifiser at denne linen som ble endret faktisk fungerer
-		//IPlayer pl = GameHolder.getInstance().getGame().getPlayerInfo(playerColor);
 		IPlayer pl = getPlayer(playerColor);
 		if (pl == null) {
 			return;
@@ -140,7 +158,12 @@ public class LudoBoard implements ILudoBoard {
 		pl.setFirstBoardPosition(firsMovePosition);
 	}
 
-	// Sets the position to when the
+    /**
+     * Setter posisjon før start mot eget målområde  
+     * 
+     * @param playerColor           Spillerens farge
+     * @param fieldToStartWayHome   Felt før start hjem/mål
+     */ 	
 	public void setWayHomePosition(String playerColor, int fieldToStartWayHome) {
 		IPlayer pl = getPlayer(playerColor);
 		if (pl == null) {
@@ -148,14 +171,24 @@ public class LudoBoard implements ILudoBoard {
 		}
 		pl.setStartWayHomePosition(fieldToStartWayHome);
 	}
-
-	// Add the home base definitions for a player
+	
+    /**
+     * Legger inn home base definitions for en spiller  
+     * 
+     * @param col       Spillerens farge
+     * @param baseHome  Felt før start hjem/mål
+     */ 
 	public void addBaseHomeDefs(String col, Vector<Coordinate> baseHome) {
 		IPlayer pl = getPlayer(col);
 		pl.setHomePositions(baseHome);
 	}
 
-	// Add the way home definitions for a player
+    /**
+     * Legger inn way home definitions for en spiller  
+     * 
+     * @param col       Spillerens farge
+     * @param wayHome   Vektor som representerer way home området til en spiller. 
+     */
 	public void addWayHomeDefs(String col, Vector<Coordinate> wayHome) {
 		IPlayer pl = getPlayer(col);
 		if (pl == null) {
@@ -163,11 +196,6 @@ public class LudoBoard implements ILudoBoard {
 		}
 		pl.setWayHomePositions(wayHome);
 	}
-
-//	public void getHomePosition(PlayerColor color, int t) {
-//		// TODO Auto-generated method stub
-//
-//	}
 
 	/**
 	 * Set the initial resolution the board definitions where read from
@@ -191,6 +219,11 @@ public class LudoBoard implements ILudoBoard {
 		imY = y;
 	}
 
+    /**
+     * Rekalkulerer X  
+     * 
+     * @param x 
+     */
 	public int recalcX(int x) {
 		if(x==0) {
 			Assert.fail("Image width is 0 - this would say that scaling gives 0");
@@ -198,7 +231,12 @@ public class LudoBoard implements ILudoBoard {
 		int ret = (int) (((((float) imX) / ((float) xRes))) * x);
 		return ret;
 	}
-
+	
+    /**
+     * Rekalkulerer Y  
+     * 
+     * @param y 
+     */
 	public int recalcY(int y) {
 		if(y==0) {
 			Assert.fail("Image height is 0 - this would say that scaling gives 0");
@@ -208,7 +246,7 @@ public class LudoBoard implements ILudoBoard {
 	}
 
 	/**
-	 * Recalculating the positions based on the graphics attributes
+	 * Rekalkulerer posisjonene basert på grafikk
 	 */
 	public void recalcPositions() {
 		// WayHome
@@ -241,33 +279,12 @@ public class LudoBoard implements ILudoBoard {
 			p.DumpGame();
 		}
 	}
-	
-	public PlayerColor getNextPlayerColor(PlayerColor playerColor)
-	{
-		IPlayer[] playersArray = (IPlayer[]) players.values().toArray();
-		int i;
-		for(i=0;i<playersArray.length;i++)
-		{
-			if(playersArray[i].getColor().compareTo(playerColor)==0)
-			{
-				if(i+1<playersArray.length)
-				{
-					return playersArray[i+1].getColor();
-				}
-				else
-				{
-					return playersArray[0].getColor();
-				}
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * Reset the game
 	 */
 	public void resetGame() {
-		// TODO Auto-generated method stub
+//
 		
 	}
 }
