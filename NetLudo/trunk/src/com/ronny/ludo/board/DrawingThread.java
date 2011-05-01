@@ -5,8 +5,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 
+/**
+ * DEBUG THREAD Automatic player...
+ * 
+ * @author ANDROD
+ *
+ */
 public class DrawingThread extends Thread {
-	private static String TAG = "DrawingThread";
 	
 	private final static int sleepInterval = 30000;
 	private SurfaceHolder mSurfaceHolder;
