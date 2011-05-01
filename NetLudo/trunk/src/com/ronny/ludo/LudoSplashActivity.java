@@ -1,16 +1,15 @@
 package com.ronny.ludo;
 
-import com.ronny.ludo.helper.SoundPlayer;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.ronny.ludo.helper.SoundPlayer;
 
 public class LudoSplashActivity extends Activity {
 

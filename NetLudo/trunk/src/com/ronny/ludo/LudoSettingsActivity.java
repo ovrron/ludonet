@@ -17,10 +17,10 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Animation.AnimationListener;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,8 +35,6 @@ import com.ronny.ludo.model.GameHolder;
 
 public class LudoSettingsActivity extends Activity 
 {
-	private String TAG = "-Settings-:";
-	
 	/** Tilgjengelige ludobrett */
 	private Vector<String> availableBoards = null;
 	/** Dialog for å velge brett */	
