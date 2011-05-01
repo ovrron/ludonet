@@ -10,8 +10,6 @@ package com.ronny.ludo.board;
  */
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -31,7 +29,6 @@ import android.widget.ImageButton;
 import com.ronny.ludo.LudoActivity;
 import com.ronny.ludo.R;
 import com.ronny.ludo.communication.LudoMessageBroker;
-import com.ronny.ludo.helper.ImageDialog;
 import com.ronny.ludo.helper.LudoConstants;
 import com.ronny.ludo.helper.SoundPlayer;
 import com.ronny.ludo.model.Coordinate;
@@ -400,17 +397,17 @@ public class LudoSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         
 		// ******************************************DEBUG
 		// Plot på skjerm
-		currentXBoard = currentX / currentScale;
-		currentYBoard = currentY / currentScale;
-
-		Canvas c = holder.lockCanvas(null);
-		Paint foodPaint = new Paint();
-		foodPaint.setColor(Color.BLACK);
-		synchronized (holder) {
-			onDraw(c);
-		}
-		c.drawCircle((int) currentXBoard, (int) currentYBoard, (int) delta, foodPaint);
-		holder.unlockCanvasAndPost(c);
+//		currentXBoard = currentX / currentScale;
+//		currentYBoard = currentY / currentScale;
+//
+//		Canvas c = holder.lockCanvas(null);
+//		Paint foodPaint = new Paint();
+//		foodPaint.setColor(Color.BLACK);
+//		synchronized (holder) {
+//			onDraw(c);
+//		}
+//		c.drawCircle((int) currentXBoard, (int) currentYBoard, (int) delta, foodPaint);
+//		holder.unlockCanvasAndPost(c);
 		// ****************************************** DEBUG END
 
 		// ret = Game.getInstance().handleMove((int) currentXBoard, (int)
