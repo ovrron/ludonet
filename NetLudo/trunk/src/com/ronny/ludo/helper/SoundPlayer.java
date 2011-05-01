@@ -16,6 +16,8 @@ public class SoundPlayer
 	public static final int MOVE = R.raw.move;
 	public static final int TOHOUSEBAD = R.raw.tohousebad;
 	public static final int TOHOUSEGOOD = R.raw.tohousegood;
+	public static final int WINNER = R.raw.win;
+	public static final int LOSER = R.raw.lose;
 	private MediaPlayer mp = null;
 	private Context context = null;
 	

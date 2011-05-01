@@ -80,7 +80,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 		// Load board definisjoner - lastes før inflating.
 		ParseBoardDefinitionHelper ph = new ParseBoardDefinitionHelper();
 
-		// Brett er lagt inn i regler - for lasting på klient.  Dette er et bevisst valg siden egene brett kan ha egene regler (framtidig utvidelse)
+		// Brett er lagt inn i regler - for lasting på klient.  Dette er et bevisst valg siden egne brett kan ha egne regler (framtidig utvidelse)
 		String boardFile = GameHolder.getInstance().getRules().getLudoBoardFile();
 		int iidd = getResources().getIdentifier(boardFile, "xml", "com.ronny.ludo");
 		// parseXmlDefs();
@@ -299,6 +299,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					LudoActivity.this.finish();
 				}
 			});
+			soundPlayer.playSound(SoundPlayer.WINNER);
 			erd.showDialog(
 					LudoActivity.this,
 					getResources().getText(R.string.msg_winnermetitle).toString(),
@@ -312,6 +313,7 @@ public class LudoActivity extends Activity implements SensorEventListener {
 					LudoActivity.this.finish();
 				}
 			});
+			soundPlayer.playSound(SoundPlayer.LOSER);
 			erd.showDialog(
 					LudoActivity.this,
 					getResources().getText(R.string.msg_winnertitle).toString(),

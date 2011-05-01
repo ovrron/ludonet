@@ -452,6 +452,11 @@ public class LudoMessageBroker {
 	 * @param color winner color
 	 */
 	public void sendWinnerPlayer(PlayerColor color) {
+		if (currentServer.isServer()) {
+			//Distribuer melding til interne listeners
+			sendMessageToBrokerListeners("G" + SPLITTER + "W" + SPLITTER + color.toString());
+		}
+		// Melding til alle
 		distributeMessage("G" + SPLITTER + "W" + SPLITTER + color.toString());
 	}
 	
