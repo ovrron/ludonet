@@ -35,18 +35,11 @@ public class LudoChooseGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choosegame);
 		initButtonListeners();
-
-//		// Create server object - always done
-//		GameHolder.getInstance().setMessageManager(new TeamMessageMgr());
-//		// Create message broker - always done 
-//		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
-//		// Create Turn Manager - always done
-//		GameHolder.getInstance().setTurnManager(new TurnManager());
 		startAnimation();
 	}
 
 	/**
-     * 
+     * Initierer knappene
      */
 	private void initButtonListeners()
     {
@@ -73,6 +66,9 @@ public class LudoChooseGameActivity extends Activity {
 		});
     }
 	
+	/**
+	 * Starter animasjon av bokstaven O
+	 */
     private void startAnimation()
     {
     	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.rotate);

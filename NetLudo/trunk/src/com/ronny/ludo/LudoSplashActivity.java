@@ -11,6 +11,14 @@ import android.widget.ImageView;
 
 import com.ronny.ludo.helper.SoundPlayer;
 
+/**
+ * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+ * 
+ * Splashscreen
+ * 
+ * @author ovrron
+ * 
+ */
 public class LudoSplashActivity extends Activity {
 
 	private ImageView logo;
@@ -26,13 +34,14 @@ public class LudoSplashActivity extends Activity {
         soundPlayer.playSound(SoundPlayer.SPLASH);
     }
     
-    private void startAnimation()
-    {
+    /**
+     * Starter animasjon
+     */
+    private void startAnimation() {
     	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.logo);
     	logo = (ImageView)findViewById(R.id.imageViewLogo);
     	logo.startAnimation(animationLogo);
-    	animationLogo.setAnimationListener(new AnimationListener() 
-    	{
+    	animationLogo.setAnimationListener(new AnimationListener() {
     	
     		public void onAnimationEnd(Animation animation) {
     			logo.setVisibility(ImageView.INVISIBLE);
@@ -59,7 +68,5 @@ public class LudoSplashActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-//        startAnimation();
-    }
-    
+    }    
 }

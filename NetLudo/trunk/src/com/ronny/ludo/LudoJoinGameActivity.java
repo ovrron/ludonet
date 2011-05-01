@@ -77,13 +77,13 @@ public class LudoJoinGameActivity extends Activity {
 		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
 		// Create Turn Manager - always done
 		GameHolder.getInstance().setTurnManager(new TurnManager());
+		// Reset players
+		GameHolder.getInstance().resetPlayers();
 
 		// Her må vi sette opp en listener som tar oss videre til spillet når vi har connect.
 		final Handler hnd = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-//				Integer msgtype = msg.getData().getInt(TeamMessageMgr.BUNDLE_OPERATION);
-//				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
 				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
 
 				// Start game when color arrives...
@@ -96,13 +96,13 @@ public class LudoJoinGameActivity extends Activity {
 					if (messageParts.length == 3) {
 						if (messageParts[2] != null) {
 							gotColor = true;
+							//Lagrer siste ip man klarte å kople seg til, slik at det blir default ip neste gang
 							SharedPreferences.Editor prefEditor = settings.edit();
 							prefEditor.putString((String) getResources().getText(R.string.sharedpreferences_connectip), editTextIP.getText().toString());
 							prefEditor.commit();
 							PlayerColor plc = PlayerColor.getColorFromString(messageParts[2]);
 							// Save color for client
 							GameHolder.getInstance().addLocalClientColor(plc);
-							//gotPlayers = true;
 							
 							// Disable button
 							Button buttonJoin = (Button) findViewById(R.id.buttonIP);
@@ -135,7 +135,7 @@ public class LudoJoinGameActivity extends Activity {
 					
 				}
 				
-				// The player info have arrived
+				// The player (who's playing) info have arrived
 				if(messageParts[1].equals("SP")){
 					if (messageParts[2] != null) {
 						gotPlayers = true;
@@ -152,6 +152,7 @@ public class LudoJoinGameActivity extends Activity {
 				}
 	
 				
+				// Motatt all nødvendig info fra server
 				if(gotColor && gotSettings && gotPlayers && gotStartGame){
 					// remove toast/dialog
 					waitDialog.hide();
@@ -175,7 +176,7 @@ public class LudoJoinGameActivity extends Activity {
 	}
 
 	/**
-     * 
+     * Initierer knapp
      */
 	private void initButtonListeners() {
 		final Button buttonJoin = (Button) findViewById(R.id.buttonIP);
@@ -183,8 +184,7 @@ public class LudoJoinGameActivity extends Activity {
 		buttonJoin.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				buttonJoin.setEnabled(false);
-				int rc = GameHolder.getInstance().getMessageManager()
-						.initClientConnection(editTextIP.getText().toString());
+				int rc = GameHolder.getInstance().getMessageManager().initClientConnection(editTextIP.getText().toString());
 				Log.d("CONNECT", "RC=" + rc);
 				if (rc == 0) {
 					// Allocate color
@@ -204,16 +204,16 @@ public class LudoJoinGameActivity extends Activity {
 		});
 	}
 	
-    private void startAnimation()
-    {
+	/**
+	 * Starter animering av bokstaven O
+	 */
+    private void startAnimation() {
     	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.rotate);
     	o = (ImageView) findViewById(R.id.imageViewO);
     	o.startAnimation(animationLogo);
-    	animationLogo.setAnimationListener(new AnimationListener() 
-    	{
+    	animationLogo.setAnimationListener(new AnimationListener() {
     	
     		public void onAnimationEnd(Animation animation) {
- 
 		    }
 		
 		    public void onAnimationRepeat(Animation animation) {
@@ -231,12 +231,9 @@ public class LudoJoinGameActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 	        Log.d(this.getClass().getName(), "back button pressed");
-			//TODO Disconnect other players
 			GameHolder.getInstance().getMessageBroker().quitGame();
 			this.finish();
 	    }
 	    return super.onKeyDown(keyCode, event);
-
 	}
-
 }

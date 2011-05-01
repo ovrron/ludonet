@@ -63,6 +63,11 @@ public class GameHolder  {
 		this.surfaceView = surfaceView;
 	}
 	
+	public void resetPlayers(){
+		localClientColors = null;
+	}
+	
+	
 	/**
 	 * @return the game
 	 */

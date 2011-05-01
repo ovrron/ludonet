@@ -34,50 +34,50 @@ import com.ronny.ludo.model.TurnManager;
 import com.ronny.ludo.model.TurnManager.PlayerLocation;
 
 /**
+ * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+ * 
+ * Starter et nytt spill.
  * 
  * @author ovrron
  * 
  */
 public class LudoStartNewGameActivity extends Activity {
 	
-	private class HelperPlayers // Må ikke forveksles med Hjelpepleiere :-)
-	{
+	/**
+	 * Hjelpeklasse for å holde orden på spillere
+	 * @author ronny
+	 *
+	 */
+	private class HelperPlayers { // Må ikke forveksles med Hjelpepleiere :-)
+	
 		private Vector<HelperPlayer> players = new Vector<HelperPlayer>();
 		
-		public HelperPlayers()
-		{}
+		public HelperPlayers() {
+		}
 		
-		public void addPlayer(HelperPlayer player)
-		{
+		public void addPlayer(HelperPlayer player){
 			players.add(player);
 		}
 		
-		public HelperPlayer getPlayer(PlayerColor playerColor)
-		{
-			for (HelperPlayer p:players) 
-			{
-				if(p.getPlayerColor()==playerColor)
-				{
+		public HelperPlayer getPlayer(PlayerColor playerColor) {
+			for (HelperPlayer p:players) {
+				if(p.getPlayerColor()==playerColor) {
 					return p;
 				}
 			}
 			return null;
 		}
 		
-		public HelperPlayer getPlayer(ImageButton playerButton)
-		{
-			for (HelperPlayer p:players) 
-			{
-				if(p.getPlayerButton().getId()==playerButton.getId())
-				{
+		public HelperPlayer getPlayer(ImageButton playerButton) {
+			for (HelperPlayer p:players) {
+				if(p.getPlayerButton().getId()==playerButton.getId()) {
 					return p;
 				}
 			}
 			return null;
 		}
 		
-		public Vector<HelperPlayer> getPlayers()
-		{
+		public Vector<HelperPlayer> getPlayers() {
 			return players;
 		}
 		
@@ -90,8 +90,11 @@ public class LudoStartNewGameActivity extends Activity {
 			return null;
 		}
 	}
+
 	/**
-	 * 
+	 * Hjelpeklasse for å holde orden på en spiller
+	 * @author ronny
+	 *
 	 */
 	private class HelperPlayer {
 		private ImageButton playerButton;
@@ -113,16 +116,13 @@ public class LudoStartNewGameActivity extends Activity {
 			}
 		}
 		
-		public void setLocation(PlayerLocation playerLocation)
-		{
+		public void setLocation(PlayerLocation playerLocation) {
 			GameHolder.getInstance().getTurnManager().setLoaction(playerColor, playerLocation);
 			setPlayerState(playerLocation, playerButton);
-			if(playerLocation==PlayerLocation.LOCAL)
-			{
+			if(playerLocation==PlayerLocation.LOCAL) {
 				setConnected(true);
 			}
-			else if(playerLocation==PlayerLocation.FREE)
-			{
+			else if(playerLocation==PlayerLocation.FREE) {
 				setConnected(false);
 			}
 		}
@@ -131,13 +131,11 @@ public class LudoStartNewGameActivity extends Activity {
 			return GameHolder.getInstance().getTurnManager().getLocation(playerColor);
 		}
 		
-		public PlayerColor getPlayerColor()
-		{
+		public PlayerColor getPlayerColor() {
 			return playerColor;
 		}
 		
-		public ImageButton getPlayerButton()
-		{
+		public ImageButton getPlayerButton() {
 			return playerButton;
 		}
 	}
@@ -162,7 +160,9 @@ public class LudoStartNewGameActivity extends Activity {
 		GameHolder.getInstance().setMessageBroker(new LudoMessageBroker(GameHolder.getInstance().getMessageManager()));
 		// Create Turn Manager - always done
 		GameHolder.getInstance().setTurnManager(new TurnManager());
-		
+		// Reset players
+		GameHolder.getInstance().resetPlayers();
+
 		init();
 		startAnimation();
 	}
@@ -171,7 +171,7 @@ public class LudoStartNewGameActivity extends Activity {
 
 	
 	/**
-     * 
+     * Initiering
      */
 	private void init() {
 		// Set up game remedies
@@ -188,7 +188,6 @@ public class LudoStartNewGameActivity extends Activity {
 			@Override
 			public void handleMessage(Message msg) {
 				String message = (String) msg.obj;
-				//final String[] messageParts = message.split("\\,");
 				final String[] messageParts = message.split(LudoMessageBroker.SPLITTER);
 				Log.d("LStartNewGame", "In msg: " + message);
 				if (messageParts[0].equals("A")) { // Administrative messages
@@ -227,8 +226,10 @@ public class LudoStartNewGameActivity extends Activity {
 		players.addPlayer(new HelperPlayer(PlayerColor.GREEN, (ImageButton) findViewById(R.id.imageButtonPlayerGreen)));
 		players.addPlayer(new HelperPlayer(PlayerColor.YELLOW, (ImageButton) findViewById(R.id.imageButtonPlayerYellow)));
 		players.addPlayer(new HelperPlayer(PlayerColor.BLUE, (ImageButton) findViewById(R.id.imageButtonPlayerBlue)));
+		//Setter rød spiller til lokal
 		players.getPlayer(GameHolder.getInstance().getTurnManager().getFreeColor(PlayerLocation.LOCAL, PlayerColor.RED, false)).setLocation(PlayerLocation.LOCAL);
 		
+		//Henter ip
 		ipAddressCurrent = new IPAddressHelper().getLocalIpAddress();
 		if (ipAddressCurrent == null) {
 			editTextIP.setText(getResources().getString(
@@ -240,57 +241,18 @@ public class LudoStartNewGameActivity extends Activity {
 			buttonInvite.setEnabled(true);
 			buttonPlayGame.setEnabled(true);
 		}
-		
-		// Init TurnManager 
-//		PlayerColor pc = GameHolder.getInstance().getTurnManager()
-//				.getFreeColor(PlayerLocation.LOCAL, PlayerColor.RED, false);
-
-		//setIconForColor(pc, PlayerLocation.LOCAL);
 
 		editTextIP.setEnabled(false);
 		initImageButtonListeners();
 		initButtonListeners();
 
-		// open registation
+		// open registration
 		GameHolder.getInstance().getMessageManager().openRegistration();
 	}
 
 	/**
-	 * Update icons for players and colors
-	 * 
-	 * @param pc
-	 * @param loc
+	 * Start animering av bokstaven O
 	 */
-//	private void setIconForColor(PlayerColor pc, PlayerLocation loc) {
-//		switch (pc) {
-//		case RED:
-//			playerRed.setConnected(true);
-//			break;
-//		case GREEN:
-//			playerGreen.setConnected(true);
-//			break;
-//		case YELLOW:
-//			playerYellow.setConnected(true);
-//			break;
-//		case BLUE:
-//			playerBlue.setConnected(true);
-//			break;
-//		}
-//		if (loc == PlayerLocation.FREE) {
-//			GameHolder.getInstance().getTurnManager().freeColor(pc);
-//		}
-//
-//		// Free and allocated resources - distribute message to clients...
-//		if (loc == PlayerLocation.FREE) {
-//			GameHolder.getInstance().getMessageBroker()
-//					.distributeMessage("A,CI," + pc.toString());
-//		} else {
-//			GameHolder.getInstance().getMessageBroker()
-//					.distributeMessage("A,CO," + pc.toString());
-//		}
-//	}
-
-	
     private void startAnimation()
     {
     	Animation animationLogo = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -311,6 +273,9 @@ public class LudoStartNewGameActivity extends Activity {
 		});    	
     }
     
+    /**
+     * Initierer spillerknappene
+     */
 	private void initImageButtonListeners() {
 		OnClickListener listener = new OnClickListener() 
 		{
@@ -349,45 +314,10 @@ public class LudoStartNewGameActivity extends Activity {
 		{
 			p.getPlayerButton().setOnClickListener(listener);
 		}
-//		imageButtonPlayerRed.setOnClickListener(new OnClickListener() {
-//			public void onClick(View v) {
-//
-//				// Check remote - if not local/free, then forget.
-//				if (GameHolder.getInstance().getTurnManager().isRemote(PlayerColor.RED)) {
-//					return;
-//				}
-//
-//				// No remote issues here - check local
-//
-//				// Check locally on/off
-//				if (GameHolder.getInstance().getTurnManager()
-//						.isFree(PlayerColor.RED)) {
-//					// If free - then allocate the color and set local image.
-//					PlayerColor pc = GameHolder
-//							.getInstance()
-//							.getTurnManager()
-//							.getFreeColor(PlayerLocation.LOCAL,
-//									PlayerColor.RED, false);
-//					// I could could allocate -
-//					if (pc != PlayerColor.NONE) {
-//						// Place the house on, and start anim
-//						//playerRed.setConnected(true);
-//						startPlayerFrameAnimation((ImageButton)v);
-//					}
-//				} else {
-//					// Already allocated => free the color, remove the house and
-//					// stop anim
-//					//playerRed.setConnected(false);
-//					stopPlayerFrameAnimation((ImageButton)v);
-//					GameHolder.getInstance().getTurnManager()
-//							.freeColor(PlayerColor.RED);
-//				}
-//			}
-//		});
 	}
 
 	/**
-     * 
+     * Initierer knapper
      */
 	private void initButtonListeners() {
 		buttonPlayGame.setOnClickListener(new OnClickListener() {
@@ -416,28 +346,15 @@ public class LudoStartNewGameActivity extends Activity {
 				LudoStartNewGameActivity.this.finish();
 			}
 		});
-
+		//Sender invitasjon via sms
 		buttonInvite.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// Send invitasjon
-				// TODO legg inn tekst som skal sendes i strings.xml
-				// TODO lage mulighet for en venneliste med telefonnr som man
-				// kan velge fra
-				// TODO kanskje mulighet for å sende epost også
 				String msgText = ipAddressCurrent + " "
 						+ getResources().getString(R.string.start_invite_text);
-				// Intent msg = new Intent(Intent.ACTION_SEND);
-				// msg.setType("text/plain");
-				// msg.putExtra("sms_body", msgText);
-				// msg.putExtra(Intent.EXTRA_TEXT, "email body");
-				// msg.putExtra(Intent.EXTRA_SUBJECT, "email subject");
-				// startActivity(msg);
-				// startActivity(Intent.createChooser(msg, "Velg sms"));
 
 				Intent sendIntent = new Intent(Intent.ACTION_VIEW);
 				sendIntent.putExtra("sms_body", msgText);
-				// String tlfno = "90177797, 99001155, 1234678";
-				// sendIntent.putExtra("address", tlfno);
 				sendIntent.setType("vnd.android-dir/mms-sms");
 				startActivity(sendIntent);
 			}
@@ -445,9 +362,8 @@ public class LudoStartNewGameActivity extends Activity {
 	}
 
 	/**
-	 * 
-	 * @param players
-	 *            , tabell med imageviews som representerer spillere
+	 * Starter animering rundt spillerknappene
+	 * @param players, tabell med imagebuttons som representerer spillere
 	 */
 	public void startPlayerFrameAnimation(ImageButton... players) {
 		for (ImageButton player : players) {
@@ -459,44 +375,25 @@ public class LudoStartNewGameActivity extends Activity {
 					frameAnimation.start();
 				}
 			});
-
 		}
 	}
 
 	/**
-	 * 
-	 * @param players
-	 *            , tabell med imageviews som representerer spillere
+	 * Stopper animering rundt spillerknappene
+	 * @param players, tabell med imageviews som representerer spillere
 	 */
 	public void stopPlayerFrameAnimation(ImageButton... players) {
 		for (ImageButton player : players) {
 			player.setBackgroundDrawable(null);
-			// AnimationDrawable frameAnimation = (AnimationDrawable)
-			// player.getBackground();
-			// frameAnimation.stop();
 		}
 	}
 
-	// Call TurnManager
-	// private PlayerState getPlayerState(ImageButton player)
-	// {
-	// Drawable d = player.getDrawable();
-	// if(d.equals(getResources().getDrawable(R.drawable.player_red_local))||d.equals(getResources().getDrawable(R.drawable.player_green_local))||d.equals(getResources().getDrawable(R.drawable.player_yellow_local))||d.equals(getResources().getDrawable(R.drawable.player_blue_local)))
-	// {
-	// return PlayerState.LOCAL;
-	// }
-	// else
-	// if(d.equals(getResources().getDrawable(R.drawable.player_red_remote))||d.equals(getResources().getDrawable(R.drawable.player_green_remote))||d.equals(getResources().getDrawable(R.drawable.player_yellow_remote))||d.equals(getResources().getDrawable(R.drawable.player_blue_remote)))
-	// {
-	// return PlayerState.REMOTE;
-	// }
-	// else
-	// {
-	// return PlayerState.FREE;
-	// }
-	//
-	// }
-
+	/**
+	 * Hjelpemetode for å hente id til riktig drawable
+	 * @param playerState
+	 * @param player
+	 * @return id
+	 */
 	private int getPlayerResID(PlayerLocation playerState, ImageButton player) {
 		Resources res = getResources();
 
@@ -554,11 +451,10 @@ public class LudoStartNewGameActivity extends Activity {
 
 	/**
 	 * 
+	 * @param playerState
 	 * @param players
-	 *            , tabell med imageviews som representerer spillere
 	 */
-	public void setPlayerState(PlayerLocation playerState,
-			ImageButton... players) {
+	public void setPlayerState(PlayerLocation playerState, ImageButton... players) {
 		for (ImageButton player : players) {
 			int resID = getPlayerResID(playerState, player);
 			try {
