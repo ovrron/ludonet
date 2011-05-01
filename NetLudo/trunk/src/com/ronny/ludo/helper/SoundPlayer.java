@@ -11,7 +11,7 @@ public class SoundPlayer
 	public static final int ROLL6 = R.raw.shake_and_roll_6;
 	public static final int ROLL = R.raw.shake_and_roll;
 	public static final int NO_LEGAL_MOVE = R.raw.crowd_groan;
-	public static final int SPLASH = R.raw.viacom2;
+	public static final int SPLASH = R.raw.playludo;
 	public static final int DISCONNECT = R.raw.disconnect;
 	public static final int MOVE = R.raw.move;
 	public static final int TOHOUSEBAD = R.raw.tohousebad;
