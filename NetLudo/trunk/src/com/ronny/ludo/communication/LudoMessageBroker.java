@@ -442,9 +442,11 @@ public class LudoMessageBroker {
 		distributeMessage("G" + SPLITTER + "M" + SPLITTER + color.toString() + SPLITTER + pieceIndex + SPLITTER
 				+ numMoves + SPLITTER + jubelHyl);
 
-		// Distribuer melding til interne listeners
-		sendMessageToBrokerListeners("G" + SPLITTER + "M" + SPLITTER + color.toString() + SPLITTER + pieceIndex
-				+ SPLITTER + numMoves + SPLITTER + jubelHyl);
+		// Distribuer melding til interne listeners hvis server
+		if(currentServer.isServer()) {
+			sendMessageToBrokerListeners("G" + SPLITTER + "M" + SPLITTER + color.toString() + SPLITTER + pieceIndex
+					+ SPLITTER + numMoves + SPLITTER + jubelHyl);
+		}
 	}
 
 	/**
