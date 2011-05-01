@@ -46,7 +46,8 @@ public class DrawingThread extends Thread {
 		   Canvas c;
 		   Log.d("DRAWINGTHREAD", "----STARTER");
 		   mySleep(18000);
-		   int teller = 0;
+		   @SuppressWarnings("unused")
+		int teller = 0;
 		   while (isRunning()) {
 				c=null;
 				try {
