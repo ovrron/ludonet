@@ -28,6 +28,9 @@ import com.ronny.ludo.model.GameHolder;
 import com.ronny.ludo.model.TurnManager;
 
 /**
+ * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+ * 
+ * Activity for choosing type of game - be a server (start a game) og join a game.
  * 
  * @author ovrron
  * 
@@ -64,9 +67,7 @@ public class LudoChooseGameActivity extends Activity {
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(v.getContext(), LudoSettingsActivity.class);
-				
 				startActivity(intent);
-				//startActivity(new Intent(LudoStartActivity.this, LudoActivity.class));
 			}
 		});
     
@@ -77,9 +78,7 @@ public class LudoChooseGameActivity extends Activity {
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(v.getContext(), LudoJoinGameActivity.class);
-				
 				startActivity(intent);
-				//startActivity(new Intent(LudoStartActivity.this, LudoActivity.class));
 			}
 		});
     }
@@ -91,14 +90,10 @@ public class LudoChooseGameActivity extends Activity {
     	o.startAnimation(animationLogo);
     	animationLogo.setAnimationListener(new AnimationListener() 
     	{
-    	
     		public void onAnimationEnd(Animation animation) {
- 
 		    }
-		
 		    public void onAnimationRepeat(Animation animation) {
 		    }
-		
 		    public void onAnimationStart(Animation animation) {
 		    }
 		});    	
