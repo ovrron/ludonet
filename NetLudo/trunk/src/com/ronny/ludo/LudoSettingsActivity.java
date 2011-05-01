@@ -88,7 +88,6 @@ public class LudoSettingsActivity extends Activity
       	/** Initierer knapp for å velge brett*/
       	ImageButton imageButtonChooseBoard = (ImageButton)findViewById(R.id.imageButtonChooseBoard);
       	imageButtonChooseBoard.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				boardDialog.show();
 			}
@@ -96,7 +95,6 @@ public class LudoSettingsActivity extends Activity
 
       	/** Henter valgt brett fra brettdialogen */
     	boardDialog.setOnDismissListener(new OnDismissListener() {
-			@Override
 			public void onDismiss(DialogInterface dialog) {
 				String chosenBoard = boardDialog.getChosenBoard();
 				String[] boardDef = chosenBoard.split(ParseBoardDefinitionHelper.SEPARATOR);
@@ -108,7 +106,6 @@ public class LudoSettingsActivity extends Activity
     	/** Initierer neste knappen */
 		Button buttonNext = (Button)findViewById(R.id.buttonNext);
 		buttonNext.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				/** Oppdaterer settings til regler, samt lagrer de i sharedpreferences */
 				if(updateSettings()) {
