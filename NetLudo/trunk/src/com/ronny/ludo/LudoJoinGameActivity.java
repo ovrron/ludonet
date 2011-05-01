@@ -30,12 +30,16 @@ import com.ronny.ludo.model.PlayerColor;
 import com.ronny.ludo.model.TurnManager;
 
 /**
+ * Copyright: (c) 2011 Ronny Heitmann Andersen, Ronny Øvereng and Karl-Erik Moberg
+ * 
+ * Joining a started game.
  * 
  * @author ovrron
  * 
  */
 public class LudoJoinGameActivity extends Activity {
 
+	// State/information
 	boolean gotColor = false;
 	boolean gotSettings = false;
 	boolean gotPlayers = false;
@@ -48,7 +52,10 @@ public class LudoJoinGameActivity extends Activity {
 	SharedPreferences settings = null;
 	private ProgressDialog waitDialog;
 
-	/** Called when the activity is first created. */
+	/** 
+	 * Called when the activity is first created. 
+	 * 
+	 * */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -72,21 +79,20 @@ public class LudoJoinGameActivity extends Activity {
 		// Create Turn Manager - always done
 		GameHolder.getInstance().setTurnManager(new TurnManager());
 
-		// Her må vi sette opp en listener som tar oss videre til spillet når vi
-		// har connect.
-		// Create server message handle
+		// Her må vi sette opp en listener som tar oss videre til spillet når vi har connect.
 		final Handler hnd = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				Integer msgtype = msg.getData().getInt(TeamMessageMgr.BUNDLE_OPERATION);
-				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
+//				Integer msgtype = msg.getData().getInt(TeamMessageMgr.BUNDLE_OPERATION);
+//				Integer client = msg.getData().getInt(TeamMessageMgr.BUNDLE_CLIENTID);
 				String theMessage = msg.getData().getSerializable(TeamMessageMgr.BUNDLE_MESSAGE).toString();
 
 				// Start game when color arrives...
 				Log.d("Client got color msg", "MSG:" + theMessage);
 				// Split message
-				//final String[] messageParts = theMessage.split("\\,");
 				final String[] messageParts = theMessage.split(LudoMessageBroker.SPLITTER);
+				
+				// Color allocated
 				if (messageParts[1].equals("CA")) {
 					if (messageParts.length == 3) {
 						if (messageParts[2] != null) {
@@ -103,7 +109,7 @@ public class LudoJoinGameActivity extends Activity {
 							Button buttonJoin = (Button) findViewById(R.id.buttonIP);
 							buttonJoin.setEnabled(false);
 							
-							// Add the awiting game start message...
+							// Add the awaiting game start message...
 							waitDialog = new ProgressDialog(LudoJoinGameActivity.this);
 							waitDialog.setTitle(getResources().getString(R.string.msg_network_waiting_title));
 							String message = null;
@@ -148,9 +154,9 @@ public class LudoJoinGameActivity extends Activity {
 	
 				
 				if(gotColor && gotSettings && gotPlayers && gotStartGame){
-//					remove toast/dialog
+					// remove toast/dialog
 					waitDialog.hide();
-					// Remove myself as listener
+					// Remove myself as listener since I'm changing activity
 					GameHolder.getInstance().getMessageManager().removeListener(this);
 					// Start game
 					Intent ludoIntent = new Intent(LudoJoinGameActivity.this.getApplicationContext(), LudoActivity.class);
@@ -169,23 +175,6 @@ public class LudoJoinGameActivity extends Activity {
 
 	}
 
-	// /**
-	// *
-	// */
-	// private void initEditTextListener()
-	// {
-	// EditText editTextIP = (EditText) findViewById(R.id.editTextIP);
-	// editTextIP.setOnKeyListener(new OnKeyListener()
-	// {
-	// @Override
-	// public boolean onKey(View v, int keyCode, KeyEvent event) {
-	// ipAddressJoin = editTextIP.getText().toString();
-	// return false;
-	// }
-	//
-	// });
-	// }
-
 	/**
      * 
      */
@@ -202,9 +191,6 @@ public class LudoJoinGameActivity extends Activity {
 					// Allocate color
 					GameHolder.getInstance().getMessageBroker().sendGimmeAColor();
 				} else {
-//					Toast.makeText(LudoJoinGameActivity.this,
-//							"Feil med connection: "+rc,
-//							Toast.LENGTH_LONG).show();
 					ImageDialog erd = new ImageDialog();
 					erd.setOnDismissListener(new OnDismissListener() {
 						public void onDismiss(DialogInterface dialog) {
