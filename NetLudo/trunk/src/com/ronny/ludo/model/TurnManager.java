@@ -34,8 +34,6 @@ public class TurnManager {
 	private PlayerColor currentTurnColor;
 	private int currentTurnPos = -1;
 
-	// private int numPlayers = 0;
-
 	/**
 	 * Define a player, color and location
 	 * 
@@ -44,9 +42,6 @@ public class TurnManager {
 	private class APlayer {
 		private PlayerColor color;
 		private PlayerLocation location;
-
-		public APlayer() {
-		}
 
 		/** 
 		* Create a player 
