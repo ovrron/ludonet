@@ -20,7 +20,13 @@ vil også dette gi avdelingen en heving i bredden av
 kompetanse en it-avdeling bør sitte inne med.
 Faget har hovedfokus på utvikling for Android-plattformen, 
 men det tas også opp utvikling omkring iPhone/iPad og Windows Mobile (.Net). 
-Kurset gav en start på utvikling og testeing av applikasjoner for mobile enheter.   
+Kurset gav en start på utvikling og testeing av applikasjoner for mobile enheter.
+KEM:  
+Den første telefonen som benyttet Android var HTC Dream som ble lansert i 2008. 
+Siden har produsenter som Samsung, Motorola og Sony Ericsson lansert mobiler som 
+bruker Android. Det finnes i dag ca 300.000 apps tilgjengelig for Android. 
+Som utviklere jobber vi i et verktøy som heter Eclipse og skriver programmene i 
+Java-språket via Google-utviklede Java-biblioteker.
 
 
 > 1) Hva gikk prosjektoppgaven deres ut på?
@@ -32,9 +38,9 @@ Vi siktet høyest og da falt oppgaven på Ludo i nettverk -
 med et håp om at løsningen blir vel motatt av sensor.
 Praktisk talt all lesing og jobbing med faget gjøres på fritiden, 
 så det kommer jo på toppen av alt annet man fyller dagene med.
-Når vi ser tilbake på selve prosjektoppgaven, så har vi vel tilsammen brukt
-(ja hvor mye skal vi tippe? - jeg satt nærmere 30 timer bare siste helgen fre-søn)
-xxx timer på å designe, utvikle og teste systemet.
+Når vi ser tilbake på selve kurset, så har vi vel totalt brukt mellom 
+200-300 timer på faget i tillegg til over en månedes arbeid med å 
+designe, utvikle og teste prosjektoppgaven.
 
 ovrron:
 	- Lage et Ludospill med mulighet for å spille over nett, mot hverandre, med hver sin android enhet.
@@ -43,7 +49,7 @@ ovrron:
 > 2) Ga videreutdanningen noe kompetanse eller kunnskap som kan komme Tryg til gode? Isåfall hva?
 *Her er litt det som Marit sa...*
 ovrron:
-	- Generell god kunnskap om design og utvikling av mobile applikasjoner 
+	- Gjennom kurset har vi fått generell god kunnskap om design og utvikling av mobile applikasjoner. 
 
 > 3) Hvilke mobile løsninger kan være aktuelt å utvikle for Trygs kunder eller ansatte?
 Beslutninger om løsninger blir tatt på et høyere nivå - alt avhengig av satsning og prioritering...
@@ -56,4 +62,4 @@ ovrron:
 ovrron:
 	- Meldte oss på kurs for eget initiativ.
 	- Har tilnærmet utelukkende brukt egen fritid
-	- Hver av oss har vel totalt brukt mellom 200-300 timer på kurset
+	
