@@ -97,9 +97,11 @@ public class LudoSettingsActivity extends Activity
     	boardDialog.setOnDismissListener(new OnDismissListener() {
 			public void onDismiss(DialogInterface dialog) {
 				String chosenBoard = boardDialog.getChosenBoard();
-				String[] boardDef = chosenBoard.split(ParseBoardDefinitionHelper.SEPARATOR);
-				textViewBoard.setText(boardDef[0]);
-				chosenBoardFile = boardDef[1];
+				if(chosenBoard!=null) {
+					String[] boardDef = chosenBoard.split(ParseBoardDefinitionHelper.SEPARATOR);
+					textViewBoard.setText(boardDef[0]);
+					chosenBoardFile = boardDef[1];
+				}
 			}
     	});
 		
