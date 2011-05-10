@@ -1,0 +1,47 @@
+(Skriver linjer med kort linjelengde for at vi skal kunne kjøre diff bedre...)
+
+> Utgangspunkt:
+> Jeg skal lage en kort sak til ASK om prosjektoppgaven deres om utvikling av mobile løsninger.
+> Jeg kan enten komme og slå av en kort prat i dag eller torsdag, eller dere kan hver enkelt sende meg noen ord på mail.
+
+
+Vi ønsket gjerne å ta faget 'Applikasjonstvikling for mobile enheter' 
+på Høgskolesenteret i Sør-Trøndelag som nettstudie.  
+Dette var eget initiativ til faglig kompetanseutvikling kanskje 
+litt på siden av Tryg IT sine kjerneteknologier (nå i 2011), 
+men som likevel blir relevant for Tryg. Android-plattformen 
+kjører på alt fra mobile enheter til mindre datamaskiner, 
+og vil på sikt sikkert bli anvendt i bedriftsinterne 
+løsninger såvel som i åpne løsninger. 
+
+Vi ser alt idag at mange finans- og forsikringsforetak har løsninger for platformen. 
+I tillegg til generell kompetanseheving, 
+vil også dette gi avdelingen en heving i bredden av 
+kompetanse en it-avdeling bør sitte inne med.
+Faget har hovedfokus på utvikling for Android-plattformen, 
+men det tas også opp utvikling omkring iPhone/iPad og Windows Mobile (.Net). 
+Kurset gav en start på utvikling og testeing av applikasjoner for mobile enheter.   
+
+
+> 1) Hva gikk prosjektoppgaven deres ut på?
+Prosjektoppgaven er en felles innlevering og en eksamensbesvarelse. 
+Utgangspunktet for prosjekter, var å lage et program for å spille bondesjakk.
+Dette var en av flere løsninger man kunne velge - 
+alt avhengig av hvilken karakter man siktet mot.
+Vi siktet høyest og da falt oppgaven på Ludo i nettverk - 
+med et håp om at løsningen blir vel motatt av sensor.
+Praktisk talt all lesing og jobbing med faget gjøres på fritiden, 
+så det kommer jo på toppen av alt annet man fyller dagene med.
+Når vi ser tilbake på selve prosjektoppgaven, så har vi vel tilsammen brukt
+(ja hvor mye skal vi tippe? - jeg satt nærmere 30 timer bare siste helgen fre-søn)
+xxx timer på å designe, utvikle og teste systemet.
+
+> 2) Ga videreutdanningen noe kompetanse eller kunnskap som kan komme Tryg til gode? Isåfall hva?
+*Her er litt det som Marit sa...* 
+
+> 3) Hvilke mobile løsninger kan være aktuelt å utvikle for Trygs kunder eller ansatte?
+Beslutninger om løsninger blir tatt på et høyere nivå - alt avhengig av satsning og prioritering...
+
+
+> 4) Annet dere kan tenke dere å legge til.
+
