@@ -36,12 +36,24 @@ Når vi ser tilbake på selve prosjektoppgaven, så har vi vel tilsammen brukt
 (ja hvor mye skal vi tippe? - jeg satt nærmere 30 timer bare siste helgen fre-søn)
 xxx timer på å designe, utvikle og teste systemet.
 
+ovrron:
+	- Lage et Ludospill med mulighet for å spille over nett, mot hverandre, med hver sin android enhet.
+	- Innebærer nettverkskommunikasjon og avansert brukergrensesnittprogrammmering
+
 > 2) Ga videreutdanningen noe kompetanse eller kunnskap som kan komme Tryg til gode? Isåfall hva?
-*Her er litt det som Marit sa...* 
+*Her er litt det som Marit sa...*
+ovrron:
+	- Generell god kunnskap om design og utvikling av mobile applikasjoner 
 
 > 3) Hvilke mobile løsninger kan være aktuelt å utvikle for Trygs kunder eller ansatte?
 Beslutninger om løsninger blir tatt på et høyere nivå - alt avhengig av satsning og prioritering...
-
+ovrron:
+	- Det er forretningen som bestemmer og initierer hvilke it løsnigner som skal se dagens lys, og vi har ingen mulighet for å påvirke dette.
+	- Vi kan håpe på å bli involvert 
+	
 
 > 4) Annet dere kan tenke dere å legge til.
-
+ovrron:
+	- Meldte oss på kurs for eget initiativ.
+	- Har tilnærmet utelukkende brukt egen fritid
+	- Hver av oss har vel totalt brukt mellom 200-300 timer på kurset
